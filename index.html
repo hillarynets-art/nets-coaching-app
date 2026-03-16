@@ -119,6 +119,50 @@ const EX_IMAGES = {
   55: "",   // MOUNTAIN CLIMBER
   56: "",   // BEAR CRAWL
   57: "",   // HIGH KNEES
+
+  /* ── BATCH 3: FULL CATALOG (WorkoutLabs A-Z) ── */
+  /* -- Strength -- */
+  58: "",   // WALKING LUNGE
+  59: "",   // SINGLE-LEG DEADLIFT
+  60: "",   // KETTLEBELL SWING
+  61: "",   // SUMO SQUAT
+  62: "",   // PIKE PUSH-UP
+  63: "",   // INVERTED ROW
+  64: "",   // PISTOL SQUAT
+  65: "",   // COSSACK SQUAT
+  66: "",   // NORDIC HAMSTRING CURL
+  67: "",   // DUMBBELL THRUSTER
+  68: "",   // GLUTE BRIDGE
+  69: "",   // DUMBBELL SNATCH
+  /* -- Power & Plyometrics -- */
+  70: "",   // 180 JUMP SQUAT
+  71: "",   // EXPLOSIVE SPLIT SQUAT JUMP
+  72: "",   // AGILITY LADDER DRILL
+  73: "",   // CLAP PUSH-UP
+  74: "",   // FROG JUMP
+  75: "",   // JUMP ROPE
+  76: "",   // LATERAL BOUND
+  77: "",   // BUTT KICKS
+  /* -- Core -- */
+  78: "",   // AB WHEEL ROLLOUT
+  79: "",   // BICYCLE CRUNCH
+  80: "",   // FLUTTER KICKS
+  81: "",   // V-UP
+  82: "",   // WINDSHIELD WIPERS
+  83: "",   // HOLLOW BODY HOLD
+  84: "",   // PLANK TO PUSH-UP
+  /* -- Recovery & Mobility -- */
+  85: "",   // CLAMSHELL
+  86: "",   // COBRA STRETCH
+  87: "",   // FROG STRETCH
+  88: "",   // WORLD'S GREATEST STRETCH
+  89: "",   // DOWNWARD DOG
+  90: "",   // SCORPION STRETCH
+  91: "",   // FOAM ROLLER IT BAND
+  92: "",   // DONKEY KICKS
+  93: "",   // FIRE HYDRANT
+  94: "",   // KNEE-TO-CHEST STRETCH
+  95: "",   // CROSS-BODY SHOULDER STRETCH
 };
 
 const C={
@@ -1339,6 +1383,475 @@ const EXERCISES=[
   ],
   cues:["Every knee reaches hip height — no shortcuts","Stay tall — don't lean backward","Pump arms hard — they drive the speed","Balls of feet — light and fast"],
   tip:"High knees are the simplest way to improve foot speed for basketball. Do them as part of your warm-up (30 seconds at moderate pace) and as conditioning (15-second max-effort bursts). Focus on getting your knees to full height rather than going fast with shallow range.",rpe:6},
+
+/* ══════════════════════════════════════════════════════════
+   BATCH 3 — WorkoutLabs Full Catalog (A-Z) Basketball Picks
+   No machines / no cables — bodyweight & free weights only
+   ══════════════════════════════════════════════════════════ */
+
+// ── STRENGTH (Full Catalog) ──────────────────────────────
+
+{id:58,name:"WALKING LUNGE",type:"strength",muscle:"lower",
+ muscles:["Quadriceps","Glutes","Hamstrings","Hip Flexors","Core"],primary:"Quadriceps",diff:"Beginner",
+ equipment:"Bodyweight (add dumbbells to progress)",
+ benefit:"Trains single-leg strength through a full range of motion while moving forward — mirrors the driving and cutting patterns of basketball.",
+ steps:[
+   {title:"Tall Start",fig:"stand",desc:"Stand tall with feet hip-width apart, arms at your sides or hands on hips. Brace your core and look straight ahead."},
+   {title:"Step & Lower",fig:"lunge",desc:"Take a large step forward with your RIGHT foot. Lower your body until both knees form 90-degree angles. Your back knee hovers just above the floor. Keep your torso upright — do NOT lean forward."},
+   {title:"Drive Forward",fig:"lunge_stand",desc:"Push through your RIGHT heel and step your LEFT foot forward into the next lunge. Continue alternating legs as you walk forward. Each rep is one step."},
+ ],
+ cues:["Back knee hovers 1 inch off the floor","Front knee tracks over your toes — not past","Chest stays tall — don't fold forward","Drive through the heel, not the toes"],
+ tip:"Walking lunges build the single-leg strength basketball demands on every drive and cut. Start bodyweight for 3×10 each leg, then add dumbbells (15-25 lb each hand). For basketball specificity, occasionally add a torso rotation toward the front leg at the bottom.",rpe:6},
+
+{id:59,name:"SINGLE-LEG DEADLIFT",type:"strength",muscle:"lower",
+ muscles:["Hamstrings","Glutes","Core","Lower Back","Calves"],primary:"Hamstrings",diff:"Intermediate",
+ equipment:"Dumbbell or Kettlebell",
+ benefit:"Builds single-leg balance and posterior chain strength — critical for injury prevention, landing mechanics, and deceleration on the court.",
+ steps:[
+   {title:"Stand on One Leg",fig:"stand",desc:"Hold a dumbbell in your LEFT hand. Stand on your RIGHT foot with a slight knee bend. Lift your LEFT foot slightly off the ground."},
+   {title:"Hinge Forward",fig:"lunge_stand",desc:"Hinge at your hips, sending your LEFT leg straight back as your torso lowers toward the floor. The dumbbell travels straight down. Your body forms a T-shape — back leg, torso, and head in one line."},
+   {title:"Return to Standing",fig:"stand",desc:"Squeeze your RIGHT glute and hamstring to pull yourself back to standing. Control the motion — don't rush. Complete all reps on one side, then switch."},
+ ],
+ cues:["Hips stay SQUARE to the floor — don't open up","Slight knee bend in the standing leg — never locked","Back leg, torso, and head form ONE straight line","Move slowly — balance is the challenge"],
+ tip:"This is one of the best exercises for basketball injury prevention. Weak hamstrings and poor single-leg balance are the top risk factors for ACL injuries. Start with a light weight (10-15 lb) and focus on perfect balance before adding load. Do 3×8 each leg.",rpe:7},
+
+{id:60,name:"KETTLEBELL SWING",type:"strength",muscle:"lower",
+ muscles:["Glutes","Hamstrings","Core","Shoulders","Hip Flexors"],primary:"Glutes",diff:"Intermediate",
+ equipment:"Kettlebell",
+ benefit:"Develops explosive hip extension power — the same movement pattern that drives jumping, sprinting, and defensive slides in basketball.",
+ steps:[
+   {title:"Setup",fig:"squat_q",desc:"Stand with feet slightly wider than shoulder-width. Hold the kettlebell with both hands, arms straight. Hinge at the hips and let the bell hang between your knees. Back flat, core braced."},
+   {title:"Hike & Drive",fig:"stand",desc:"Snap your hips forward explosively, squeezing your glutes hard. This hip thrust launches the kettlebell forward and up to chest height. Your arms are just along for the ride — the power comes from your hips."},
+   {title:"Control the Backswing",fig:"squat_q",desc:"Let the kettlebell swing back between your legs as you hinge at the hips again. Maintain a flat back and braced core. Immediately snap your hips forward for the next rep. This is a continuous, rhythmic movement."},
+ ],
+ cues:["HIP SNAP — not an arm lift. The bell floats from hip power","Squeeze glutes at the top like you're finishing a jump","Flat back on the backswing — never round your spine","Bell goes to chest height — not overhead"],
+ tip:"The kettlebell swing is the #1 exercise for developing the explosive hip extension that powers your vertical jump. Start with a moderate weight (25-35 lb) and do 3-4 sets of 12-15 reps. Once your form is solid, go heavier for power (4×8).",rpe:7},
+
+{id:61,name:"SUMO SQUAT",type:"strength",muscle:"lower",
+ muscles:["Adductors","Glutes","Quadriceps","Hamstrings","Core"],primary:"Adductors",diff:"Beginner",
+ equipment:"Dumbbell or Kettlebell (optional)",
+ benefit:"Strengthens the inner thighs and hips in a wide stance — directly transfers to defensive positioning, lateral movement, and rebounding base.",
+ steps:[
+   {title:"Wide Stance",fig:"stand",desc:"Stand with feet 1.5x shoulder-width apart, toes pointed out 45 degrees. Hold a weight at your hips with both hands, or use bodyweight only."},
+   {title:"Squat Down",fig:"squat_q",desc:"Lower your hips straight down by bending your knees outward over your toes. Keep your torso upright and core braced. Descend until your thighs are parallel to the floor or slightly below."},
+   {title:"Drive Up",fig:"stand",desc:"Push through both feet evenly to stand back up. Squeeze your glutes and inner thighs at the top. Keep your knees tracking over your toes throughout the movement."},
+ ],
+ cues:["Knees push OUT over toes — never collapse inward","Torso stays upright — don't lean forward","Push through full foot — not just toes","Feel the inner thighs working on every rep"],
+ tip:"Basketball players need strong adductors for lateral defense and rebounding position. This squat variation targets them directly. Start bodyweight, progress to holding a dumbbell or kettlebell. Do 3×12-15.",rpe:6},
+
+{id:62,name:"PIKE PUSH-UP",type:"strength",muscle:"upper",
+ muscles:["Anterior Deltoids","Triceps","Upper Chest","Core","Trapezius"],primary:"Anterior Deltoids",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Builds overhead pressing strength with bodyweight alone — develops the shoulder power needed for shooting range and defensive hand challenges.",
+ steps:[
+   {title:"Pike Position",fig:"pushup_up",desc:"Start in a push-up position, then walk your feet toward your hands until your hips are high in the air forming an inverted V. Your body should be at roughly 90 degrees at the hips. Hands shoulder-width apart."},
+   {title:"Lower Your Head",fig:"pushup_down",desc:"Bend your elbows and lower the top of your head toward the floor between your hands. Elbows track back at about 45 degrees. Lower until your head nearly touches the floor."},
+   {title:"Press Up",fig:"pushup_up",desc:"Push through your hands to extend your arms fully, returning to the pike position. Keep your core tight and hips high throughout the movement."},
+ ],
+ cues:["Hips stay HIGH — this is a shoulder press, not a push-up","Head goes between your hands, not in front","Elbows at 45 degrees — not flared wide","Elevate feet on a bench to increase difficulty"],
+ tip:"Pike push-ups are the bodyweight alternative to overhead presses. They build the shoulder strength needed for shooting from distance and challenging shots defensively. Start with 3×8 and progress to feet-elevated pike push-ups.",rpe:7},
+
+{id:63,name:"INVERTED ROW",type:"strength",muscle:"upper",
+ muscles:["Lats","Rhomboids","Biceps","Rear Deltoids","Core"],primary:"Lats",diff:"Beginner",
+ equipment:"Barbell in Rack or Sturdy Table",
+ benefit:"Bodyweight pulling exercise that strengthens the back muscles needed for rebounding, boxing out, and absorbing contact on drives.",
+ steps:[
+   {title:"Hang Under Bar",fig:"plank",desc:"Set a barbell in a rack at waist height. Lie underneath and grip the bar slightly wider than shoulder-width, palms facing away. Extend your body so you hang with arms straight, heels on the ground."},
+   {title:"Pull Chest to Bar",fig:"pushup_up",desc:"Squeeze your shoulder blades together and pull your chest up to the bar. Keep your body rigid as a plank — hips don't sag or pike. Elbows drive back, not out."},
+   {title:"Lower with Control",fig:"plank",desc:"Slowly extend your arms to return to the start position. Maintain the rigid body line. Don't let your shoulders round forward at the bottom."},
+ ],
+ cues:["Body stays RIGID — straight line from head to heels","Squeeze shoulder blades together at the top","Elbows drive back along your ribs","Lower the bar height to increase difficulty"],
+ tip:"This is an excellent pulling exercise that requires no machines. It builds the back strength needed for physical basketball — rebounding, posting up, and absorbing contact. Start with the bar at hip height (easier) and lower it as you get stronger. Do 3×10-12.",rpe:6},
+
+{id:64,name:"PISTOL SQUAT",type:"strength",muscle:"lower",
+ muscles:["Quadriceps","Glutes","Hamstrings","Hip Flexors","Core"],primary:"Quadriceps",diff:"Advanced",
+ equipment:"None (use support for assistance)",
+ benefit:"The ultimate single-leg strength test — develops the leg power and balance needed for finishing through contact and explosive first steps.",
+ steps:[
+   {title:"Balance on One Leg",fig:"stand",desc:"Stand on your RIGHT foot. Extend your LEFT leg straight out in front of you, off the ground. Arms extended forward for counterbalance."},
+   {title:"Descend Slowly",fig:"squat_q",desc:"Bend your RIGHT knee and lower your body as deep as you can while keeping your LEFT leg extended and off the floor. Your RIGHT heel stays flat on the ground. Go as low as your mobility allows."},
+   {title:"Drive Up",fig:"stand",desc:"Push through your RIGHT foot to stand back up to the starting position. Keep your extended leg off the floor throughout. Complete all reps, then switch legs."},
+ ],
+ cues:["Heel stays flat on the ground — never lift it","Extended leg stays straight and off the floor","Arms forward for counterbalance","Use a doorframe or chair for support while learning"],
+ tip:"Pistol squats are advanced. Build up to them: start with assisted versions holding a doorframe or TRX band. Progress through box pistol squats (sitting onto a bench) before attempting full pistols. The single-leg strength transfers directly to driving and finishing in basketball.",rpe:9},
+
+{id:65,name:"COSSACK SQUAT",type:"strength",muscle:"lower",
+ muscles:["Adductors","Quadriceps","Glutes","Hamstrings","Hip Flexors"],primary:"Adductors",diff:"Intermediate",
+ equipment:"None (add dumbbell to progress)",
+ benefit:"Deep lateral squat that builds hip mobility and inner thigh strength — directly improves lateral defensive movement and reduces groin injury risk.",
+ steps:[
+   {title:"Wide Stance",fig:"stand",desc:"Stand with feet very wide apart (about 2x shoulder-width). Toes pointed slightly outward. Arms in front for balance."},
+   {title:"Shift & Squat to One Side",fig:"squat_q",desc:"Shift your weight to your RIGHT leg and squat down as deep as possible over your RIGHT foot. Your LEFT leg stays straight with the toes pointing up. Keep your RIGHT heel flat and chest tall."},
+   {title:"Shift to Other Side",fig:"squat_q",desc:"Push through your RIGHT foot and shift your weight to your LEFT side, squatting deep over your LEFT foot. Your RIGHT leg goes straight. Continue alternating side to side."},
+ ],
+ cues:["Squatting foot stays FLAT — heel never lifts","Straight leg toes point to ceiling","Chest stays tall — don't fold forward","Go as deep as your mobility allows — depth improves over time"],
+ tip:"Cossack squats are one of the best exercises for basketball lateral mobility. They open up the hips, strengthen the adductors, and improve the deep range of motion needed for defensive slides. Start bodyweight 3×8 each side, add a dumbbell goblet hold to progress.",rpe:7},
+
+{id:66,name:"NORDIC HAMSTRING CURL",type:"strength",muscle:"lower",
+ muscles:["Hamstrings","Glutes","Core","Calves"],primary:"Hamstrings",diff:"Advanced",
+ equipment:"Partner or Anchored Surface",
+ benefit:"The gold standard for hamstring injury prevention. Eccentric hamstring strength dramatically reduces the risk of hamstring strains and ACL injuries in basketball.",
+ steps:[
+   {title:"Kneel with Anchored Feet",fig:"stand",desc:"Kneel on a pad with your feet anchored under something heavy (partner holding your ankles, loaded barbell, or bench). Body upright from knees to head."},
+   {title:"Lean Forward Slowly",fig:"plank",desc:"Keeping your body STRAIGHT from knees to head, slowly lean forward by extending at the knees. Fight gravity with your hamstrings — control the descent for 3-5 seconds. Go as far as you can before you lose control."},
+   {title:"Catch & Push Back",fig:"pushup_down",desc:"When you can no longer hold the lean, catch yourself with your hands in a push-up position. Use a small push-up to help yourself back to the starting position. Your hamstrings do the work on the way DOWN — that's the key part."},
+ ],
+ cues:["Body stays STRAIGHT — don't bend at the hips","The SLOW DESCENT is the exercise — control it","3-5 second lowering phase","Use hands to assist on the way back up — that's okay"],
+ tip:"Research shows Nordic curls reduce hamstring injuries by up to 51%. Start with just 3×3 reps — the eccentric load is intense. Progress to 3×6 over several weeks. Even partial range of motion is hugely beneficial. Every basketball player should do these.",rpe:9},
+
+{id:67,name:"DUMBBELL THRUSTER",type:"strength",muscle:"full",
+ muscles:["Quadriceps","Glutes","Shoulders","Triceps","Core"],primary:"Quadriceps",diff:"Intermediate",
+ equipment:"Dumbbells",
+ benefit:"Combines a front squat with an overhead press in one explosive movement — builds the full-body power used in rebounding, outlet passes, and contested layups.",
+ steps:[
+   {title:"Front Rack Position",fig:"stand",desc:"Hold dumbbells at shoulder height with palms facing each other. Feet shoulder-width apart. Elbows high, core braced."},
+   {title:"Squat Down",fig:"squat_q",desc:"Perform a full squat — hips below parallel, chest tall, elbows high. Keep the dumbbells at shoulder height throughout the descent."},
+   {title:"Explode Up & Press",fig:"stand",desc:"Drive explosively out of the squat. As you reach the top, use the momentum to press the dumbbells overhead in one fluid motion. Lock out arms at the top, then lower the dumbbells back to shoulders for the next rep."},
+ ],
+ cues:["One fluid motion — squat directly into press","Use LEG DRIVE to launch the press — don't muscle it","Full depth squat — no half reps","Lock out arms fully overhead"],
+ tip:"Thrusters build the kind of full-body explosive power that translates to basketball — jumping for rebounds while reaching overhead, powering through contact for layups. Start with 15-20 lb dumbbells for 3×10, progress to heavier weight for 4×6.",rpe:8},
+
+{id:68,name:"GLUTE BRIDGE",type:"strength",muscle:"lower",
+ muscles:["Glutes","Hamstrings","Core","Hip Flexors"],primary:"Glutes",diff:"Beginner",
+ equipment:"None",
+ benefit:"Fundamental glute activation exercise — builds the hip extension power behind every jump, sprint, and defensive slide in basketball.",
+ steps:[
+   {title:"Lie on Your Back",fig:"bridge",desc:"Lie face up with knees bent, feet flat on the floor hip-width apart. Arms at your sides, palms down. Feet about 12 inches from your glutes."},
+   {title:"Bridge Up",fig:"bridge",desc:"Push through your heels and squeeze your glutes to lift your hips until your body forms a straight line from knees to shoulders. Hold for 1-2 seconds at the top. Squeeze your glutes HARD."},
+   {title:"Lower with Control",fig:"bridge",desc:"Slowly lower your hips back to the floor. Don't just drop — take 2 seconds to descend. Tap the floor lightly and immediately bridge back up."},
+ ],
+ cues:["SQUEEZE glutes hard at the top — hold 1-2 seconds","Push through HEELS — not toes","Straight line from knees to shoulders at top","Don't hyperextend your lower back — stop when hips are level"],
+ tip:"Glute bridges are the foundation of hip power. Many basketball players have 'sleepy glutes' from sitting, which kills jumping power and increases injury risk. Do these as a warm-up (2×15) before every session and as a strength exercise (3×20 or add weight) twice a week.",rpe:4},
+
+{id:69,name:"DUMBBELL SNATCH",type:"power",muscle:"full",
+ muscles:["Glutes","Hamstrings","Shoulders","Trapezius","Core"],primary:"Glutes",diff:"Advanced",
+ equipment:"Dumbbell",
+ benefit:"Single-arm explosive power from floor to overhead — develops the full-body coordination and explosiveness needed for rebounds, blocks, and athletic plays.",
+ steps:[
+   {title:"Setup",fig:"squat_q",desc:"Stand with feet shoulder-width apart, dumbbell on the floor between your feet. Hinge at the hips to grip it with one hand. Back flat, hips lower than shoulders, free arm out for balance."},
+   {title:"Explode Upward",fig:"stand",desc:"In one explosive motion, drive through your legs and pull the dumbbell straight up close to your body. As it passes your chest, punch your hand to the ceiling and catch the weight overhead with a locked arm. Your hips, knees, and arm all extend simultaneously."},
+   {title:"Control Down",fig:"squat_q",desc:"Lower the dumbbell back to shoulder height, then to hip height, then back to the floor with control. Reset your position and repeat. Do all reps on one arm, then switch."},
+ ],
+ cues:["One explosive motion — don't muscle it with your arm","Drive with your LEGS first — the arm follows","Lock out overhead — bicep by your ear","Start light until you have the timing down"],
+ tip:"The dumbbell snatch is one of the most basketball-specific power exercises — it's basically the same movement pattern as jumping for a rebound with one hand. Start light (15-20 lb) and focus on technique. Progress to 3×5 each arm with heavier weight.",rpe:8},
+
+// ── POWER & PLYOMETRICS (Full Catalog) ──────────────────
+
+{id:70,name:"180 JUMP SQUAT",type:"power",muscle:"lower",
+ muscles:["Quadriceps","Glutes","Calves","Core","Hip Flexors"],primary:"Quadriceps",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Adds rotational power to the jump squat — develops the mid-air body control and turning ability needed for reverse layups, spin moves, and defensive recovery.",
+ steps:[
+   {title:"Quarter Squat",fig:"squat_q",desc:"Stand with feet shoulder-width apart. Lower into a quarter squat, loading your legs. Arms swing back behind you for momentum."},
+   {title:"Jump & Rotate 180°",fig:"jump",desc:"Explode upward while rotating your body 180 degrees in the air. Use your core and arm swing to drive the rotation. Land facing the opposite direction you started."},
+   {title:"Absorb & Repeat",fig:"squat_q",desc:"Land softly in a quarter squat, absorbing the impact through your legs. Immediately load for the next jump, rotating 180 degrees back to your original facing. Alternate rotation direction."},
+ ],
+ cues:["Land SOFTLY — quiet feet, bent knees","Core drives the rotation — not your shoulders","Full 180° rotation — don't cheat short","Pause between reps if needed for balance"],
+ tip:"180 jump squats build the rotational power for spin moves, reverse layups, and defensive pivots. Start with 3×6 reps. Focus on controlled landings before adding speed. Progress to continuous reps without pausing.",rpe:8},
+
+{id:71,name:"EXPLOSIVE SPLIT SQUAT JUMP",type:"power",muscle:"lower",
+ muscles:["Quadriceps","Glutes","Hamstrings","Calves","Core"],primary:"Quadriceps",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Plyometric lunge that develops single-leg explosive power — translates directly to first-step quickness and driving to the basket.",
+ steps:[
+   {title:"Lunge Position",fig:"lunge",desc:"Start in a lunge position — RIGHT foot forward, LEFT foot back. Both knees at about 90 degrees. Torso upright, core braced."},
+   {title:"Explode Up & Switch",fig:"jump",desc:"Explode upward off both feet, jumping as high as possible. While airborne, switch your legs so you land with LEFT foot forward, RIGHT foot back."},
+   {title:"Land & Absorb",fig:"lunge",desc:"Land softly in a lunge position with the opposite leg forward. Absorb the impact by bending into the lunge. Immediately explode up again to switch legs. Continue alternating."},
+ ],
+ cues:["Land SOFTLY in a full lunge — don't short it","Both feet leave the ground on every jump","Arms pump to generate height","Chest stays tall — don't lean forward on landing"],
+ tip:"These build the explosive single-leg power that makes first steps deadly. Start with 3×6 each leg. Rest 60-90 seconds between sets. Quality over quantity — every jump should be maximum effort with a controlled landing.",rpe:8},
+
+{id:72,name:"AGILITY LADDER DRILL",type:"power",muscle:"lower",
+ muscles:["Calves","Quadriceps","Hip Flexors","Core","Hamstrings"],primary:"Calves",diff:"Beginner",
+ equipment:"Agility Ladder (or tape lines on floor)",
+ benefit:"Develops rapid foot coordination, ankle stability, and neuromuscular speed — the foundation of quick defensive footwork and fast breaks.",
+ steps:[
+   {title:"Two Feet In Each Box",fig:"stand",desc:"Stand at one end of the ladder. Run through placing BOTH feet in each box as fast as possible. Stay on the balls of your feet, pumping your arms. Drive your knees up."},
+   {title:"Lateral Shuffle",fig:"stand",desc:"Stand beside the ladder. Side-step through, placing both feet in each box. Stay low in an athletic stance. Face the same direction the entire time. Go down and back."},
+   {title:"Ickey Shuffle (In-In-Out)",fig:"stand",desc:"Start beside the ladder. Step IN with your lead foot, IN with your trail foot, then OUT with your lead foot to the other side. Repeat down the ladder in a zigzag pattern. This builds the lateral footwork for defensive slides."},
+ ],
+ cues:["BALLS OF FEET — never flat-footed","Quick, light contacts — don't stomp","Eyes up — not looking at your feet","Pump your arms — they drive foot speed"],
+ tip:"Ladder drills are a basketball staple. Do them as part of every warm-up (5-10 minutes). Key patterns for basketball: two-feet-in-each, lateral shuffle, Ickey shuffle, one-foot hop, and crossover steps. Focus on speed AND accuracy — sloppy fast feet don't help on the court.",rpe:6},
+
+{id:73,name:"CLAP PUSH-UP",type:"power",muscle:"upper",
+ muscles:["Chest","Triceps","Anterior Deltoids","Core"],primary:"Chest",diff:"Advanced",
+ equipment:"None",
+ benefit:"Develops upper body explosive power — the same rapid force production needed for chest passes, blocking shots, and finishing through contact.",
+ steps:[
+   {title:"Push-up Position",fig:"pushup_up",desc:"Start in a standard push-up position — hands slightly wider than shoulders, body in a straight line from head to heels, core braced."},
+   {title:"Lower & Explode",fig:"pushup_down",desc:"Lower your chest to the floor with control, then EXPLODE upward as hard as you can so your hands leave the ground. Quickly clap your hands together while airborne."},
+   {title:"Land & Absorb",fig:"pushup_up",desc:"Land with soft elbows (slightly bent), absorbing the impact. Immediately lower into the next rep. Maintain your plank position throughout — hips don't sag or pike."},
+ ],
+ cues:["EXPLODE off the floor — maximum force on every rep","Land with SOFT elbows — never locked out","Body stays rigid — no hip sag","Quality over quantity — stop when you can't clap"],
+ tip:"Clap push-ups build the explosive chest and tricep power for chest passes and absorbing contact. You should be able to do 20+ regular push-ups before attempting these. Start with 3×5 and focus on height and control. Rest fully between sets.",rpe:8},
+
+{id:74,name:"FROG JUMP",type:"power",muscle:"lower",
+ muscles:["Glutes","Quadriceps","Hamstrings","Calves","Core"],primary:"Glutes",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Horizontal explosive power from a deep squat — develops the launching ability needed for diving for loose balls, rebounding distance, and closing out.",
+ steps:[
+   {title:"Deep Squat",fig:"squat_q",desc:"Drop into a deep squat with your feet wider than shoulder-width. Touch your fingertips to the floor between your feet. Chest up, back flat."},
+   {title:"Jump Forward",fig:"jump",desc:"Explode FORWARD and UPWARD, extending your hips, knees, and ankles fully. Swing your arms forward for momentum. Try to cover as much distance as possible."},
+   {title:"Land & Reset",fig:"squat_q",desc:"Land in the deep squat position, absorbing the impact softly. Fingertips touch the floor again. Immediately explode into the next jump. Continue for the prescribed reps or distance."},
+ ],
+ cues:["Jump FORWARD — not just up. Cover distance","Land softly in a full squat every time","Arms swing forward to drive momentum","Full hip extension at takeoff"],
+ tip:"Frog jumps build horizontal power — the explosive quality needed for closing out on shooters, diving for loose balls, and getting into rebounding position quickly. Do 3×8 reps or 4 lengths of the court. Rest 90 seconds between sets.",rpe:8},
+
+{id:75,name:"JUMP ROPE",type:"power",muscle:"lower",
+ muscles:["Calves","Quadriceps","Shoulders","Core","Forearms"],primary:"Calves",diff:"Beginner",
+ equipment:"Jump Rope",
+ benefit:"Develops foot speed, ankle stiffness, coordination, and cardio endurance — the foundation of quick lateral movement and staying light on your feet all game.",
+ steps:[
+   {title:"Basic Bounce",fig:"stand",desc:"Hold rope handles at hip height, elbows close to your body. Jump just high enough to clear the rope — about 1-2 inches off the ground. Land on the balls of your feet with soft knees."},
+   {title:"Single Leg Hops",fig:"stand",desc:"Once comfortable with two-foot bouncing, switch to hopping on one foot for 10 reps, then the other foot for 10 reps. This builds ankle stability and calf endurance for each leg independently."},
+   {title:"Boxer Shuffle",fig:"stand",desc:"Shift your weight side to side as you jump, mimicking a boxer's shuffle. LEFT foot lands, then RIGHT foot lands, alternating. This builds the lateral rhythm used in defensive slides."},
+ ],
+ cues:["Small jumps — just clear the rope","Wrists spin the rope — not your arms","Stay on the balls of your feet","Light and quick — not heavy and slow"],
+ tip:"Jump rope is an underrated basketball training tool. It builds the calf endurance and ankle stiffness that keeps you light on your feet for four quarters. Start with 3-minute rounds (30 seconds work, 10 seconds rest). Build to 10 continuous minutes. Mix in single-leg and side-to-side variations.",rpe:5},
+
+{id:76,name:"LATERAL BOUND",type:"power",muscle:"lower",
+ muscles:["Glutes","Quadriceps","Adductors","Calves","Core"],primary:"Glutes",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Single-leg lateral explosive power — develops the side-to-side quickness for defensive slides, crossovers, and cutting to the basket.",
+ steps:[
+   {title:"Stand on One Leg",fig:"stand",desc:"Stand on your RIGHT foot with a slight bend in your knee. LEFT foot off the ground. Arms ready at your sides."},
+   {title:"Bound Sideways",fig:"jump",desc:"Push off your RIGHT foot explosively to the LEFT, driving your body sideways. Cover as much distance as possible. Swing your arms to generate power."},
+   {title:"Stick the Landing",fig:"stand",desc:"Land on your LEFT foot ONLY. Absorb the landing with a bent knee — stick it for 2 seconds with good balance. Then immediately bound back to the RIGHT, landing on your RIGHT foot."},
+ ],
+ cues:["STICK each landing — hold balance for 2 seconds","Drive with the OUTSIDE foot — push away from it","Land softly — quiet, controlled foot contact","Maximum distance on each bound"],
+ tip:"Lateral bounds are the most basketball-specific plyometric exercise. They train the exact lateral power used in defensive slides and cutting. Start with 3×6 each direction. Progress to continuous bounds without pausing. The goal is maximum distance with a controlled, balanced landing.",rpe:8},
+
+{id:77,name:"BUTT KICKS",type:"power",muscle:"lower",
+ muscles:["Hamstrings","Calves","Quadriceps","Hip Flexors"],primary:"Hamstrings",diff:"Beginner",
+ equipment:"None",
+ benefit:"Dynamic warm-up exercise that activates the hamstrings and improves running mechanics — essential prep for sprinting and fast break situations.",
+ steps:[
+   {title:"Light Jog",fig:"stand",desc:"Start jogging in place or moving forward. Stay on the balls of your feet, arms pumping naturally."},
+   {title:"Kick Heels to Glutes",fig:"stand",desc:"As you jog, exaggerate your heel kick so each foot comes up to touch your glute. Keep your thighs relatively vertical — the knee doesn't drive forward. The motion is a quick backflip of the foot."},
+   {title:"Increase Speed",fig:"stand",desc:"Build up the tempo until you're doing rapid butt kicks at full speed. Each heel should contact (or nearly contact) your glute. Maintain an upright posture — don't lean forward."},
+ ],
+ cues:["Heels kick UP to your butt — not out behind you","Stay upright — don't lean forward","Quick contacts — light and fast","Pump your arms naturally"],
+ tip:"Butt kicks are a staple warm-up drill that activates your hamstrings and grooves proper running mechanics. Do 2×30 seconds as part of your pre-practice warm-up. They pair well with high knees — do one immediately after the other.",rpe:4},
+
+// ── CORE (Full Catalog) ─────────────────────────────────
+
+{id:78,name:"AB WHEEL ROLLOUT",type:"strength",muscle:"core",
+ muscles:["Rectus Abdominis","Obliques","Hip Flexors","Lats","Shoulders"],primary:"Rectus Abdominis",diff:"Advanced",
+ equipment:"Ab Wheel or Barbell with Plates",
+ benefit:"One of the most challenging core exercises — builds the rigid core strength needed for absorbing contact, maintaining balance, and transferring power from legs to upper body.",
+ steps:[
+   {title:"Kneel Behind Wheel",fig:"plank",desc:"Kneel on a pad with the ab wheel in front of you. Grip the handles with both hands, arms straight. Start with the wheel directly under your shoulders."},
+   {title:"Roll Forward",fig:"plank",desc:"Slowly roll the wheel forward, extending your arms and lowering your torso toward the floor. Keep your core TIGHT and back flat — do NOT let your lower back arch. Go only as far as you can control."},
+   {title:"Pull Back",fig:"plank",desc:"Squeeze your abs hard and pull the wheel back to the starting position. The return is harder than the extension — use your core, not your hip flexors. Exhale forcefully as you pull back."},
+ ],
+ cues:["NEVER let your lower back arch — that means you've gone too far","Squeeze abs the ENTIRE time — constant tension","Go only as far as you can CONTROL","Exhale hard on the pull-back"],
+ tip:"Ab rollouts build serious core strength, but they're advanced. Start with partial range — roll out only 12-18 inches. Over weeks, gradually extend your range. If your lower back arches at any point, you've gone too far. Do 3×6-8 with perfect form.",rpe:9},
+
+{id:79,name:"BICYCLE CRUNCH",type:"strength",muscle:"core",
+ muscles:["Obliques","Rectus Abdominis","Hip Flexors"],primary:"Obliques",diff:"Beginner",
+ equipment:"None",
+ benefit:"Rotational core exercise that targets the obliques — the muscles that power torso rotation for passing, shooting off the dribble, and defensive pivots.",
+ steps:[
+   {title:"Lie on Back",fig:"bridge",desc:"Lie face up with your hands behind your head (fingertips, not clasped). Lift both feet off the floor with knees bent at 90 degrees. Lift your shoulders slightly off the ground."},
+   {title:"Rotate & Extend",fig:"bridge",desc:"Twist your torso to bring your RIGHT elbow toward your LEFT knee while extending your RIGHT leg straight. The rotation comes from your CORE — don't pull on your neck."},
+   {title:"Alternate Sides",fig:"bridge",desc:"Reverse the motion — LEFT elbow to RIGHT knee, LEFT leg extends. Continue alternating in a pedaling motion. Move with control — not speed. Feel the obliques working on each rotation."},
+ ],
+ cues:["Rotation comes from your CORE — not your neck","Elbows stay wide — don't pull on your head","Extended leg hovers 6 inches off the floor — not high","Slow and controlled — no rushing"],
+ tip:"Bicycle crunches are research-backed as one of the best oblique exercises. The rotational strength they build directly transfers to passing power and shooting off the dribble. Do 3×15 each side with slow, controlled reps. Quality over speed.",rpe:5},
+
+{id:80,name:"FLUTTER KICKS",type:"strength",muscle:"core",
+ muscles:["Hip Flexors","Lower Abs","Quadriceps","Core"],primary:"Hip Flexors",diff:"Beginner",
+ equipment:"None",
+ benefit:"Builds lower abdominal and hip flexor endurance — the muscular stamina that keeps your core engaged through four quarters of basketball.",
+ steps:[
+   {title:"Lie Flat",fig:"bridge",desc:"Lie face up with your legs straight and hands under your glutes or at your sides. Press your lower back into the floor — this is critical. Lift both feet about 6 inches off the ground."},
+   {title:"Alternating Kicks",fig:"bridge",desc:"Make small, quick kicks — one foot goes up about 12 inches while the other comes down to 6 inches. Alternate continuously like swimming flutter kicks. Keep your legs mostly straight."},
+   {title:"Maintain Position",fig:"bridge",desc:"Continue for the prescribed time. Keep your lower back PRESSED into the floor the entire time. If your back arches, lift your feet higher or stop the set."},
+ ],
+ cues:["Lower back PRESSED into the floor — never arched","Small, quick kicks — 6-12 inch range","Legs stay relatively straight — slight knee bend okay","Breathe continuously — don't hold your breath"],
+ tip:"Flutter kicks build the lower ab endurance that keeps your core active during late-game situations. Do 3×30 seconds. The moment your lower back lifts off the floor, stop — that's your back taking over and can cause injury. Build endurance gradually.",rpe:6},
+
+{id:81,name:"V-UP",type:"strength",muscle:"core",
+ muscles:["Rectus Abdominis","Hip Flexors","Obliques"],primary:"Rectus Abdominis",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Full-range core exercise that works the entire abdominal wall — builds the explosive core strength needed for getting off the floor quickly and sit-up-and-go movements.",
+ steps:[
+   {title:"Lie Flat",fig:"bridge",desc:"Lie flat on your back with arms extended overhead on the floor and legs straight. Your body forms one straight line."},
+   {title:"Fold Up",fig:"stand",desc:"Simultaneously lift your legs AND torso off the floor, reaching your hands toward your toes. Your body forms a V-shape at the top. Keep your legs and arms as straight as possible."},
+   {title:"Lower with Control",fig:"bridge",desc:"Slowly lower your legs and torso back to the flat starting position. Don't just crash down — take 2 seconds to lower. Tap the floor lightly, then immediately fold up again."},
+ ],
+ cues:["Legs AND torso rise simultaneously — not one then the other","Reach for your TOES at the top","Lower slowly — 2 seconds down","Keep legs as straight as possible"],
+ tip:"V-ups are a challenging full-range core exercise. If they're too hard at first, start with tuck-ups (knees bent) and progress to straight legs. Do 3×10-12. The ability to explosively engage your full core transfers to every athletic movement in basketball.",rpe:7},
+
+{id:82,name:"WINDSHIELD WIPERS",type:"strength",muscle:"core",
+ muscles:["Obliques","Rectus Abdominis","Hip Flexors","Lower Back"],primary:"Obliques",diff:"Advanced",
+ equipment:"None",
+ benefit:"Advanced rotational core strength — develops the anti-rotation and rotation power needed for driving through contact and torso control in mid-air.",
+ steps:[
+   {title:"Legs Up",fig:"bridge",desc:"Lie on your back with arms extended out to the sides in a T position, palms down. Lift your legs to vertical — straight up, perpendicular to the floor."},
+   {title:"Rotate to One Side",fig:"bridge",desc:"Keeping your legs together and as straight as possible, slowly lower them to the RIGHT side toward the floor. Go as far as you can while keeping your LEFT shoulder on the ground. Feel the oblique stretch."},
+   {title:"Return & Go Other Side",fig:"bridge",desc:"Use your core to pull your legs back to vertical, then slowly lower them to the LEFT side. Shoulders stay pinned to the floor throughout. Continue alternating like windshield wipers."},
+ ],
+ cues:["SHOULDERS stay on the floor — both sides","Move SLOWLY — 3 seconds each direction","Legs stay as straight as possible","The farther you lower, the harder it gets — work your range"],
+ tip:"Windshield wipers are an advanced oblique exercise. Start with bent knees (easier) and progress to straight legs. Do 3×6 each side. The rotational core control they build is essential for finishing through contact and maintaining body control in the air.",rpe:8},
+
+{id:83,name:"HOLLOW BODY HOLD",type:"strength",muscle:"core",
+ muscles:["Rectus Abdominis","Hip Flexors","Obliques","Quadriceps"],primary:"Rectus Abdominis",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Gymnastic core hold that builds total core stability — the foundation for maintaining body control during every aerial move in basketball.",
+ steps:[
+   {title:"Lie Flat & Press Down",fig:"bridge",desc:"Lie face up. Press your lower back firmly into the floor. This is the key position — your back should be completely flat with NO gap."},
+   {title:"Extend Arms & Legs",fig:"bridge",desc:"Extend your arms overhead (biceps by ears) and lift your legs straight, feet about 6 inches off the floor. Lift your shoulders off the floor slightly. Your body forms a shallow U or banana shape."},
+   {title:"Hold",fig:"bridge",desc:"HOLD this position. Your lower back stays pressed into the floor. If it lifts, raise your feet higher or bend your knees slightly. Breathe normally. Hold for the prescribed time."},
+ ],
+ cues:["Lower back PRESSED into the floor — the #1 rule","Arms and legs hover — don't rest them","Slight shoulder lift — don't go full crunch","If your back lifts, make the position easier until you're stronger"],
+ tip:"The hollow body hold is the foundation of gymnastic core strength. It builds the total-body tension that basketball players need for body control in the air. Start with 3×20 seconds. Progress to 3×45 seconds. If your lower back comes off the floor, you're not strong enough yet — bend your knees or raise your feet higher.",rpe:7},
+
+{id:84,name:"PLANK TO PUSH-UP",type:"strength",muscle:"core",
+ muscles:["Core","Triceps","Shoulders","Chest"],primary:"Core",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Dynamic plank variation that builds core stability and upper body endurance — the strength to maintain body control while transitioning between movements.",
+ steps:[
+   {title:"Forearm Plank",fig:"plank",desc:"Start in a forearm plank — elbows under shoulders, body in a straight line from head to heels, core braced tight."},
+   {title:"Walk Up to Push-up",fig:"pushup_up",desc:"Place your RIGHT hand flat, then your LEFT hand flat, pressing yourself up to a full push-up position. Keep your hips as stable as possible — don't rock side to side."},
+   {title:"Walk Back Down",fig:"plank",desc:"Lower your RIGHT elbow back to the floor, then your LEFT elbow, returning to the forearm plank. That's one rep. Alternate which hand leads each rep."},
+ ],
+ cues:["MINIMIZE hip rocking — keep them square","Alternate your leading arm each rep","Core stays tight throughout — no sagging","Hands go where your elbows were"],
+ tip:"This exercise builds the dynamic core stability needed for basketball's constant transitions — from floor to feet, defense to offense, standing to jumping. Do 3×8 (4 leading with each arm). Focus on keeping your hips dead still as you transition.",rpe:7},
+
+// ── RECOVERY & MOBILITY (Full Catalog) ──────────────────
+
+{id:85,name:"CLAMSHELL",type:"stretching",muscle:"lower",
+ muscles:["Gluteus Medius","Hip External Rotators","Hip Abductors"],primary:"Gluteus Medius",diff:"Beginner",
+ equipment:"Resistance Band (optional)",
+ benefit:"Essential hip stabilizer activation exercise — strengthens the gluteus medius that prevents knee collapse during cutting, landing, and defensive slides. Key for ACL injury prevention.",
+ steps:[
+   {title:"Side Lie Position",fig:"bridge",desc:"Lie on your side with hips stacked, knees bent at 45 degrees, feet together. Rest your head on your bottom arm. Place your top hand on your hip to feel the glute activate."},
+   {title:"Open the Top Knee",fig:"bridge",desc:"Keeping your feet together, rotate your top knee open toward the ceiling as far as it goes. The motion comes from your HIP — your pelvis doesn't roll backward. Squeeze your glute hard at the top."},
+   {title:"Lower with Control",fig:"bridge",desc:"Slowly lower your knee back to the starting position. Don't just drop it — take 2 seconds to lower. That's one rep. Complete all reps on one side, then switch."},
+ ],
+ cues:["Feet stay together — only the knee opens","Hip doesn't roll backward — stay stacked","Squeeze the glute at the top — FEEL it","Add a resistance band above knees to increase difficulty"],
+ tip:"Clamshells are the single most important injury prevention exercise for basketball players. Weak gluteus medius = knees collapsing inward = ACL injuries. Do 2-3×15 each side as part of EVERY warm-up. Add a mini band when bodyweight becomes too easy.",rpe:3},
+
+{id:86,name:"COBRA STRETCH",type:"stretching",muscle:"core",
+ muscles:["Rectus Abdominis","Hip Flexors","Chest","Lower Back"],primary:"Rectus Abdominis",diff:"Beginner",
+ equipment:"None",
+ benefit:"Opens up the front body and relieves lower back tension — counteracts the forward-lean posture common in basketball players from defensive stance and driving.",
+ steps:[
+   {title:"Lie Face Down",fig:"pushup_down",desc:"Lie face down with your palms flat on the floor next to your shoulders, fingers facing forward. Legs together, tops of feet on the floor."},
+   {title:"Press Up",fig:"pushup_up",desc:"Press through your hands to lift your chest off the floor. Straighten your arms as far as comfortable while keeping your hips on the floor. Look slightly upward. Feel the stretch across your abs and hip flexors."},
+   {title:"Hold & Breathe",fig:"pushup_up",desc:"Hold the extended position for 20-30 seconds. Breathe deeply — let your abs stretch with each inhale. Slowly lower back down. Repeat 3 times."},
+ ],
+ cues:["Hips stay ON the floor — don't lift them","Shoulders down and back — don't shrug","Breathe into the stretch — deep belly breaths","Only go as high as is comfortable — no pain"],
+ tip:"Cobra stretches are essential for basketball players who spend a lot of time in flexed positions (defensive stance, driving). They open up the hip flexors and abs while gently extending the lower back. Do them after every practice and game.",rpe:2},
+
+{id:87,name:"FROG STRETCH",type:"stretching",muscle:"lower",
+ muscles:["Adductors","Hip Flexors","Groin","Glutes"],primary:"Adductors",diff:"Beginner",
+ equipment:"None",
+ benefit:"Deep inner thigh and groin opener — improves the hip mobility needed for wide defensive stances and reduces groin strain risk.",
+ steps:[
+   {title:"All-Fours Wide",fig:"plank",desc:"Start on all fours. Spread your knees as wide as comfortable, wider than your hips. Turn your feet outward so the insides of your feet are on the floor."},
+   {title:"Shift Back",fig:"plank",desc:"Slowly push your hips back toward your heels, keeping your knees wide. You'll feel a deep stretch in your inner thighs and groin. Go only as far as is comfortable."},
+   {title:"Hold & Rock",fig:"plank",desc:"Hold the stretched position for 30-60 seconds, breathing deeply. Gently rock forward and backward to explore the range. Over time, gradually spread your knees wider."},
+ ],
+ cues:["Move slowly — don't force the stretch","Breathe deeply — relax into the position","Inner thighs should feel a stretch, not pain","Gradually widen over sessions — not all at once"],
+ tip:"Groin strains are one of the most common basketball injuries. The frog stretch is the best preventive measure — it opens up the adductors and inner hips. Hold for 60 seconds after every practice. Over weeks, you'll gain significant hip width for defensive stance.",rpe:2},
+
+{id:88,name:"WORLD'S GREATEST STRETCH",type:"stretching",muscle:"full",
+ muscles:["Hip Flexors","Hamstrings","Thoracic Spine","Adductors","Glutes","Chest"],primary:"Hip Flexors",diff:"Beginner",
+ equipment:"None",
+ benefit:"A full-body dynamic stretch that hits every major muscle group in one flowing sequence — the single best warm-up stretch for basketball.",
+ steps:[
+   {title:"Forward Lunge",fig:"lunge",desc:"Step your RIGHT foot forward into a deep lunge. LEFT knee hovers just above the floor. Both hands on the ground inside your RIGHT foot."},
+   {title:"Elbow to Instep",fig:"lunge",desc:"Drop your LEFT elbow toward your RIGHT instep (inside of foot), gently pushing your RIGHT knee outward. Hold 2-3 seconds. Feel the hip flexor and groin stretch."},
+   {title:"Rotate & Reach",fig:"lunge_stand",desc:"Place your LEFT hand on the floor for stability. Rotate your torso RIGHT and reach your RIGHT hand to the ceiling. Follow your hand with your eyes. Hold 2-3 seconds. Step forward and repeat on the other side."},
+ ],
+ cues:["Deep lunge — back knee just off the floor","Elbow drives INSIDE the front foot","Full torso rotation — reach to the ceiling","Flow through each position — don't rush"],
+ tip:"This is called the 'World's Greatest Stretch' for a reason — it hits hip flexors, hamstrings, groin, thoracic spine, and chest in one movement. Do 5 reps each side as the centerpiece of your pre-game warm-up. It's the single best bang-for-your-buck stretch.",rpe:3},
+
+{id:89,name:"DOWNWARD DOG",type:"stretching",muscle:"full",
+ muscles:["Calves","Hamstrings","Shoulders","Lats","Lower Back"],primary:"Calves",diff:"Beginner",
+ equipment:"None",
+ benefit:"Lengthens the entire posterior chain while building shoulder stability — relieves the calf and hamstring tightness common from basketball's constant running and jumping.",
+ steps:[
+   {title:"Hands & Feet",fig:"pushup_up",desc:"Start on all fours. Walk your hands about 4 inches forward of your shoulders. Tuck your toes under."},
+   {title:"Press Hips Up",fig:"pushup_up",desc:"Press through your hands and lift your hips toward the ceiling, straightening your arms and legs. Your body forms an inverted V shape. Press your chest toward your thighs and your heels toward the floor."},
+   {title:"Hold & Pedal",fig:"pushup_up",desc:"Hold the position for 30-60 seconds. Alternately bend one knee then the other (pedaling) to deepen the calf and hamstring stretch. Press your hands firmly into the floor, spreading your fingers."},
+ ],
+ cues:["Push hips UP and BACK — not just up","Press heels toward the floor — they don't need to touch","Spread fingers wide — press through all 10","Pedal your feet to deepen the calf stretch"],
+ tip:"Downward dog stretches everything that gets tight from basketball — calves, hamstrings, shoulders, and back. Hold for 45-60 seconds after every game or practice. The pedaling variation (bending one knee at a time) is especially good for releasing tight calves.",rpe:2},
+
+{id:90,name:"SCORPION STRETCH",type:"stretching",muscle:"full",
+ muscles:["Hip Flexors","Chest","Obliques","Thoracic Spine","Quadriceps"],primary:"Hip Flexors",diff:"Intermediate",
+ equipment:"None",
+ benefit:"Dynamic rotational stretch that opens the hips and thoracic spine — improves the rotational mobility for shooting, passing, and mid-air body control.",
+ steps:[
+   {title:"Lie Face Down",fig:"pushup_down",desc:"Lie face down with your arms extended out to the sides in a T position, palms flat on the floor."},
+   {title:"Reach Foot Over",fig:"pushup_down",desc:"Lift your RIGHT foot and swing it over your body toward your LEFT hand, rotating through your spine. Go as far as comfortable — your foot may or may not touch the ground on the other side. Feel the stretch in your hip flexor, chest, and thoracic spine."},
+   {title:"Return & Switch",fig:"pushup_down",desc:"Slowly bring your RIGHT leg back to the start. Repeat with your LEFT foot reaching toward your RIGHT hand. Alternate sides for the prescribed reps."},
+ ],
+ cues:["Opposite shoulder stays on the floor as much as possible","Move slowly and with control","Breathe into the rotation","Don't force the range — it improves over time"],
+ tip:"Scorpion stretches are excellent for the thoracic rotation that basketball players need for shooting and passing. Do 5-8 each side as part of your warm-up or cool-down. They're especially helpful for players who feel 'stiff' in the mid-back area.",rpe:3},
+
+{id:91,name:"FOAM ROLLER IT BAND",type:"stretching",muscle:"lower",
+ muscles:["IT Band","Quadriceps","Glutes","Hip Flexors"],primary:"IT Band",diff:"Beginner",
+ equipment:"Foam Roller",
+ benefit:"Releases tension in the IT band and lateral thigh — prevents the knee pain and tightness that plagues basketball players from constant running and cutting.",
+ steps:[
+   {title:"Side Lie on Roller",fig:"plank",desc:"Lie on your RIGHT side with the foam roller under your outer thigh, just above the knee. Support yourself with your right forearm and left hand on the floor in front of you. Top leg can cross over for stability."},
+   {title:"Roll Slowly",fig:"plank",desc:"Slowly roll from just above the knee up to the hip bone. Move about 1 inch per second. When you find a tender spot, PAUSE on it for 20-30 seconds until the tension releases."},
+   {title:"Full Length",fig:"plank",desc:"Continue rolling the entire length of the outer thigh. Spend 2-3 minutes per side. Pay extra attention to spots that are particularly tender — those need the most work."},
+ ],
+ cues:["Move SLOWLY — 1 inch per second","PAUSE on tender spots — 20-30 seconds","Support your weight with your arms — control pressure","Breathe through the discomfort — don't tense up"],
+ tip:"IT band tightness is one of the most common issues for basketball players. It causes lateral knee pain and hip tightness. Foam roll your IT band for 2-3 minutes per side before and after every game or practice. It's uncomfortable but prevents serious knee issues.",rpe:3},
+
+{id:92,name:"DONKEY KICKS",type:"stretching",muscle:"lower",
+ muscles:["Glutes","Hamstrings","Core","Lower Back"],primary:"Glutes",diff:"Beginner",
+ equipment:"None",
+ benefit:"Glute activation exercise that isolates each side independently — ensures both glutes fire properly for balanced power in jumping and sprinting.",
+ steps:[
+   {title:"All Fours",fig:"plank",desc:"Start on your hands and knees. Hands under shoulders, knees under hips. Core braced, back flat — neutral spine."},
+   {title:"Kick Back",fig:"plank",desc:"Keeping your RIGHT knee bent at 90 degrees, drive your RIGHT foot toward the ceiling. Squeeze your glute at the top. Your thigh should be parallel to the floor or slightly above. Don't arch your lower back."},
+   {title:"Lower & Repeat",fig:"plank",desc:"Lower your knee back to the starting position with control. Complete all reps on one side, then switch. Focus on feeling the GLUTE — not the lower back."},
+ ],
+ cues:["Squeeze the GLUTE at the top — that's the target","Keep your back FLAT — no arching","Movement is at the HIP — not the lower back","Controlled tempo — 2 seconds up, 2 seconds down"],
+ tip:"Donkey kicks are a simple but effective glute activation exercise. Many basketball players have one glute that fires weaker than the other, creating power imbalances. Do 2×15 each side as part of your warm-up to ensure both glutes are engaged before training.",rpe:3},
+
+{id:93,name:"FIRE HYDRANT",type:"stretching",muscle:"lower",
+ muscles:["Gluteus Medius","Hip Abductors","Core","Hip External Rotators"],primary:"Gluteus Medius",diff:"Beginner",
+ equipment:"None",
+ benefit:"Hip abductor and external rotator activation — builds the lateral hip stability that prevents knee collapse during cutting and landing.",
+ steps:[
+   {title:"All Fours",fig:"plank",desc:"Start on hands and knees. Hands under shoulders, knees under hips. Core braced, back flat."},
+   {title:"Lift Knee to Side",fig:"plank",desc:"Keeping your RIGHT knee bent at 90 degrees, lift it out to the side as high as possible — like a dog at a fire hydrant. Your pelvis stays level — don't shift your weight to the opposite side."},
+   {title:"Lower & Repeat",fig:"plank",desc:"Lower your knee back to the starting position with control. Complete all reps on one side, then switch. Focus on the outer hip/glute doing the work."},
+ ],
+ cues:["Pelvis stays LEVEL — don't lean away","Knee lifts to the SIDE — not back","Feel the OUTER HIP working — not the lower back","Add a mini band above knees for extra resistance"],
+ tip:"Fire hydrants work the same gluteus medius as clamshells but from a different angle. Pair them together for a complete hip stability warm-up: 15 clamshells + 15 fire hydrants each side before every practice. Your knees will thank you.",rpe:3},
+
+{id:94,name:"KNEE-TO-CHEST STRETCH",type:"stretching",muscle:"lower",
+ muscles:["Glutes","Lower Back","Hip Flexors","Hamstrings"],primary:"Glutes",diff:"Beginner",
+ equipment:"None",
+ benefit:"Gentle hip and lower back stretch — relieves the posterior hip tightness that builds up from basketball's constant running, jumping, and defensive stance.",
+ steps:[
+   {title:"Lie on Back",fig:"bridge",desc:"Lie face up on the floor with both legs straight. Relax your arms at your sides."},
+   {title:"Pull One Knee In",fig:"bridge",desc:"Lift your RIGHT knee toward your chest. Clasp your hands around your shin or behind your thigh and gently pull the knee closer to your chest. Keep your LEFT leg flat on the floor and your lower back pressed down."},
+   {title:"Hold & Switch",fig:"bridge",desc:"Hold for 20-30 seconds, breathing deeply. Feel the stretch in your glute, lower back, and hip. Release and switch to your LEFT knee. Then try both knees simultaneously."},
+ ],
+ cues:["Keep opposite leg FLAT on the floor","Gently pull — don't force","Lower back stays pressed into the floor","Breathe deeply into the stretch"],
+ tip:"Simple but effective recovery stretch. After games and hard practices, spend 30 seconds each leg plus 30 seconds with both knees. It decompresses the lower back and releases tight glutes — areas that take a beating in basketball.",rpe:1},
+
+{id:95,name:"CROSS-BODY SHOULDER STRETCH",type:"stretching",muscle:"upper",
+ muscles:["Posterior Deltoid","Rhomboids","Trapezius","Rotator Cuff"],primary:"Posterior Deltoid",diff:"Beginner",
+ equipment:"None",
+ benefit:"Releases tension in the back of the shoulder — maintains the shoulder mobility needed for shooting range, overhead passing, and blocking shots.",
+ steps:[
+   {title:"Extend Arm Across",fig:"stand",desc:"Stand or sit tall. Extend your RIGHT arm straight across your chest at shoulder height."},
+   {title:"Pull with Other Arm",fig:"stand",desc:"Use your LEFT hand or forearm to press your RIGHT arm closer to your chest. Pull just below the elbow — never pull on the elbow joint itself. Feel the stretch in the back of your RIGHT shoulder."},
+   {title:"Hold & Switch",fig:"stand",desc:"Hold for 20-30 seconds, breathing normally. Keep your RIGHT shoulder relaxed — don't shrug it up. Release and switch arms."},
+ ],
+ cues:["Pull BELOW the elbow — not on the joint","Don't shrug the stretching shoulder — keep it down","Stand or sit TALL — good posture","Gentle pull — not aggressive"],
+ tip:"Basketball involves a lot of overhead motion (shooting, rebounding, blocking) which can tighten the posterior shoulder. Stretch both shoulders for 30 seconds each after every session. If you feel a pinch rather than a stretch, stop and see a trainer.",rpe:1},
 
 ];
 
