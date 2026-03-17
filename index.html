@@ -2258,14 +2258,17 @@ const WorkoutsScreen=()=>{
 };
 
 /* ─── HOME ────────────────────────────────────────────── */
-const HomeScreen=({setTab})=>(
+const HomeScreen=({setTab,currentUser})=>{
+  const name=currentUser?.displayName||currentUser?.username||"Player";
+  const initial=name.charAt(0).toUpperCase();
+  return(
   <div style={{padding:"0 16px 16px"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
       <div>
-        <div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Good Morning</div>
-        <div style={{fontSize:22,fontWeight:700,color:C.fg}}>Hillary 👋</div>
+        <div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Good {getTimeOfDay()}</div>
+        <div style={{fontSize:22,fontWeight:700,color:C.fg}}>{name} 👋</div>
       </div>
-      <div style={{width:40,height:40,borderRadius:20,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:16,color:C.accentFg}}>H</div>
+      <div style={{width:40,height:40,borderRadius:20,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:16,color:C.accentFg}}>{initial}</div>
     </div>
     <div style={{background:"linear-gradient(135deg,#1A1A00,#2A2A04)",border:`1px solid ${C.accent}33`,borderRadius:16,padding:20,marginBottom:16,position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",right:-10,top:-10,width:100,height:100,borderRadius:"50%",background:C.accent+"08"}}/>
@@ -2293,7 +2296,8 @@ const HomeScreen=({setTab})=>(
       </div>
     </Card>
   </div>
-);
+  );
+};
 
 /* ─── RECOVERY ────────────────────────────────────────── */
 const RecoveryScreen=()=>{
@@ -2426,6 +2430,141 @@ const getAdminData=()=>{try{return JSON.parse(localStorage.getItem('nc_admin')||
 const saveAdminData=d=>{try{localStorage.setItem('nc_admin',JSON.stringify(d))}catch{}};
 const mergeEx=ex=>{const ov=(getAdminData().exercises||{})[ex.id];return ov?{...ex,...ov}:ex;};
 const getImgData=id=>(getAdminData().images||{})[id]||EX_IMAGES[id]||"";
+
+/* ── Auth helpers ────────────────────────────────────── */
+const getUsers=()=>{try{return JSON.parse(localStorage.getItem('nc_users')||'[]')}catch{return[]}};
+const saveUsers=u=>{try{localStorage.setItem('nc_users',JSON.stringify(u))}catch{}};
+const getSession=()=>{try{return JSON.parse(localStorage.getItem('nc_session')||'null')}catch{return null}};
+const saveSession=s=>{try{localStorage.setItem('nc_session',JSON.stringify(s))}catch{}};
+const clearSession=()=>{try{localStorage.removeItem('nc_session')}catch{}};
+const getTimeOfDay=()=>{const h=new Date().getHours();if(h<12)return"Morning";if(h<17)return"Afternoon";return"Evening"};
+
+/* ── AuthScreen ──────────────────────────────────────── */
+const AuthScreen=({onLogin})=>{
+  const [mode,setMode]=React.useState("login");
+  const [username,setUsername]=React.useState("");
+  const [password,setPassword]=React.useState("");
+  const [confirmPw,setConfirmPw]=React.useState("");
+  const [displayName,setDisplayName]=React.useState("");
+  const [rememberMe,setRememberMe]=React.useState(true);
+  const [error,setError]=React.useState("");
+  const [showPw,setShowPw]=React.useState(false);
+  const reset=()=>{setError("");setPassword("");setConfirmPw("");};
+  const switchMode=m=>{setMode(m);reset();setUsername("");setDisplayName("");};
+
+  const doLogin=()=>{
+    if(!username.trim()||!password){setError("Enter your username and password");return;}
+    const users=getUsers();
+    const user=users.find(u=>u.username.toLowerCase()===username.trim().toLowerCase()&&u.password===password);
+    if(!user){setError("Incorrect username or password");return;}
+    const s={userId:user.id,username:user.username,displayName:user.displayName||user.username,rememberMe,loginTime:Date.now()};
+    saveSession(s);onLogin(s);
+  };
+
+  const doSignup=()=>{
+    if(!username.trim()){setError("Choose a username");return;}
+    if(username.trim().length<3){setError("Username must be at least 3 characters");return;}
+    if(!password){setError("Choose a password");return;}
+    if(password.length<4){setError("Password must be at least 4 characters");return;}
+    if(password!==confirmPw){setError("Passwords don't match");return;}
+    const users=getUsers();
+    if(users.find(u=>u.username.toLowerCase()===username.trim().toLowerCase())){setError("Username already taken — try another");return;}
+    const nu={id:Date.now().toString(36),username:username.trim(),password,displayName:displayName.trim()||username.trim(),createdAt:new Date().toISOString()};
+    saveUsers([...users,nu]);
+    const s={userId:nu.id,username:nu.username,displayName:nu.displayName,rememberMe,loginTime:Date.now()};
+    saveSession(s);onLogin(s);
+  };
+
+  const inp={width:"100%",background:C.muted,border:`1px solid ${C.border}`,borderRadius:12,padding:"14px 16px",color:C.fg,fontFamily:"Space Grotesk",fontSize:15,outline:"none",boxSizing:"border-box",WebkitAppearance:"none"};
+  const lbl={fontSize:10,fontWeight:700,color:C.mutedFg,letterSpacing:1.5,textTransform:"uppercase",display:"block",textAlign:"left",marginBottom:6};
+  const action=mode==="login"?doLogin:doSignup;
+
+  return(
+    <div style={{width:"100%",height:"100%",background:C.bg,display:"flex",flexDirection:"column",alignItems:"center",overflowY:"auto",boxSizing:"border-box"}}>
+      {/* Header / Logo area */}
+      <div style={{width:"100%",background:"linear-gradient(180deg,#111100 0%,#09090B 100%)",padding:"52px 28px 36px",textAlign:"center",borderBottom:`1px solid ${C.accent}22`}}>
+        <div style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:88,height:88,borderRadius:28,background:C.accent+"18",border:`2px solid ${C.accent}44`,marginBottom:16}}>
+          <NCLogo size={56} color={C.accent}/>
+        </div>
+        <div style={{fontSize:24,fontWeight:800,color:C.fg,letterSpacing:4,textTransform:"uppercase",marginBottom:4}}>NETS COACHING</div>
+        <div style={{fontSize:11,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Basketball Training</div>
+      </div>
+
+      {/* Form */}
+      <div style={{width:"100%",padding:"28px 28px 40px",boxSizing:"border-box",maxWidth:390}}>
+        <div style={{fontSize:19,fontWeight:700,color:C.fg,marginBottom:24,textAlign:"center"}}>
+          {mode==="login"?"Welcome Back 👋":"Create Your Account"}
+        </div>
+
+        {/* Display name (signup only) */}
+        {mode==="signup"&&(
+          <div style={{marginBottom:14}}>
+            <label style={lbl}>Your Name (optional)</label>
+            <input style={inp} placeholder="e.g. Jordan Williams" value={displayName} autoCapitalize="words" onChange={e=>{setDisplayName(e.target.value);setError("");}}/>
+          </div>
+        )}
+
+        {/* Username */}
+        <div style={{marginBottom:14}}>
+          <label style={lbl}>Username</label>
+          <input style={inp} placeholder="your_username" value={username} autoCapitalize="none" autoCorrect="off" spellCheck="false"
+            onChange={e=>{setUsername(e.target.value);setError("");}}
+            onKeyDown={e=>e.key==="Enter"&&action()}/>
+        </div>
+
+        {/* Password */}
+        <div style={{marginBottom:mode==="signup"?14:0}}>
+          <label style={lbl}>Password</label>
+          <div style={{position:"relative"}}>
+            <input style={{...inp,paddingRight:48}} type={showPw?"text":"password"} placeholder="••••••••" value={password}
+              onChange={e=>{setPassword(e.target.value);setError("");}}
+              onKeyDown={e=>e.key==="Enter"&&action()}/>
+            <button onClick={()=>setShowPw(!showPw)} style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:C.mutedFg,cursor:"pointer",fontSize:16,padding:0}}>
+              {showPw?"🙈":"👁"}
+            </button>
+          </div>
+        </div>
+
+        {/* Confirm password (signup only) */}
+        {mode==="signup"&&(
+          <div style={{marginBottom:0}}>
+            <label style={lbl}>Confirm Password</label>
+            <input style={inp} type="password" placeholder="••••••••" value={confirmPw}
+              onChange={e=>{setConfirmPw(e.target.value);setError("");}}
+              onKeyDown={e=>e.key==="Enter"&&doSignup()}/>
+          </div>
+        )}
+
+        {/* Error */}
+        {error&&<div style={{color:C.red,fontSize:12,marginTop:12,textAlign:"center",padding:"8px 12px",background:C.red+"11",borderRadius:8,border:`1px solid ${C.red}33`}}>{error}</div>}
+
+        {/* Remember me */}
+        <div style={{display:"flex",alignItems:"center",gap:10,marginTop:16,marginBottom:20,cursor:"pointer",WebkitTapHighlightColor:"transparent"}} onClick={()=>setRememberMe(!rememberMe)}>
+          <div style={{width:22,height:22,borderRadius:7,border:`2px solid ${rememberMe?C.accent:C.border}`,background:rememberMe?C.accent:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+            {rememberMe&&<span style={{color:C.accentFg,fontSize:13,fontWeight:900,lineHeight:1}}>✓</span>}
+          </div>
+          <span style={{fontSize:13,color:C.mutedFg,userSelect:"none"}}>Keep me signed in</span>
+        </div>
+
+        {/* CTA Button */}
+        <button onClick={action}
+          style={{width:"100%",background:C.accent,color:C.accentFg,border:"none",borderRadius:14,padding:"16px",fontFamily:"Space Grotesk",fontWeight:800,fontSize:15,cursor:"pointer",letterSpacing:1,marginBottom:18,WebkitTapHighlightColor:"transparent"}}>
+          {mode==="login"?"SIGN IN":"CREATE ACCOUNT"}
+        </button>
+
+        {/* Switch mode */}
+        <div style={{textAlign:"center",fontSize:13,color:C.mutedFg}}>
+          {mode==="login"
+            ?<>New here?{" "}<span style={{color:C.accent,fontWeight:700,cursor:"pointer"}} onClick={()=>switchMode("signup")}>Create account</span></>
+            :<>Already have an account?{" "}<span style={{color:C.accent,fontWeight:700,cursor:"pointer"}} onClick={()=>switchMode("login")}>Sign in</span></>
+          }
+        </div>
+
+        <div style={{textAlign:"center",fontSize:10,color:C.mutedFg+"55",marginTop:24}}>Your data is stored on this device only</div>
+      </div>
+    </div>
+  );
+};
 
 /* ── Admin Login ─────────────────────────────────────── */
 const AdminLogin=({onSuccess,onClose})=>{
@@ -2637,32 +2776,92 @@ function App(){
   const [tab,setTab]=useState("home");
   const [showAdminLogin,setShowAdminLogin]=useState(false);
   const [showAdmin,setShowAdmin]=useState(false);
-  const screens={home:<HomeScreen setTab={setTab}/>,workouts:<WorkoutsScreen/>,recovery:<RecoveryScreen/>,metrics:<MetricsScreen/>,videos:<VideosScreen/>,stats:<StatsScreen/>};
+  const [showProfileMenu,setShowProfileMenu]=useState(false);
+
+  /* ── Auth state — auto-login if valid "remember me" session ── */
+  const [currentUser,setCurrentUser]=useState(()=>{
+    const s=getSession();
+    return (s&&s.rememberMe)?s:null;
+  });
+
+  const handleLogin=s=>setCurrentUser(s);
+  const handleLogout=()=>{clearSession();setCurrentUser(null);setTab("home");setShowProfileMenu(false);};
+
+  const phone=(
+    <div style={{width:390,height:844,background:C.bg,borderRadius:44,overflow:"hidden",boxShadow:"0 0 0 10px #111,0 0 80px rgba(223,225,4,0.15)",display:"flex",flexDirection:"column",position:"relative"}}>
+      {currentUser?(
+        <>
+          {/* Admin overlays */}
+          {showAdminLogin&&<AdminLogin onSuccess={()=>{setShowAdminLogin(false);setShowAdmin(true);}} onClose={()=>setShowAdminLogin(false)}/>}
+          {showAdmin&&<AdminPanel onClose={()=>setShowAdmin(false)}/>}
+
+          {/* Profile menu overlay */}
+          {showProfileMenu&&(
+            <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.85)",zIndex:200,display:"flex",alignItems:"flex-end"}} onClick={()=>setShowProfileMenu(false)}>
+              <div onClick={e=>e.stopPropagation()} style={{width:"100%",background:C.card,borderRadius:"24px 24px 0 0",padding:"24px 24px 40px",border:`1px solid ${C.border}`}}>
+                {/* Avatar + name */}
+                <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:24}}>
+                  <div style={{width:52,height:52,borderRadius:26,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,color:C.accentFg,flexShrink:0}}>
+                    {(currentUser.displayName||currentUser.username).charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div style={{fontSize:16,fontWeight:700,color:C.fg}}>{currentUser.displayName||currentUser.username}</div>
+                    <div style={{fontSize:12,color:C.mutedFg}}>@{currentUser.username}</div>
+                  </div>
+                </div>
+                {/* Divider */}
+                <div style={{height:1,background:C.border,marginBottom:16}}/>
+                {/* Admin option */}
+                <button onClick={()=>{setShowProfileMenu(false);setShowAdminLogin(true);}}
+                  style={{width:"100%",display:"flex",alignItems:"center",gap:12,background:"none",border:`1px solid ${C.border}`,borderRadius:12,padding:"14px 16px",color:C.fg,fontFamily:"Space Grotesk",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:10}}>
+                  <span style={{fontSize:18}}>⚙️</span> Admin Mode
+                </button>
+                {/* Sign out */}
+                <button onClick={handleLogout}
+                  style={{width:"100%",display:"flex",alignItems:"center",gap:12,background:C.red+"11",border:`1px solid ${C.red}33`,borderRadius:12,padding:"14px 16px",color:C.red,fontFamily:"Space Grotesk",fontSize:14,fontWeight:700,cursor:"pointer"}}>
+                  <span style={{fontSize:18}}>🚪</span> Sign Out
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Status bar */}
+          <div style={{background:C.bg,padding:"14px 20px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+            <span style={{fontSize:12,fontWeight:600,color:C.fg}}>{new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</span>
+            <div style={{display:"flex",gap:6,alignItems:"center"}}><NCLogo size={22}/><span style={{fontSize:11,fontWeight:700,color:C.fg,letterSpacing:2,textTransform:"uppercase"}}>NETS COACHING</span></div>
+            {/* Avatar button — opens profile menu */}
+            <button onClick={()=>setShowProfileMenu(true)}
+              style={{width:30,height:30,borderRadius:15,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:12,color:C.accentFg,border:"none",cursor:"pointer",padding:0}}>
+              {(currentUser.displayName||currentUser.username).charAt(0).toUpperCase()}
+            </button>
+          </div>
+
+          <div style={{flex:1,overflowY:"auto",paddingTop:16}}>
+            {tab==="home"&&<HomeScreen setTab={setTab} currentUser={currentUser}/>}
+            {tab==="workouts"&&<WorkoutsScreen/>}
+            {tab==="recovery"&&<RecoveryScreen/>}
+            {tab==="metrics"&&<MetricsScreen/>}
+            {tab==="videos"&&<VideosScreen/>}
+            {tab==="stats"&&<StatsScreen/>}
+          </div>
+          <div style={{background:C.surface,borderTop:`1px solid ${C.border}`,display:"flex",padding:"8px 2px 18px",flexShrink:0}}>
+            {NAV.map(n=>(<button key={n.id} onClick={()=>setTab(n.id)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",cursor:"pointer",padding:"4px 0"}}>
+              <div style={{width:30,height:30,borderRadius:9,background:tab===n.id?C.accent:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>
+                {tab===n.id?<span style={{fontWeight:700,fontSize:9,color:C.accentFg,letterSpacing:-0.5}}>{n.label.slice(0,3)}</span>:<span style={{fontSize:16}}>{n.icon}</span>}
+              </div>
+              <span style={{fontSize:7,color:tab===n.id?C.accent:C.mutedFg,fontWeight:tab===n.id?700:400,letterSpacing:0.3}}>{n.label}</span>
+            </button>))}
+          </div>
+        </>
+      ):(
+        <AuthScreen onLogin={handleLogin}/>
+      )}
+    </div>
+  );
+
   return(
     <div style={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"100vh",background:"#000",fontFamily:"Space Grotesk,sans-serif"}}>
-      <div style={{width:390,height:844,background:C.bg,borderRadius:44,overflow:"hidden",boxShadow:"0 0 0 10px #111,0 0 80px rgba(223,225,4,0.15)",display:"flex",flexDirection:"column",position:"relative"}}>
-        {/* Admin overlays */}
-        {showAdminLogin&&<AdminLogin onSuccess={()=>{setShowAdminLogin(false);setShowAdmin(true);}} onClose={()=>setShowAdminLogin(false)}/>}
-        {showAdmin&&<AdminPanel onClose={()=>setShowAdmin(false)}/>}
-
-        {/* Status bar */}
-        <div style={{background:C.bg,padding:"14px 24px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-          <span style={{fontSize:12,fontWeight:600,color:C.fg}}>9:41</span>
-          <div style={{display:"flex",gap:6,alignItems:"center"}}><NCLogo size={22}/><span style={{fontSize:11,fontWeight:700,color:C.fg,letterSpacing:2,textTransform:"uppercase"}}>NETS COACHING</span></div>
-          {/* Admin gear — tap to enter admin mode */}
-          <button onClick={()=>setShowAdminLogin(true)} style={{background:"none",border:"none",color:C.mutedFg,fontSize:14,cursor:"pointer",padding:"2px 4px",lineHeight:1}} title="Admin">⚙</button>
-        </div>
-
-        <div style={{flex:1,overflowY:"auto",paddingTop:16}}>{screens[tab]}</div>
-        <div style={{background:C.surface,borderTop:`1px solid ${C.border}`,display:"flex",padding:"8px 2px 18px",flexShrink:0}}>
-          {NAV.map(n=>(<button key={n.id} onClick={()=>setTab(n.id)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",cursor:"pointer",padding:"4px 0"}}>
-            <div style={{width:30,height:30,borderRadius:9,background:tab===n.id?C.accent:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>
-              {tab===n.id?<span style={{fontWeight:700,fontSize:9,color:C.accentFg,letterSpacing:-0.5}}>{n.label.slice(0,3)}</span>:<span style={{fontSize:16}}>{n.icon}</span>}
-            </div>
-            <span style={{fontSize:7,color:tab===n.id?C.accent:C.mutedFg,fontWeight:tab===n.id?700:400,letterSpacing:0.3}}>{n.label}</span>
-          </button>))}
-        </div>
-      </div>
+      {phone}
     </div>
   );
 }
