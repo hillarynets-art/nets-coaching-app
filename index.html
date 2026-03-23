@@ -15,7 +15,13 @@
   input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;outline:none}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;cursor:pointer}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes splashIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+  @keyframes splashLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes splashPulse{0%,100%{opacity:.5}50%{opacity:1}}
+  @keyframes loadBar{0%{width:0}85%{width:100%}100%{width:100%}}
+  @keyframes tileIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .fade-up{animation:fadeUp .25s ease forwards}
 </style>
 </head>
@@ -165,12 +171,19 @@ const EX_IMAGES = {
   95: "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cross_Body_Shoulder_Stretch/0.jpg",   // CROSS-BODY SHOULDER STRETCH
 };
 
-const C={
+const CDark={
   bg:"#09090B",surface:"#111113",card:"#1A1A1C",
   fg:"#FAFAFA",muted:"#27272A",mutedFg:"#71717A",
   accent:"#DFE104",accentFg:"#000",border:"#2A2A2C",
   green:"#22C55E",red:"#EF4444",orange:"#F97316",blue:"#60A5FA",purple:"#818CF8",
 };
+const CLight={
+  bg:"#F8F8F6",surface:"#FFFFFF",card:"#FFFFFF",
+  fg:"#0A0A0A",muted:"#EBEBEB",mutedFg:"#6B7280",
+  accent:"#B8B800",accentFg:"#fff",border:"#E5E5E5",
+  green:"#16A34A",red:"#DC2626",orange:"#EA580C",blue:"#2563EB",purple:"#7C3AED",
+};
+let C={...CDark};
 
 /* âââ TYPE & MUSCLE CONFIG âââââââââââââââââââââââââââââ */
 const TYPES={
@@ -2772,8 +2785,32 @@ const NAV=[
   {id:"recovery",label:"RECOVER",icon:"ð"},{id:"metrics",label:"BODY",icon:"ð"},
   {id:"videos",label:"VIDEOS",icon:"ð¬"},{id:"stats",label:"STATS",icon:"ð"},
 ];
+function SplashScreen({onDone}){
+  const {useEffect}=React;
+  useEffect(()=>{const t=setTimeout(onDone,2600);return()=>clearTimeout(t);},[]);
+  return <div style={{position:"absolute",inset:0,background:"#09090B",zIndex:9999,
+    display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
+    animation:"splashIn .4s ease",gap:0}}>
+    <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 55%,rgba(223,225,4,.10) 0%,transparent 65%)",animation:"splashPulse 2.5s ease-in-out infinite"}}/>
+    <div style={{animation:"splashLogo 2.5s ease-in-out infinite",position:"relative",zIndex:1,marginBottom:20}}>
+      <NCLogo size={36}/>
+    </div>
+    <div style={{fontSize:13,fontWeight:700,letterSpacing:4,color:"rgba(255,255,255,.5)",textTransform:"uppercase",position:"relative",zIndex:1}}>NETS COACHING</div>
+    <div style={{position:"absolute",bottom:80,left:60,right:60,zIndex:1}}>
+      <div style={{height:2,background:"#1e1e1e",borderRadius:2,overflow:"hidden"}}>
+        <div style={{height:"100%",background:"#DFE104",borderRadius:2,animation:"loadBar 2.4s ease-in-out forwards"}}/>
+      </div>
+      <div style={{textAlign:"center",fontSize:11,color:"rgba(255,255,255,.25)",marginTop:8,animation:"splashPulse 2s ease-in-out infinite"}}>Loading your content...</div>
+    </div>
+  </div>;
+}
+
 function App(){
   const [tab,setTab]=useState("home");
+  const [showSplash,setShowSplash]=useState(()=>true);
+  const [isDark,setIsDark]=useState(()=>localStorage.getItem("ncaTheme")!=="light");
+  Object.assign(C,isDark?CDark:CLight);
+  const toggleTheme=()=>{const next=!isDark;setIsDark(next);localStorage.setItem("ncaTheme",next?"dark":"light");};
   const [showAdminLogin,setShowAdminLogin]=useState(false);
   const [showAdmin,setShowAdmin]=useState(false);
   const [showProfileMenu,setShowProfileMenu]=useState(false);
@@ -2789,6 +2826,7 @@ function App(){
 
   const phone=(
     <div style={{width:390,height:844,background:C.bg,borderRadius:44,overflow:"hidden",boxShadow:"0 0 0 10px #111,0 0 80px rgba(223,225,4,0.15)",display:"flex",flexDirection:"column",position:"relative"}}>
+      {showSplash&&<SplashScreen onDone={()=>setShowSplash(false)}/>}
       {currentUser?(
         <>
           {/* Admin overlays */}
@@ -2826,14 +2864,21 @@ function App(){
           )}
 
           {/* Status bar */}
-          <div style={{background:C.bg,padding:"14px 20px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <span style={{fontSize:12,fontWeight:600,color:C.fg}}>{new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})}</span>
-            <div style={{display:"flex",gap:6,alignItems:"center"}}><NCLogo size={22}/><span style={{fontSize:11,fontWeight:700,color:C.fg,letterSpacing:2,textTransform:"uppercase"}}>NETS COACHING</span></div>
+          <div style={{background:C.bg,padding:"12px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+            <div style={{display:"flex",gap:6,alignItems:"center"}}><NCLogo size={22}/></div>
             {/* Avatar button â opens profile menu */}
-            <button onClick={()=>setShowProfileMenu(true)}
-              style={{width:30,height:30,borderRadius:15,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:12,color:C.accentFg,border:"none",cursor:"pointer",padding:0}}>
-              {(currentUser.displayName||currentUser.username).charAt(0).toUpperCase()}
-            </button>
+            <div style={{display:"flex",gap:8,alignItems:"center"}}>
+              <button onClick={toggleTheme}
+                style={{background:C.muted,border:`1px solid ${C.border}`,borderRadius:20,
+                  padding:"4px 10px",cursor:"pointer",fontSize:11,color:C.mutedFg,fontFamily:"Space Grotesk",
+                  fontWeight:600,letterSpacing:.5}}>
+                {isDark?"☀":"🌙"}
+              </button>
+              <button onClick={()=>setShowProfileMenu(true)}
+                style={{width:30,height:30,borderRadius:15,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:12,color:C.accentFg,border:"none",cursor:"pointer",padding:0}}>
+                {(currentUser.displayName||currentUser.username).charAt(0).toUpperCase()}
+              </button>
+            </div>
           </div>
 
           <div style={{flex:1,overflowY:"auto",paddingTop:16}}>
@@ -2860,7 +2905,7 @@ function App(){
   );
 
   return(
-    <div style={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"100vh",background:"#000",fontFamily:"Space Grotesk,sans-serif"}}>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"100vh",background:isDark?"#000":"#1a1a1a",fontFamily:"Space Grotesk,sans-serif"}}>
       {phone}
     </div>
   );
