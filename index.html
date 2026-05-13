@@ -2780,10 +2780,146 @@ const AdminPanel=({onClose})=>{
 };
 
 /* âââ APP SHELL âââââââââââââââââââââââââââââââââââââââââ */
+
+/* --- GEAR / APPAREL ---------------------------------------------------
+   First drop: NC Coaching tee (spec 2510-032, dated 2025-10-13).
+   50 pcs * black * S*10 M*10 L*15 XL*15 * HS1892 fabric * DTF print.
+   Chest: NC monogram, 10cm wide, 8cm down from collar.
+   Back:  BYDESIGN arched, 3cm down from collar, scales 46/48/50/52cm.
+
+   HOW TO ADD PHOTOSHOOT IMAGES:
+   Paste your Higgsfield (or any) image URLs into GEAR_IMAGES below.
+   Leave a slot as "" to show the placeholder tile.
+
+   HIGGSFIELD PROMPT STARTERS (visual language taken from the Temu refs):
+   - HERO / BACK:
+       "Editorial menswear shot, athletic male model back-to-camera,
+        hands tugging the hem of an oversized black t-shirt, plain
+        off-white studio wall, soft directional key light from upper
+        left, slight shadow on wall, mid-thigh crop, shoulders dominant
+        in frame, shot on 50mm, muted contrast, no logo retouching."
+   - FRONT:
+       "Same model and lighting, front-on, hands relaxed at sides,
+        silver chain visible at neckline, small white NC monogram
+        centered on chest, oversized fit, plain studio wall."
+   - CHEST DETAIL / BACK DETAIL:
+       "Flat lay close-up of a single white DTF print on black cotton
+        jersey, soft top-down light, fabric texture visible, no model."
+   ---------------------------------------------------------------------- */
+const GEAR_IMAGES={
+  hero:        "",  // back-to-camera, hands tugging hem
+  front:       "",  // front body shot, chest monogram visible
+  back:        "",  // pure back body shot, BYDESIGN arch
+  chestDetail: "",  // close-up of NC chest mark
+  backDetail:  "",  // close-up of BYDESIGN arch print
+  lifestyle:   "",  // wider environmental / oversized-fit context
+};
+
+const GearScreen=()=>{
+  const [size,setSize]=useState("M");
+  const sizes=[
+    {k:"S", cm:46, qty:10},
+    {k:"M", cm:48, qty:10},
+    {k:"L", cm:50, qty:15},
+    {k:"XL",cm:52, qty:15},
+  ];
+  const sel=sizes.find(s=>s.k===size);
+
+  const Slot=({src,label,h=320})=>(
+    <div style={{width:"100%",height:h,borderRadius:14,overflow:"hidden",background:C.muted,border:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+      {src
+        ? <img src={src} alt={label} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+        : <div style={{textAlign:"center",color:C.mutedFg,padding:20}}>
+            <div style={{fontSize:30,opacity:.45,marginBottom:8}}>👕</div>
+            <div style={{fontSize:10,fontWeight:700,letterSpacing:2,marginBottom:4}}>{label}</div>
+            <div style={{fontSize:9,opacity:.7,lineHeight:1.4}}>Paste a Higgsfield URL into<br/><code style={{background:C.surface,padding:"1px 5px",borderRadius:4,fontSize:9}}>GEAR_IMAGES.{label.toLowerCase().replace(/\s+/g,"")}</code></div>
+          </div>}
+    </div>
+  );
+
+  return <div style={{padding:"4px 18px 24px",color:C.fg}}>
+    <div style={{marginBottom:14}}>
+      <div style={{fontSize:10,letterSpacing:3,color:C.mutedFg,fontWeight:600}}>DROP 001 · 50 PCS · BLACK</div>
+      <div style={{fontSize:26,fontWeight:700,letterSpacing:-0.5,marginTop:4,lineHeight:1.1}}>NC Coaching Tee</div>
+      <div style={{fontSize:12,color:C.mutedFg,marginTop:6,letterSpacing:0.5}}>BYDESIGN · oversized cut · DTF print</div>
+    </div>
+
+    <div style={{marginBottom:16}}><Slot src={GEAR_IMAGES.hero} label="HERO" h={360}/></div>
+
+    <div style={{display:"flex",gap:8,marginBottom:20}}>
+      {[["Fabric","HS1892"],["Color","Black"],["Print","DTF"],["Sizes","4"]].map(([k,v])=>(
+        <div key={k} style={{flex:1,background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 6px",textAlign:"center"}}>
+          <div style={{fontSize:8,letterSpacing:1.5,color:C.mutedFg,fontWeight:600}}>{k.toUpperCase()}</div>
+          <div style={{fontSize:11,fontWeight:700,color:C.fg,marginTop:3}}>{v}</div>
+        </div>
+      ))}
+    </div>
+
+    <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:8}}>
+      <div style={{fontSize:16,fontWeight:700,letterSpacing:-0.2}}>Front · chest mark</div>
+      <div style={{fontSize:10,color:C.accent,letterSpacing:1,fontWeight:700}}>8CM FROM COLLAR</div>
+    </div>
+    <Card style={{padding:0,overflow:"hidden",marginBottom:18}}>
+      <Slot src={GEAR_IMAGES.chestDetail} label="CHEST DETAIL" h={220}/>
+      <div style={{padding:"12px 14px",fontSize:11,color:C.mutedFg,lineHeight:1.5}}>
+        NC monogram, 10 cm wide. Centered on the chest. White DTF transfer on black jersey.
+      </div>
+    </Card>
+
+    <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:8}}>
+      <div style={{fontSize:16,fontWeight:700,letterSpacing:-0.2}}>Back · BYDESIGN arch</div>
+      <div style={{fontSize:10,color:C.accent,letterSpacing:1,fontWeight:700}}>3CM FROM COLLAR</div>
+    </div>
+    <Card style={{padding:0,overflow:"hidden",marginBottom:18}}>
+      <Slot src={GEAR_IMAGES.backDetail} label="BACK DETAIL" h={220}/>
+      <div style={{padding:"12px 14px",fontSize:11,color:C.mutedFg,lineHeight:1.5}}>
+        BYDESIGN arched across the upper back. Print width scales with size — 46 / 48 / 50 / 52 cm across S / M / L / XL.
+      </div>
+    </Card>
+
+    <div style={{fontSize:16,fontWeight:700,marginBottom:10}}>Pick a size</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:12}}>
+      {sizes.map(s=>(
+        <button key={s.k} onClick={()=>setSize(s.k)} style={{
+          background:size===s.k?C.accent:C.card,
+          color:size===s.k?C.accentFg:C.fg,
+          border:`1px solid ${size===s.k?C.accent:C.border}`,
+          borderRadius:10,padding:"12px 0",cursor:"pointer",
+          fontFamily:"Space Grotesk",
+        }}>
+          <div style={{fontSize:14,fontWeight:800}}>{s.k}</div>
+          <div style={{fontSize:9,marginTop:2,opacity:.75,letterSpacing:0.5}}>{s.cm}cm</div>
+        </button>
+      ))}
+    </div>
+    <div style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"12px 14px",marginBottom:20,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+      <div>
+        <div style={{fontSize:9,color:C.mutedFg,letterSpacing:1.5,fontWeight:600}}>STOCK · {size}</div>
+        <div style={{fontSize:18,fontWeight:700,color:C.fg,marginTop:2}}>{sel.qty} pcs</div>
+      </div>
+      <div style={{textAlign:"right"}}>
+        <div style={{fontSize:9,color:C.mutedFg,letterSpacing:1.5,fontWeight:600}}>BACK PRINT</div>
+        <div style={{fontSize:18,fontWeight:700,color:C.accent,marginTop:2}}>{sel.cm} cm</div>
+      </div>
+    </div>
+
+    <div style={{fontSize:16,fontWeight:700,marginBottom:10}}>On body</div>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}>
+      <Slot src={GEAR_IMAGES.front} label="FRONT" h={220}/>
+      <Slot src={GEAR_IMAGES.back}  label="BACK"  h={220}/>
+    </div>
+    <div style={{marginBottom:20}}><Slot src={GEAR_IMAGES.lifestyle} label="LIFESTYLE" h={240}/></div>
+
+    <Btn onClick={()=>alert("Reservation flow coming soon — first drop limited to 50 pieces.")}>Reserve my size</Btn>
+    <div style={{textAlign:"center",fontSize:10,color:C.mutedFg,marginTop:10,letterSpacing:1.5}}>50 PIECES TOTAL · FIRST DROP</div>
+  </div>;
+};
+
 const NAV=[
   {id:"home",label:"HOME",icon:"â"},{id:"workouts",label:"TRAIN",icon:"ðï¸"},
   {id:"recovery",label:"RECOVER",icon:"ð"},{id:"metrics",label:"BODY",icon:"ð"},
   {id:"videos",label:"VIDEOS",icon:"ð¬"},{id:"stats",label:"STATS",icon:"ð"},
+  {id:"gear",label:"GEAR",icon:"👕"},
 ];
 function SplashScreen({onDone}){
   const {useEffect}=React;
@@ -2888,6 +3024,7 @@ function App(){
             {tab==="metrics"&&<MetricsScreen/>}
             {tab==="videos"&&<VideosScreen/>}
             {tab==="stats"&&<StatsScreen/>}
+            {tab==="gear"&&<GearScreen/>}
           </div>
           <div style={{background:C.surface,borderTop:`1px solid ${C.border}`,display:"flex",padding:"8px 2px 18px",flexShrink:0}}>
             {NAV.map(n=>(<button key={n.id} onClick={()=>setTab(n.id)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",cursor:"pointer",padding:"4px 0"}}>
