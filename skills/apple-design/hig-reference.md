@@ -72,6 +72,7 @@ Pick one tint for interactive elements. Red is reserved for destructive. Green/o
 | Token | Light | Dark |
 |---|---|---|
 | fill (buttons, thin controls) | rgba(120,120,128,.20) | rgba(120,120,128,.36) |
+| tint-wash (tinted buttons, highlighted cards) | tint @ 12% | tint @ 15% |
 | fill-secondary | rgba(120,120,128,.16) | rgba(120,120,128,.32) |
 | fill-tertiary (segmented track, search bg) | rgba(118,118,128,.12) | rgba(118,118,128,.24) |
 | fill-quaternary | rgba(116,116,128,.08) | rgba(118,118,128,.18) |
@@ -92,7 +93,7 @@ Pick one tint for interactive elements. Red is reserved for destructive. Green/o
 | Row padding | 11–12 vertical, 16 horizontal |
 | Status bar | `env(safe-area-inset-top)` (≈ 47–59 on notch/Dynamic Island phones) |
 | Nav bar | 44 tall; large title adds 52 (total 96) and collapses on scroll |
-| Tab bar | 49 tall + `env(safe-area-inset-bottom)` (≈ 34 on home-indicator phones) |
+| Tab bar | 49 tall + `env(safe-area-inset-bottom)` (≈ 34 on home-indicator phones, 0 on home-button phones). Inside a desktop mock frame `env()` is 0, so use `max(env(safe-area-inset-bottom), 34px)` for the frame only |
 | Toolbar | 44 |
 | Search field | 36 tall, 10 radius, fill-tertiary bg, 17px text |
 | Segmented control | 32 tall, 9 outer radius, 7 inner selected radius, 2 inset, 13/600 text |
@@ -102,6 +103,10 @@ Pick one tint for interactive elements. Red is reserved for destructive. Green/o
 | Filled button, medium | 34 tall, 8–10 radius, 15/600 |
 | Filled button, small (capsule) | 28 tall, 999 radius, 13/600, 14 h-padding |
 | Sheet grabber | 36 × 5, 2.5 radius, label-tertiary, 5 from top |
+| Sheet corner | 10 (UIKit default for every detent). Apps may raise it via `preferredCornerRadius`; if you do, use one value app-wide, 16 is the common choice |
+| Numbered or icon-led rows | 29 × 29 leading square, 6.5 radius, tint or system-color fill, 15/600 glyph or number, 12 gap to text. Same spec for step lists |
+| Badge / tag | 22 tall capsule, 11/600, 8–10 h-padding, fill or tint at 15%; the only place uppercase is acceptable |
+| Focus ring | `outline: 2px solid tint; outline-offset: 2px` on `:focus-visible` only |
 | Alert | 270 wide, 14 radius, Title 17/600 centered, body 13, buttons 44 tall split by hairline |
 | Inset grouped list | 10 radius, 16 side margin, 35 gap between groups, header 13 footnote 16 left-padded |
 | Card (Fitness/Health style) | 16–20 radius, 16 padding, bg-secondary, no border |
