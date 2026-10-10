@@ -2,27 +2,62 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)"/>
 <title>Nets Coaching</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
 <style>
+  :root{--bg:#000;--fill:#2C2C2E;--tint:#DFE104;--label:#FFF;--separator:#38383A;--card:#1C1C1E}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#000;font-family:'Space Grotesk',sans-serif}
+  html{height:100%;-webkit-text-size-adjust:100%}
+  body{min-height:100dvh;background:#000;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;
+       font:17px/22px -apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",system-ui,sans-serif;
+       -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:normal}
+  button,input,select,textarea{font:inherit;color:inherit;-webkit-appearance:none;appearance:none;letter-spacing:normal}
+  button{touch-action:manipulation;user-select:none;-webkit-user-select:none;cursor:pointer}
+  button:active{opacity:.75;transform:scale(.97);transition:transform .1s ease-out,opacity .1s ease-out}
+  button{transition:transform .15s ease-out,opacity .15s ease-out}
+  button[data-plain]:active{opacity:.5;transform:none}
+  :focus{outline:none}
+  :focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+  input::placeholder,textarea::placeholder{color:rgba(120,120,128,.6)}
   ::-webkit-scrollbar{width:0}
-  input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;cursor:pointer}
+  .scroll{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .num{font-variant-numeric:tabular-nums}
+  .hairline{box-shadow:0 .5px 0 0 var(--separator)}
+  .hairline-top{box-shadow:0 -.5px 0 0 var(--separator)}
+  .material{-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%)}
+  @supports not (backdrop-filter:blur(1px)){.material{background:var(--bg) !important}}
+  @media (prefers-reduced-transparency:reduce){.material{background:var(--bg) !important;-webkit-backdrop-filter:none;backdrop-filter:none}}
+  input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--fill);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 .5px 4px rgba(0,0,0,.12),0 6px 13px rgba(0,0,0,.12);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:28px;height:28px;border:none;border-radius:50%;background:#fff;box-shadow:0 .5px 4px rgba(0,0,0,.12),0 6px 13px rgba(0,0,0,.12)}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes sheetIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  @keyframes scrimIn{from{opacity:0}to{opacity:1}}
+  @keyframes alertIn{from{opacity:0;transform:scale(1.1)}to{opacity:1;transform:scale(1)}}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes splashIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
   @keyframes splashLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   @keyframes splashPulse{0%,100%{opacity:.5}50%{opacity:1}}
   @keyframes loadBar{0%{width:0}85%{width:100%}100%{width:100%}}
   @keyframes tileIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  .fade-up{animation:fadeUp .25s ease forwards}
+  .fade-up{animation:fadeUp .25s cubic-bezier(.25,.1,.25,1) forwards}
+  .sheet{animation:sheetIn .35s cubic-bezier(.32,.72,0,1) both}
+  .scrim{animation:scrimIn .3s ease-out both}
+  .alert{animation:alertIn .2s cubic-bezier(.25,.1,.25,1) both}
+  @media (prefers-reduced-motion:reduce){
+    .sheet,.scrim,.alert,.fade-up{animation:fadeIn .15s ease-out both}
+    button:active{transform:none}
+    *{animation-duration:.15s !important}
+  }
 </style>
 </head>
 <body>
@@ -172,27 +207,131 @@ const EX_IMAGES = {
 };
 
 const CDark={
-  bg:"#09090B",surface:"#111113",card:"#1A1A1C",
-  fg:"#FAFAFA",muted:"#27272A",mutedFg:"#71717A",
-  accent:"#DFE104",accentFg:"#000",border:"#2A2A2C",
-  green:"#22C55E",red:"#EF4444",orange:"#F97316",blue:"#60A5FA",purple:"#818CF8",
+  bg:"#000000",surface:"#1C1C1E",card:"#1C1C1E",card2:"#2C2C2E",card3:"#3A3A3C",cardOnSheet:"#2C2C2E",
+  fg:"#FFFFFF",muted:"#2C2C2E",mutedFg:"#8E8E93",label3:"#636366",
+  accent:"#DFE104",accentFg:"#000000",tint:"#DFE104",border:"#38383A",gray:"#8E8E93",
+  green:"#30D158",red:"#FF453A",orange:"#FF9F0A",blue:"#0A84FF",purple:"#BF5AF2",indigo:"#5E5CE6",
 };
 const CLight={
-  bg:"#F8F8F6",surface:"#FFFFFF",card:"#FFFFFF",
-  fg:"#0A0A0A",muted:"#EBEBEB",mutedFg:"#6B7280",
-  accent:"#B8B800",accentFg:"#fff",border:"#E5E5E5",
-  green:"#16A34A",red:"#DC2626",orange:"#EA580C",blue:"#2563EB",purple:"#7C3AED",
+  bg:"#F2F2F7",surface:"#F2F2F7",card:"#FFFFFF",card2:"#F2F2F7",card3:"#E5E5EA",cardOnSheet:"#FFFFFF",
+  fg:"#000000",muted:"#E5E5EA",mutedFg:"#6E6E73",label3:"#AEAEB2",
+  accent:"#DFE104",accentFg:"#000000",tint:"#6E6E00",border:"#C6C6C8",gray:"#8E8E93",
+  green:"#34C759",red:"#FF3B30",orange:"#FF9500",blue:"#007AFF",purple:"#AF52DE",indigo:"#5856D6",
 };
 let C={...CDark};
 
+/* ─── TYPE SCALE (Apple HIG, Dynamic Type "Large") ───────── */
+const T={
+  largeTitle:{fontSize:34,lineHeight:"41px",fontWeight:700},
+  title1:{fontSize:28,lineHeight:"34px",fontWeight:700},
+  title2:{fontSize:22,lineHeight:"28px",fontWeight:700},
+  title3:{fontSize:20,lineHeight:"25px",fontWeight:600},
+  headline:{fontSize:17,lineHeight:"22px",fontWeight:600},
+  body:{fontSize:17,lineHeight:"22px",fontWeight:400},
+  callout:{fontSize:16,lineHeight:"21px",fontWeight:400},
+  subhead:{fontSize:15,lineHeight:"20px",fontWeight:400},
+  footnote:{fontSize:13,lineHeight:"18px",fontWeight:400},
+  caption1:{fontSize:12,lineHeight:"16px",fontWeight:400},
+  caption2:{fontSize:11,lineHeight:"13px",fontWeight:400},
+};
+/* alpha("#RRGGBB",.15) → "#RRGGBB26" */
+const alpha=(c,a)=>(c||"#000000").slice(0,7)+Math.round(a*255).toString(16).padStart(2,"0");
+/* "BACK SQUAT" → "Back Squat" (exercise data is stored upper-case) */
+const titleCase=s=>String(s||"").toLowerCase().replace(/(^|[\s\-/(])([a-z])/g,(m,p,c)=>p+c.toUpperCase()).replace(/\bRdl\b/g,"RDL").replace(/\bIt Band\b/g,"IT Band").replace(/\bYtw\b/g,"YTW").replace(/\b(\d+)m\b/g,"$1m");
+const stripEmoji=s=>String(s||"").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu,"").trim();
+
+/* ─── SF-SYMBOL-STYLE ICONS (24 grid, 1.75 stroke) ──────── */
+const ICONS={
+  home:"M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z",
+  train:"M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11",
+  recover:"M12 20.5S4.5 15.9 4.5 10.5A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7.5 2.5c0 5.4-7.5 10-7.5 10z",
+  body:"M12 7.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4zM12 8.5v6M8 11h8M12 14.5 8.5 21M12 14.5l3.5 6.5",
+  stats:"M7 4h10v4.5a5 5 0 0 1-10 0zM7 6H4.5A2.5 2.5 0 0 0 7 9.5M17 6h2.5A2.5 2.5 0 0 1 17 9.5M12 13.5V17M8.5 20.5h7",
+  chevronRight:"M9.5 5.5 16 12l-6.5 6.5",chevronLeft:"M14.5 5.5 8 12l6.5 6.5",chevronDown:"M5.5 9.5 12 16l6.5-6.5",
+  xmark:"M6.5 6.5l11 11M17.5 6.5l-11 11",check:"M5 12.5l4.5 4.5L19 7",
+  search:"M10.5 17.5a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20.5 20.5l-4.8-4.8",
+  plus:"M12 5v14M5 12h14",
+  sun:"M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4",
+  moon:"M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z",
+  gear:"M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
+  logout:"M9 4H5.5A1.5 1.5 0 0 0 4 5.5v13A1.5 1.5 0 0 0 5.5 20H9M15.5 16.5 20 12l-4.5-4.5M20 12H9",
+  play:"M7.5 4.5v15l12-7.5z",
+  eye:"M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  eyeOff:"M4 4l16 16M10 10.3A3 3 0 0 0 13.7 14M7.5 7.6C4.5 9.3 2.5 12 2.5 12s3.5 6.5 9.5 6.5c1.6 0 3-.4 4.3-1M11 5.6c.3 0 .7-.1 1-.1 6 0 9.5 6.5 9.5 6.5s-.8 1.5-2.3 3.1",
+  camera:"M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.3-2h6l1.3 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5zM12 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z",
+  photo:"M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5zM4 15.5l4.5-4.5 4 4 2.5-2.5 5 5M15.5 9.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+  bulb:"M9.5 18.5h5M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z",
+  target:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 12.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z",
+  flame:"M12 21c-3.6 0-6-2.4-6-5.6 0-2.7 1.6-4.2 2.6-5.6.3 1.1.9 1.9 1.9 2.4C10.2 9.4 11 6.2 14 3c0 2.6 1 4 2.2 5.4C17.4 9.9 18 11.9 18 14c0 3.6-2.4 7-6 7z",
+  bolt:"M13.5 3 5.5 13.5h6L10.5 21l8-10.5h-6z",
+  ball:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM5.6 5.6c2.5 2.5 2.5 10.3 0 12.8M18.4 5.6c-2.5 2.5-2.5 10.3 0 12.8M3 12h18M12 3v18",
+  trophy:"M7 4h10v4.5a5 5 0 0 1-10 0zM7 6H4.5A2.5 2.5 0 0 0 7 9.5M17 6h2.5A2.5 2.5 0 0 1 17 9.5M12 13.5V17M8.5 20.5h7",
+  film:"M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5zM4 9h16M4 15h16M8 4v16M16 4v16",
+  pencil:"M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17z M13.5 7.5l3 3",
+  warning:"M12 3.5 2.5 20h19zM12 9.5v5M12 17.5v.5",
+  upload:"M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3",
+  clock:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3.5 2",
+  moonZ:"M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z",
+  brain:"M9 4.5A3 3 0 0 0 6.5 9 3 3 0 0 0 5 13.5 3 3 0 0 0 8 18.5h1V4.5zM15 4.5A3 3 0 0 1 17.5 9a3 3 0 0 1 1.5 4.5 3 3 0 0 1-3 5h-1V4.5zM9 4.5h6",
+  wave:"M3 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0",
+};
+const Icon=({name,size=24,stroke=1.75,color="currentColor",fill="none",style={}})=>(
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,display:"block",...style}} aria-hidden="true"><path d={ICONS[name]||""}/></svg>
+);
+/* 44pt circular icon button */
+const IconBtn=({name,onClick,color,size=22,label,bg,style={}})=>(
+  <button data-plain onClick={onClick} aria-label={label} style={{width:44,height:44,borderRadius:22,background:bg||"transparent",border:"none",display:"flex",alignItems:"center",justifyContent:"center",color:color||C.tint,padding:0,...style}}><Icon name={name} size={size}/></button>
+);
+/* Footnote section header (inset grouped style) */
+const SectionHeader=({children,color,style={}})=>(<div style={{...T.footnote,color:color||C.mutedFg,padding:"0 4px",marginBottom:8,...style}}>{children}</div>);
+/* Inset grouped list container + row */
+const Group=({children,style={},onSheet})=>(<div style={{background:onSheet?C.cardOnSheet:C.card,borderRadius:10,overflow:"hidden",...style}}>{children}</div>);
+const Row=({children,onClick,last,style={},inset=16})=>(<div onClick={onClick} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 16px",minHeight:44,cursor:onClick?"pointer":"default",position:"relative",...style}}>{children}{!last&&<div style={{position:"absolute",left:inset,right:0,bottom:0,height:.5,background:C.border}}/>}</div>);
+/* iOS segmented control */
+const Segmented=({options,value,onChange,style={}})=>(
+  <div role="tablist" style={{display:"flex",background:C.muted,borderRadius:9,padding:2,height:32,...style}}>
+    {options.map(([k,l])=>(<button key={k} role="tab" aria-selected={value===k} data-plain onClick={()=>onChange(k)} style={{flex:1,border:"none",borderRadius:7,background:value===k?(C.bg==="#000000"?C.card3:"#FFFFFF"):"transparent",color:value===k?C.fg:C.fg,boxShadow:value===k?"0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)":"none",fontSize:13,fontWeight:value===k?600:500,lineHeight:"18px",padding:0,transition:"background .2s"}}>{l}</button>))}
+  </div>
+);
+/* iOS toggle switch 51×31 */
+const Switch=({on,onChange,label})=>(
+  <button role="switch" aria-checked={on} aria-label={label} data-plain onClick={()=>onChange(!on)} style={{width:51,height:31,borderRadius:15.5,background:on?C.green:C.card3,border:"none",position:"relative",padding:0,transition:"background .2s",flexShrink:0}}>
+    <span style={{position:"absolute",top:2,left:on?22:2,width:27,height:27,borderRadius:13.5,background:"#fff",boxShadow:"0 3px 8px rgba(0,0,0,.15),0 3px 1px rgba(0,0,0,.06)",transition:"left .2s cubic-bezier(.32,.72,0,1)"}}/>
+  </button>
+);
+/* Sheet scrim + panel (bottom sheet with grabber) */
+const Sheet=({onClose,children,maxHeight="92%",style={},zIndex=200,scrollable=true})=>(
+  <div className="scrim" style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.4)",zIndex,display:"flex",flexDirection:"column",justifyContent:"flex-end"}} onClick={onClose}>
+    <div className="sheet" role="dialog" aria-modal="true" onClick={e=>e.stopPropagation()} style={{background:C.surface,borderRadius:"10px 10px 0 0",maxHeight,overflowY:scrollable?"auto":"visible",display:"flex",flexDirection:"column",...style}}>
+      <div style={{position:"sticky",top:0,zIndex:11,display:"flex",justifyContent:"center",padding:"5px 0 0",background:C.surface}}><div style={{width:36,height:5,borderRadius:2.5,background:C.label3,opacity:.6}}/></div>
+      {children}
+    </div>
+  </div>
+);
+/* Sheet navigation bar: leading / title / trailing */
+const SheetBar=({title,left,right,onLeft,onRight,rightBold=true,sticky=true})=>(
+  <div className="hairline" style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",height:44,padding:"0 8px",position:sticky?"sticky":"relative",top:sticky?5:0,zIndex:10,background:C.surface,flexShrink:0}}>
+    <div>{left&&<button data-plain onClick={onLeft} style={{background:"none",border:"none",color:C.tint,...T.body,padding:"0 8px",height:44}}>{left}</button>}</div>
+    <div style={{...T.headline,color:C.fg,textAlign:"center",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:220}}>{title}</div>
+    <div style={{textAlign:"right"}}>{right&&<button data-plain onClick={onRight} style={{background:"none",border:"none",color:C.tint,...T.body,fontWeight:rightBold?600:400,padding:"0 8px",height:44}}>{right}</button>}</div>
+  </div>
+);
+/* Centered alert (destructive / confirm) */
+const Alert=({children,onClose,zIndex=300})=>(
+  <div className="scrim" style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.4)",zIndex,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={onClose}>
+    <div className="alert material" role="alertdialog" aria-modal="true" onClick={e=>e.stopPropagation()} style={{width:270,borderRadius:14,background:alpha(C.card2,.92),overflow:"hidden"}}>{children}</div>
+  </div>
+);
+
+
 /* ─── TYPE & MUSCLE CONFIG ───────────────────────────── */
 const TYPES={
-  basketball:{label:"🏀 Basketball",color:C.orange},
-  strength:  {label:"💪 Strength",  color:C.accent},
-  power:     {label:"⚡ Power",      color:C.red},
-  agility:   {label:"🏃 Agility",   color:C.blue},
-  mobility:  {label:"🔄 Mobility",  color:C.purple},
-  stretching:{label:"🧘 Stretching",color:C.green},
+  basketball:{label:"Basketball",get color(){return C.orange}},
+  strength:  {label:"Strength",  get color(){return C.tint}},
+  power:     {label:"Power",     get color(){return C.red}},
+  agility:   {label:"Agility",   get color(){return C.blue}},
+  mobility:  {label:"Mobility",  get color(){return C.purple}},
+  stretching:{label:"Stretching",get color(){return C.green}},
 };
 const MUSCLES={
   lower:{label:"Lower Body"},upper:{label:"Upper Body"},
@@ -1879,18 +2018,18 @@ const Ring=({value,max,color,size=64,stroke=5})=>{
   const r=(size-stroke)/2,circ=2*Math.PI*r,off=circ-(value/max)*circ;
   return(<svg width={size} height={size}><circle cx={size/2} cy={size/2} r={r} fill="none" stroke={C.muted} strokeWidth={stroke}/><circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke} strokeDasharray={circ} strokeDashoffset={off} strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`}/></svg>);
 };
-const Bars=({values,color=C.accent,height=40})=>{
+const Bars=({values,color=C.tint,height=40})=>{
   const max=Math.max(...values);
   return(<div style={{display:"flex",alignItems:"flex-end",gap:3,height}}>{values.map((v,i)=><div key={i} style={{flex:1,height:`${(v/max)*100}%`,background:i===values.length-1?color:C.muted,borderRadius:2}}/>)}</div>);
 };
-const Tag=({children,color=C.accent})=>(<span style={{background:color+"22",color,border:`1px solid ${color}44`,borderRadius:4,padding:"2px 8px",fontSize:10,fontWeight:600,letterSpacing:1,textTransform:"uppercase"}}>{children}</span>);
-const Card=({children,style={},onClick})=>(<div onClick={onClick} style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,padding:16,cursor:onClick?"pointer":"default",...style}}>{children}</div>);
-const Btn=({children,variant="primary",style={},onClick})=>(<button onClick={onClick} style={{background:variant==="primary"?C.accent:variant==="ghost"?"transparent":C.muted,color:variant==="primary"?C.accentFg:C.fg,border:variant==="ghost"?`1px solid ${C.border}`:"none",borderRadius:10,padding:"12px 20px",fontFamily:"Space Grotesk",fontWeight:700,fontSize:13,letterSpacing:1,textTransform:"uppercase",cursor:"pointer",width:"100%",...style}}>{children}</button>);
-const Stat=({label,value,unit,color=C.accent,trend})=>(<div style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,padding:"14px 12px",flex:1}}><div style={{fontSize:10,color:C.mutedFg,fontWeight:600,letterSpacing:1,textTransform:"uppercase",marginBottom:6}}>{label}</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span style={{fontSize:24,fontWeight:700,color}}>{value}</span><span style={{fontSize:11,color:C.mutedFg}}>{unit}</span></div>{trend&&<div style={{fontSize:10,color:trend>0?C.green:C.red,marginTop:3}}>{trend>0?"↑":"↓"} {Math.abs(trend)}% this week</div>}</div>);
+const Tag=({children,color=C.tint})=>(<span style={{background:alpha(color,.15),color,borderRadius:999,padding:"3px 9px",fontSize:13,lineHeight:"16px",fontWeight:600,display:"inline-block",whiteSpace:"nowrap"}}>{children}</span>);
+const Card=({children,style={},onClick})=>(<div onClick={onClick} style={{background:C.card,borderRadius:16,padding:16,cursor:onClick?"pointer":"default",...style}}>{children}</div>);
+const Btn=({children,variant="primary",style={},onClick,size="large"})=>(<button onClick={onClick} style={{background:variant==="primary"?C.accent:variant==="ghost"?alpha(C.tint,.15):variant==="destructive"?alpha(C.red,.15):C.muted,color:variant==="primary"?C.accentFg:variant==="ghost"?C.tint:variant==="destructive"?C.red:C.fg,border:"none",borderRadius:size==="large"?14:10,height:size==="large"?50:34,padding:size==="large"?"0 20px":"0 14px",fontSize:size==="large"?17:15,fontWeight:600,lineHeight:size==="large"?"22px":"20px",width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:8,...style}}>{children}</button>);
+const Stat=({label,value,unit,color=C.tint,trend})=>(<div style={{background:C.card,borderRadius:16,padding:"14px 12px",flex:1,minWidth:0}}><div style={{...T.footnote,color:C.mutedFg,marginBottom:4,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{label}</div><div style={{display:"flex",alignItems:"baseline",gap:3}}><span className="num" style={{...T.title1,color}}>{value}</span><span style={{...T.footnote,color:C.mutedFg}}>{unit}</span></div>{trend!==undefined&&<div className="num" style={{...T.caption1,color:trend>0?C.green:C.red,marginTop:4,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{trend>0?"+":"−"}{Math.abs(trend)}%</div>}</div>);
 
 /* ─── BODY DIAGRAM ───────────────────────────────────── */
 const BodyDiagram=({muscles,primary,color})=>{
-  const bc=C.border;
+  const bc=C.label3;
   const sh=(s,k,isPri)=>{
     const op=isPri?0.72:0.32;
     if(s.t==="e")return<ellipse key={k} cx={s.cx} cy={s.cy} rx={s.rx} ry={s.ry} fill={color} fillOpacity={op}/>;
@@ -1900,7 +2039,7 @@ const BodyDiagram=({muscles,primary,color})=>{
   };
   const BodyView=({zones,label})=>(
     <div style={{textAlign:"center"}}>
-      <div style={{fontSize:8,color:C.mutedFg,letterSpacing:1,marginBottom:6,fontWeight:600}}>{label}</div>
+      <div style={{...T.caption2,color:C.mutedFg,marginBottom:8}}>{label}</div>
       <svg viewBox="0 0 70 155" width="72" height="155">
         {/* skeleton */}
         <circle cx="35" cy="10" r="8" fill="none" stroke={bc} strokeWidth="1.5"/>
@@ -1928,156 +2067,150 @@ const BodyDiagram=({muscles,primary,color})=>{
   const hasFront=muscles.some(m=>FRONT_Z[m]);
   const hasBack=muscles.some(m=>BACK_Z[m]);
   return(
-    <div style={{background:C.card,borderRadius:12,padding:16}}>
-      <div style={{fontSize:10,color:C.mutedFg,letterSpacing:1.5,textTransform:"uppercase",marginBottom:12,fontWeight:600}}>💪 Muscle Activation</div>
-      <div style={{display:"flex",justifyContent:"center",gap:28,marginBottom:14}}>
-        {(hasFront||!hasBack)&&<BodyView zones={FRONT_Z} label="FRONT"/>}
-        {(hasBack||!hasFront)&&<BodyView zones={BACK_Z} label="BACK"/>}
-      </div>
-      <div style={{display:"flex",gap:5,flexWrap:"wrap",justifyContent:"center"}}>
-        {muscles.map(m=>(
-          <div key={m} style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:m===primary?color+"33":color+"14",color:m===primary?color:C.mutedFg,fontWeight:m===primary?700:400,border:`1px solid ${m===primary?color+"55":"transparent"}`}}>
-            {m===primary?"★ "+m:m}
-          </div>
-        ))}
+    <div>
+      <SectionHeader>Muscle activation</SectionHeader>
+      <div style={{background:C.cardOnSheet,borderRadius:16,padding:16}}>
+        <div style={{display:"flex",justifyContent:"center",gap:28,marginBottom:14}}>
+          {(hasFront||!hasBack)&&<BodyView zones={FRONT_Z} label="Front"/>}
+          {(hasBack||!hasFront)&&<BodyView zones={BACK_Z} label="Back"/>}
+        </div>
+        <div style={{display:"flex",gap:6,flexWrap:"wrap",justifyContent:"center"}}>
+          {muscles.map(m=>(
+            <div key={m} style={{fontSize:13,lineHeight:"16px",padding:"3px 9px",borderRadius:999,background:m===primary?alpha(color,.2):C.card3,color:m===primary?color:C.mutedFg,fontWeight:600}}>
+              {m}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
 /* ─── EXERCISE DETAIL MODAL ─────────────────────────── */
-const DIFF_COLOR={"Beginner":C.green,"Intermediate":C.orange,"Advanced":C.red};
+const DIFF_COLOR={get Beginner(){return C.green},get Intermediate(){return C.orange},get Advanced(){return C.red}};
 
 const ExerciseModal=({ex,onClose})=>{
   const mex=mergeEx(ex);
-  const tc=TYPES[mex.type]?.color||C.accent;
+  const tc=TYPES[mex.type]?.color||C.tint;
   const exImg=getImgData(mex.id);
   ex=mex;
+  const name=titleCase(ex.name);
   return(
-    <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.88)",zIndex:200,display:"flex",flexDirection:"column",backdropFilter:"blur(6px)"}} onClick={onClose}>
-      <div className="fade-up" onClick={e=>e.stopPropagation()} style={{background:C.bg,borderRadius:"24px 24px 0 0",marginTop:"auto",maxHeight:"92%",overflowY:"auto",border:`1px solid ${C.border}`}}>
+    <Sheet onClose={onClose}>
+      <SheetBar title={name} right="Done" onRight={onClose}/>
 
-        {/* Header — always shown */}
-        <div style={{padding:"20px 20px 0",position:"sticky",top:0,background:C.bg,zIndex:10,paddingBottom:12,borderBottom:`1px solid ${C.border}`}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-            <div>
-              <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:6}}>
-                <Tag color={tc}>{TYPES[ex.type]?.label}</Tag>
-                <Tag color={DIFF_COLOR[ex.diff]}>{ex.diff}</Tag>
-                <Tag color={C.mutedFg}>{ex.equipment}</Tag>
-              </div>
-              <div style={{fontSize:18,fontWeight:700,color:C.fg,letterSpacing:0.5}}>{ex.name}</div>
-            </div>
-            <button onClick={onClose} style={{background:C.muted,border:"none",color:C.fg,width:32,height:32,borderRadius:16,cursor:"pointer",fontSize:14,flexShrink:0,marginLeft:8}}>✕</button>
+      <div style={{padding:"16px 16px 36px",display:"flex",flexDirection:"column",gap:28}}>
+
+        {/* Title block */}
+        <div>
+          <div style={{...T.title1,color:C.fg,marginBottom:10}}>{name}</div>
+          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+            <Tag color={tc}>{TYPES[ex.type]?.label}</Tag>
+            <Tag color={DIFF_COLOR[ex.diff]}>{ex.diff}</Tag>
+            <Tag color={C.mutedFg}>{ex.equipment}</Tag>
           </div>
         </div>
 
-        <div style={{padding:"16px 20px 36px",display:"flex",flexDirection:"column",gap:18}}>
+        {/* Why this exercise */}
+        <div style={{background:alpha(tc,.15),borderRadius:16,padding:16}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,color:tc}}><Icon name="target" size={18} stroke={2}/><div style={{...T.headline,color:tc}}>Why this matters</div></div>
+          <div style={{...T.body,color:C.fg}}>{ex.benefit}</div>
+        </div>
 
-          {/* Why this exercise */}
-          <div style={{background:`${tc}11`,border:`1px solid ${tc}33`,borderRadius:12,padding:14}}>
-            <div style={{fontSize:10,color:tc,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🏀 Why This Matters</div>
-            <div style={{fontSize:13,color:C.fg,lineHeight:1.7}}>{ex.benefit}</div>
-          </div>
+        {/* Step-by-step */}
+        <div>
+          <SectionHeader>Step by step</SectionHeader>
 
-          {/* Step-by-step */}
-          <div>
-            <div style={{fontSize:11,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase",marginBottom:12}}>Step-by-Step</div>
-
-            {/* Exercise illustration — populated via EX_IMAGES config at top of file */}
-            {exImg&&(
-              <div style={{borderRadius:12,overflow:"hidden",background:"#fff",marginBottom:14,border:`1px solid ${C.border}`}}>
-                <img
-                  src={exImg}
-                  alt={`${ex.name} demonstration`}
-                  style={{width:"100%",display:"block",maxHeight:200,objectFit:"contain",objectPosition:"center"}}
-                />
-                <div style={{padding:"8px 12px",background:C.card,borderTop:`1px solid ${C.border}`,display:"flex",alignItems:"center",gap:6}}>
-                  <span style={{fontSize:10,color:C.mutedFg}}>📸</span>
-                  <span style={{fontSize:10,color:C.mutedFg,letterSpacing:0.5}}>Full movement reference — compare start & finish positions</span>
-                </div>
+          {/* Exercise illustration — populated via EX_IMAGES config at top of file */}
+          {exImg&&(
+            <div style={{borderRadius:16,overflow:"hidden",background:"#fff",marginBottom:12}}>
+              <img
+                src={exImg}
+                alt={`${name} demonstration`}
+                style={{width:"100%",display:"block",maxHeight:200,objectFit:"contain",objectPosition:"center"}}
+              />
+              <div style={{padding:"8px 12px",background:C.cardOnSheet,display:"flex",alignItems:"center",gap:8,color:C.mutedFg}}>
+                <Icon name="camera" size={16}/>
+                <span style={{...T.caption1,color:C.mutedFg}}>Full movement reference. Compare start and finish positions.</span>
               </div>
-            )}
+            </div>
+          )}
 
-            <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              {ex.steps.map((step,i)=>(
-                <div key={i} style={{background:C.card,borderRadius:12,border:`1px solid ${C.border}`,overflow:"hidden"}}>
-                  <div style={{display:"flex",gap:0}}>
-                    {/* SVG figure only when no photo set in EX_IMAGES */}
-                    {!exImg&&(
-                      <div style={{width:90,flexShrink:0,background:`${tc}08`,display:"flex",alignItems:"center",justifyContent:"center",padding:6,borderRight:`1px solid ${C.border}`}}>
-                        <div style={{width:78,height:78}}>
-                          <StepFig fig={step.fig} color={C.fg} accent={tc}/>
-                        </div>
-                      </div>
-                    )}
-                    {/* Step content */}
-                    <div style={{flex:1,padding:"12px 14px"}}>
-                      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-                        <div style={{width:22,height:22,borderRadius:11,background:tc,color:tc===C.accent?C.accentFg:C.fg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,flexShrink:0}}>
-                          {i+1}
-                        </div>
-                        <div style={{fontSize:12,fontWeight:700,color:C.fg,letterSpacing:0.5}}>{step.title}</div>
-                      </div>
-                      <div style={{fontSize:12,color:C.mutedFg,lineHeight:1.65}}>{step.desc}</div>
+          <Group onSheet>
+            {ex.steps.map((step,i)=>(
+              <Row key={i} last={i===ex.steps.length-1} style={{alignItems:"flex-start",padding:"12px 16px"}} inset={exImg?60:118}>
+                {/* SVG figure only when no photo set in EX_IMAGES */}
+                {!exImg&&(
+                  <div style={{width:90,height:90,flexShrink:0,background:alpha(tc,.08),borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",padding:6}}>
+                    <div style={{width:78,height:78}}>
+                      <StepFig fig={step.fig} color={C.fg} accent={tc}/>
                     </div>
                   </div>
+                )}
+                {exImg&&(
+                  <div className="num" style={{width:29,height:29,borderRadius:6.5,background:tc,color:tc===C.accent?C.accentFg:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:600,flexShrink:0,marginTop:2}}>{i+1}</div>
+                )}
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{...T.headline,color:C.fg,marginBottom:2}}>{!exImg&&<span className="num" style={{color:tc,marginRight:6}}>{i+1}.</span>}{step.title}</div>
+                  <div style={{...T.subhead,color:C.mutedFg}}>{step.desc}</div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Muscles */}
-          <div>
-            <div style={{fontSize:11,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>Muscles Worked</div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-              {ex.muscles.map(m=>(
-                <span key={m} style={{background:m===ex.primary?tc+"22":C.muted,color:m===ex.primary?tc:C.mutedFg,border:`1px solid ${m===ex.primary?tc+"44":C.border}`,borderRadius:20,padding:"3px 10px",fontSize:10,fontWeight:600}}>
-                  {m===ex.primary?`★ ${m}`:m}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Coaching cues */}
-          <div>
-            <div style={{fontSize:11,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Coaching Cues</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {ex.cues.map((cue,i)=>(
-                <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                  <div style={{width:6,height:6,borderRadius:3,background:tc,flexShrink:0,marginTop:6}}/>
-                  <div style={{fontSize:13,color:C.fg,lineHeight:1.6}}>{cue}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Beginner tip */}
-          <div style={{background:`${C.blue}11`,border:`1px solid ${C.blue}33`,borderRadius:12,padding:14}}>
-            <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6}}>
-              <span>💡</span>
-              <div style={{fontSize:10,color:C.blue,fontWeight:700,letterSpacing:1,textTransform:"uppercase"}}>Beginner Tip</div>
-            </div>
-            <div style={{fontSize:13,color:C.fg,lineHeight:1.65}}>{ex.tip}</div>
-          </div>
-
-          {/* RPE */}
-          <div>
-            <div style={{fontSize:11,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>Target Effort — RPE {ex.rpe}/10</div>
-            <div style={{display:"flex",gap:3}}>
-              {Array.from({length:10},(_,j)=><div key={j} style={{flex:1,height:8,borderRadius:2,background:j<ex.rpe?(j<5?C.green:j<8?C.orange:C.red):C.muted}}/>)}
-            </div>
-            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
-              <span style={{fontSize:9,color:C.mutedFg}}>Easy</span>
-              <span style={{fontSize:9,color:C.mutedFg}}>Max Effort</span>
-            </div>
-          </div>
-
-          {/* Body muscle activation diagram */}
-          <BodyDiagram muscles={ex.muscles} primary={ex.primary} color={tc}/>
+              </Row>
+            ))}
+          </Group>
         </div>
+
+        {/* Muscles */}
+        <div>
+          <SectionHeader>Muscles worked</SectionHeader>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+            {ex.muscles.map(m=>(
+              <span key={m} style={{background:m===ex.primary?alpha(tc,.2):C.cardOnSheet,color:m===ex.primary?tc:C.fg,borderRadius:999,padding:"5px 12px",fontSize:15,lineHeight:"18px",fontWeight:600,display:"inline-flex",alignItems:"center",gap:4}}>
+                {m===ex.primary&&<Icon name="check" size={13} stroke={2.5}/>}{m}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Coaching cues */}
+        <div>
+          <SectionHeader>Coaching cues</SectionHeader>
+          <Group onSheet>
+            {ex.cues.map((cue,i)=>(
+              <Row key={i} last={i===ex.cues.length-1} style={{alignItems:"flex-start"}} inset={44}>
+                <div style={{width:16,display:"flex",justifyContent:"center",marginTop:8}}><div style={{width:7,height:7,borderRadius:3.5,background:tc}}/></div>
+                <div style={{...T.body,color:C.fg,flex:1}}>{cue}</div>
+              </Row>
+            ))}
+          </Group>
+        </div>
+
+        {/* Beginner tip */}
+        <div style={{background:alpha(C.blue,.15),borderRadius:16,padding:16}}>
+          <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:6,color:C.blue}}>
+            <Icon name="bulb" size={18} stroke={2}/>
+            <div style={{...T.headline,color:C.blue}}>Beginner tip</div>
+          </div>
+          <div style={{...T.body,color:C.fg}}>{ex.tip}</div>
+        </div>
+
+        {/* RPE */}
+        <div>
+          <SectionHeader>Target effort · RPE {ex.rpe} of 10</SectionHeader>
+          <div style={{background:C.cardOnSheet,borderRadius:16,padding:16}}>
+            <div style={{display:"flex",gap:4}}>
+              {Array.from({length:10},(_,j)=><div key={j} style={{flex:1,height:10,borderRadius:3,background:j<ex.rpe?(j<5?C.green:j<8?C.orange:C.red):C.muted}}/>)}
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:8}}>
+              <span style={{...T.caption1,color:C.mutedFg}}>Easy</span>
+              <span style={{...T.caption1,color:C.mutedFg}}>Max effort</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Body muscle activation diagram */}
+        <BodyDiagram muscles={ex.muscles} primary={ex.primary} color={tc}/>
       </div>
-    </div>
+    </Sheet>
   );
 };
 
@@ -2098,80 +2231,75 @@ const LibraryScreen=({onBack})=>{
   const typeKeys=["all",...Object.keys(TYPES)];
 
   return(
-    <div style={{padding:"0 16px 16px",position:"relative"}}>
+    <div style={{padding:"0 16px 16px"}}>
       {selectedEx&&<ExerciseModal ex={selectedEx} onClose={()=>setSelectedEx(null)}/>}
 
-      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
-        <button onClick={onBack} style={{background:C.muted,border:`1px solid ${C.border}`,color:C.fg,width:36,height:36,borderRadius:10,cursor:"pointer",fontSize:16,flexShrink:0}}>←</button>
-        <div>
-          <div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Browse All</div>
-          <div style={{fontSize:20,fontWeight:700,color:C.fg}}>EXERCISE LIBRARY</div>
-        </div>
+      <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:12,marginLeft:-12}}>
+        <IconBtn name="chevronLeft" onClick={onBack} label="Back" size={24}/>
+        <div style={{...T.largeTitle,color:C.fg}}>Library</div>
       </div>
 
       {/* Search */}
-      <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search exercises..."
-        style={{width:"100%",background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 14px",color:C.fg,fontFamily:"Space Grotesk",fontSize:13,outline:"none",marginBottom:12}}/>
+      <div style={{position:"relative",marginBottom:12}}>
+        <div style={{position:"absolute",left:10,top:9,color:C.mutedFg}}><Icon name="search" size={18}/></div>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search" aria-label="Search exercises"
+          style={{width:"100%",height:36,background:C.muted,border:"none",borderRadius:10,padding:"0 12px 0 34px",color:C.fg,fontSize:17,outline:"none"}}/>
+      </div>
 
       {/* Type filter */}
-      <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4,marginBottom:10}}>
+      <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:12,marginLeft:-16,marginRight:-16,paddingLeft:16,paddingRight:16}}>
         {typeKeys.map(k=>{
-          const tc=k==="all"?C.mutedFg:TYPES[k]?.color;
+          const tc=k==="all"?C.fg:TYPES[k]?.color;
+          const on=typeFilter===k;
           return(
-            <button key={k} onClick={()=>setTypeFilter(k)} style={{background:typeFilter===k?(k==="all"?C.muted:tc+"22"):C.card,color:typeFilter===k?(k==="all"?C.fg:tc):C.mutedFg,border:`1px solid ${typeFilter===k?(k==="all"?C.border:tc):C.border}`,borderRadius:20,padding:"6px 12px",fontFamily:"Space Grotesk",fontWeight:600,fontSize:10,letterSpacing:1,cursor:"pointer",flexShrink:0,textTransform:"uppercase"}}>
-              {k==="all"?"ALL":TYPES[k]?.label}
+            <button key={k} data-plain onClick={()=>setTypeFilter(k)} style={{background:on?(k==="all"?C.fg:alpha(tc,.2)):C.card,color:on?(k==="all"?C.bg:tc):C.fg,border:"none",borderRadius:999,height:32,padding:"0 14px",fontSize:15,fontWeight:on?600:500,lineHeight:"20px",flexShrink:0,whiteSpace:"nowrap"}}>
+              {k==="all"?"All":TYPES[k]?.label}
             </button>
           );
         })}
       </div>
 
       {/* Muscle filter */}
-      <div style={{display:"flex",gap:6,marginBottom:16}}>
-        {["all",...Object.keys(MUSCLES)].map(k=>(
-          <button key={k} onClick={()=>setMuscleFilter(k)} style={{flex:1,padding:"7px 4px",background:muscleFilter===k?C.muted:C.card,color:muscleFilter===k?C.fg:C.mutedFg,border:`1px solid ${muscleFilter===k?C.fg+"22":C.border}`,borderRadius:8,fontFamily:"Space Grotesk",fontWeight:600,fontSize:9,letterSpacing:0.5,cursor:"pointer",textTransform:"uppercase"}}>
-            {k==="all"?"ALL":MUSCLES[k].label}
-          </button>
-        ))}
-      </div>
+      <Segmented style={{marginBottom:16}} value={muscleFilter} onChange={setMuscleFilter} options={[["all","All"],...Object.keys(MUSCLES).map(k=>[k,MUSCLES[k].label.replace(" Body","")])]}/>
 
       {/* Count */}
-      <div style={{fontSize:11,color:C.mutedFg,marginBottom:12}}>{filtered.length} exercise{filtered.length!==1?"s":""} found</div>
+      <SectionHeader>{filtered.length} exercise{filtered.length!==1?"s":""}</SectionHeader>
 
       {/* Exercise list */}
-      <div style={{display:"flex",flexDirection:"column",gap:10}}>
-        {filtered.map(ex=>{
-          const tc=TYPES[ex.type]?.color||C.accent;
+      <Group>
+        {filtered.map((ex,idx)=>{
+          const tc=TYPES[ex.type]?.color||C.tint;
           const cardImg=getImgData(ex.id);
           return(
-            <Card key={ex.id} onClick={()=>setSelectedEx(ex)} style={{display:"flex",gap:14,alignItems:"center"}}>
+            <Row key={ex.id} onClick={()=>setSelectedEx(ex)} last={idx===filtered.length-1} inset={82} style={{padding:"10px 16px"}}>
               {/* Thumbnail — photo if set in EX_IMAGES, else SVG figure */}
-              <div style={{width:54,height:54,borderRadius:10,background:cardImg?"#fff":`${tc}11`,border:`1px solid ${tc}22`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>
+              <div style={{width:54,height:54,borderRadius:10,background:cardImg?"#fff":alpha(tc,.12),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>
                 {cardImg
-                  ?<img src={cardImg} alt={ex.name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                  ?<img src={cardImg} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
                   :<svg viewBox="0 0 100 88" style={{width:44,height:44}}>
                     {FIG[ex.steps[1]?.fig||(ex.steps[0]?.fig)]?.(C.fg,tc)}
                   </svg>
                 }
               </div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:700,color:C.fg,letterSpacing:0.5,marginBottom:4}}>{ex.name}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{...T.headline,color:C.fg,marginBottom:4,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{titleCase(ex.name)}</div>
                 <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
-                  <Tag color={tc}>{TYPES[ex.type]?.label.split(" ")[1]||TYPES[ex.type]?.label.split(" ")[0]}</Tag>
+                  <Tag color={tc}>{TYPES[ex.type]?.label}</Tag>
                   <Tag color={DIFF_COLOR[ex.diff]}>{ex.diff}</Tag>
                 </div>
               </div>
-              <div style={{color:C.mutedFg,fontSize:16,flexShrink:0}}>›</div>
-            </Card>
+              <div style={{color:C.label3}}><Icon name="chevronRight" size={16} stroke={2.25}/></div>
+            </Row>
           );
         })}
         {filtered.length===0&&(
-          <div style={{textAlign:"center",padding:"40px 0"}}>
-            <div style={{fontSize:32,marginBottom:8}}>🔍</div>
-            <div style={{fontSize:14,fontWeight:700,color:C.fg,marginBottom:4}}>No exercises found</div>
-            <div style={{fontSize:12,color:C.mutedFg}}>Try adjusting your filters</div>
+          <div style={{textAlign:"center",padding:"48px 24px"}}>
+            <div style={{color:C.label3,display:"flex",justifyContent:"center",marginBottom:12}}><Icon name="search" size={48} stroke={1.25}/></div>
+            <div style={{...T.title3,color:C.fg,marginBottom:4}}>No exercises found</div>
+            <div style={{...T.subhead,color:C.mutedFg}}>Try adjusting your filters</div>
           </div>
         )}
-      </div>
+      </Group>
     </div>
   );
 };
@@ -2180,6 +2308,7 @@ const LibraryScreen=({onBack})=>{
 const TODAY_IDS=[4,5,11,6,9]; // Back Squat, RDL, Box Jump, Split Squat, Calf Raise
 
 const WorkoutsScreen=()=>{
+  const [section,setSection]=useState("today");
   const [showLibrary,setShowLibrary]=useState(false);
   const [logged,setLogged]=useState(()=>{try{return JSON.parse(localStorage.getItem('nca_s'+new Date().toDateString())||'{}')}catch(e){return{}}});
   const [selectedEx,setSelectedEx]=useState(null);
@@ -2191,30 +2320,33 @@ const WorkoutsScreen=()=>{
   const done=todayExercises.filter(ex=>Array.from({length:ex.rpe>=7?4:3},(_,s)=>logged[`${ex.id}-${s}`]).every(Boolean)).length;
 
   return(
-    <div style={{padding:"0 16px 16px",position:"relative"}}>
+    <div style={{padding:"0 16px 16px"}}>
       {selectedEx&&<ExerciseModal ex={selectedEx} onClose={()=>setSelectedEx(null)}/>}
 
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+      <div style={{...T.largeTitle,color:C.fg,marginBottom:12}}>Train</div>
+      <Segmented style={{marginBottom:20}} value={section} onChange={setSection} options={[["today","Today"],["videos","Videos"]]}/>
+
+      {section==="videos"?<VideosScreen/>:(<>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:12}}>
         <div>
-          <div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Today</div>
-          <div style={{fontSize:20,fontWeight:700,color:C.fg}}>LOWER BODY POWER</div>
+          <div style={{...T.footnote,color:C.mutedFg}}>Today · Week 3</div>
+          <div style={{...T.title2,color:C.fg}}>Lower body power</div>
         </div>
-        <Tag color={C.orange}>Week 3</Tag>
       </div>
 
       {/* Day pills */}
-      <div style={{display:"flex",gap:6,marginBottom:16,overflowX:"auto",paddingBottom:4}}>
-        {["MON","TUE","WED","THU","FRI","SAT"].map((d,i)=>(
-          <button key={i} style={{background:i===0?C.accent:C.card,color:i===0?C.accentFg:C.mutedFg,border:`1px solid ${i===0?C.accent:C.border}`,borderRadius:8,padding:"7px 12px",fontFamily:"Space Grotesk",fontWeight:700,fontSize:10,letterSpacing:1,cursor:"pointer",flexShrink:0}}>{d}</button>
+      <div style={{display:"flex",gap:8,marginBottom:16,overflowX:"auto",paddingBottom:4,marginLeft:-16,marginRight:-16,paddingLeft:16,paddingRight:16}}>
+        {["Mon","Tue","Wed","Thu","Fri","Sat"].map((d,i)=>(
+          <button key={i} data-plain aria-pressed={i===0} style={{background:i===0?C.accent:C.card,color:i===0?C.accentFg:C.fg,border:"none",borderRadius:999,height:32,padding:"0 14px",fontSize:15,fontWeight:i===0?600:500,lineHeight:"20px",flexShrink:0}}>{d}</button>
         ))}
       </div>
 
       {/* Progress */}
       <Card style={{marginBottom:16,display:"flex",alignItems:"center",gap:16}}>
-        <Ring value={done} max={todayExercises.length} color={C.accent} size={60}/>
+        <Ring value={done} max={todayExercises.length} color={C.tint} size={60}/>
         <div style={{flex:1}}>
-          <div style={{fontSize:17,fontWeight:700,color:C.fg}}>{done}/{todayExercises.length} Exercises</div>
-          <div style={{fontSize:11,color:C.mutedFg,marginTop:2}}>{done===todayExercises.length?"🎉 Session Complete!":"Tap exercise name for instructions"}</div>
+          <div className="num" style={{...T.headline,color:C.fg}}>{done} of {todayExercises.length} exercises</div>
+          <div style={{...T.subhead,color:C.mutedFg,marginTop:2}}>{done===todayExercises.length?"Session complete":"Tap an exercise for instructions"}</div>
         </div>
       </Card>
 
@@ -2223,39 +2355,39 @@ const WorkoutsScreen=()=>{
         {todayExercises.map((ex)=>{
           const sets=ex.rpe>=7?4:3;
           const allDone=Array.from({length:sets},(_,s)=>logged[`${ex.id}-${s}`]).every(Boolean);
-          const tc=TYPES[ex.type]?.color||C.accent;
+          const tc=TYPES[ex.type]?.color||C.tint;
           return(
             <Card key={ex.id} style={{opacity:allDone?0.6:1}}>
-              <div style={{display:"flex",gap:10,marginBottom:12}}>
+              <div style={{display:"flex",gap:12,marginBottom:12,alignItems:"center"}}>
                 {/* Mini SVG */}
-                <div style={{width:48,height:48,borderRadius:10,background:`${tc}11`,border:`1px solid ${tc}22`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,cursor:"pointer"}} onClick={()=>setSelectedEx(ex)}>
+                <div style={{width:48,height:48,borderRadius:10,background:alpha(tc,.12),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,cursor:"pointer"}} onClick={()=>setSelectedEx(ex)}>
                   <svg viewBox="0 0 100 88" style={{width:38,height:38}}>
                     {FIG[ex.steps[0].fig]?.(C.fg,tc)}
                   </svg>
                 </div>
-                <div style={{flex:1,cursor:"pointer"}} onClick={()=>setSelectedEx(ex)}>
-                  <div style={{fontSize:13,fontWeight:700,color:allDone?C.green:C.fg,letterSpacing:0.3,marginBottom:4}}>{ex.name}</div>
+                <div style={{flex:1,minWidth:0,cursor:"pointer"}} onClick={()=>setSelectedEx(ex)}>
+                  <div style={{...T.headline,color:allDone?C.green:C.fg,marginBottom:4,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{titleCase(ex.name)}</div>
                   <div style={{display:"flex",gap:4}}>
                     <Tag color={DIFF_COLOR[ex.diff]}>{ex.diff}</Tag>
-                    <Tag color={tc}>{sets} sets × {ex.steps[0].fig.includes("hinge")||ex.name.includes("RDL")?"8":ex.name.includes("CALF")?"15":"6"} reps</Tag>
+                    <Tag color={tc}>{sets} × {ex.steps[0].fig.includes("hinge")||ex.name.includes("RDL")?"8":ex.name.includes("CALF")?"15":"6"} reps</Tag>
                   </div>
                 </div>
-                <div style={{fontSize:10,color:C.accent,fontWeight:700,cursor:"pointer",paddingTop:4}} onClick={()=>setSelectedEx(ex)}>INFO ›</div>
+                <button data-plain onClick={()=>setSelectedEx(ex)} aria-label="Exercise details" style={{background:"none",border:"none",color:C.label3,padding:8,marginRight:-8}}><Icon name="chevronRight" size={16} stroke={2.25}/></button>
               </div>
               {/* Set buttons */}
-              <div style={{display:"flex",gap:6}}>
+              <div style={{display:"flex",gap:8}}>
                 {Array.from({length:sets},(_,s)=>{
                   const d=logged[`${ex.id}-${s}`];
-                  return<button key={s} onClick={()=>toggle(ex.id,s)} style={{flex:1,height:34,borderRadius:8,background:d?tc:C.muted,color:d?( tc===C.accent?C.accentFg:C.fg):C.mutedFg,border:`1px solid ${d?tc:C.border}`,fontFamily:"Space Grotesk",fontWeight:700,fontSize:11,cursor:"pointer"}}>{d?"✓":`S${s+1}`}</button>;
+                  return<button key={s} onClick={()=>toggle(ex.id,s)} aria-pressed={!!d} style={{flex:1,height:34,borderRadius:10,background:d?tc:C.muted,color:d?(tc===C.accent?C.accentFg:"#fff"):C.fg,border:"none",fontSize:15,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center"}}>{d?<Icon name="check" size={18} stroke={2.5}/>:`Set ${s+1}`}</button>;
                 })}
               </div>
               {/* RPE strip */}
-              <div style={{display:"flex",alignItems:"center",gap:6,marginTop:8}}>
-                <div style={{fontSize:9,color:C.mutedFg}}>EFFORT</div>
-                <div style={{display:"flex",gap:2,flex:1}}>
-                  {Array.from({length:10},(_,j)=><div key={j} style={{flex:1,height:3,borderRadius:1,background:j<ex.rpe?(j<5?C.green:j<8?C.orange:C.red):C.muted}}/>)}
+              <div style={{display:"flex",alignItems:"center",gap:8,marginTop:12}}>
+                <div style={{...T.caption1,color:C.mutedFg}}>Effort</div>
+                <div style={{display:"flex",gap:3,flex:1}}>
+                  {Array.from({length:10},(_,j)=><div key={j} style={{flex:1,height:4,borderRadius:2,background:j<ex.rpe?(j<5?C.green:j<8?C.orange:C.red):C.muted}}/>)}
                 </div>
-                <div style={{fontSize:9,color:C.mutedFg}}>{ex.rpe}/10</div>
+                <div className="num" style={{...T.caption1,color:C.mutedFg}}>{ex.rpe}/10</div>
               </div>
             </Card>
           );
@@ -2263,9 +2395,8 @@ const WorkoutsScreen=()=>{
       </div>
 
       {/* Library button */}
-      <button onClick={()=>setShowLibrary(true)} style={{width:"100%",marginTop:16,background:"transparent",border:`1px solid ${C.border}`,borderRadius:12,padding:14,color:C.fg,fontFamily:"Space Grotesk",fontWeight:700,fontSize:13,letterSpacing:1,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,textTransform:"uppercase"}}>
-        <span>📚</span> BROWSE EXERCISE LIBRARY
-      </button>
+      <Btn variant="ghost" style={{marginTop:16}} onClick={()=>setShowLibrary(true)}>Browse exercise library</Btn>
+      </>)}
     </div>
   );
 };
@@ -2273,39 +2404,35 @@ const WorkoutsScreen=()=>{
 /* ─── HOME ────────────────────────────────────────────── */
 const HomeScreen=({setTab,currentUser})=>{
   const name=currentUser?.displayName||currentUser?.username||"Player";
-  const initial=name.charAt(0).toUpperCase();
   return(
   <div style={{padding:"0 16px 16px"}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-      <div>
-        <div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Good {getTimeOfDay()}</div>
-        <div style={{fontSize:22,fontWeight:700,color:C.fg}}>{name} 👋</div>
-      </div>
-      <div style={{width:40,height:40,borderRadius:20,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:16,color:C.accentFg}}>{initial}</div>
+    <div style={{marginBottom:16}}>
+      <div style={{...T.footnote,color:C.mutedFg}}>Good {getTimeOfDay().toLowerCase()}</div>
+      <div style={{...T.largeTitle,color:C.fg}}>{name}</div>
     </div>
-    <div style={{background:"linear-gradient(135deg,#1A1A00,#2A2A04)",border:`1px solid ${C.accent}33`,borderRadius:16,padding:20,marginBottom:16,position:"relative",overflow:"hidden"}}>
-      <div style={{position:"absolute",right:-10,top:-10,width:100,height:100,borderRadius:"50%",background:C.accent+"08"}}/>
-      <Tag>TODAY'S PLAN</Tag>
-      <div style={{fontSize:20,fontWeight:700,color:C.fg,marginTop:10,marginBottom:4}}>LOWER BODY POWER</div>
-      <div style={{fontSize:12,color:C.mutedFg,marginBottom:16}}>5 exercises · 55 min</div>
-      <div style={{display:"flex",gap:16,marginBottom:16}}>
-        {[["🏋️","Strength"],["⚡","Power"],["🏀","Basketball"]].map(([e,l])=>(<div key={l} style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:16}}>{e}</span><span style={{fontSize:11,color:C.mutedFg}}>{l}</span></div>))}
+    <div style={{background:C.card,borderRadius:16,padding:16,marginBottom:16,position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",right:-30,top:-30,width:140,height:140,borderRadius:"50%",background:alpha(C.accent,.12)}}/>
+      <div style={{position:"relative"}}>
+        <Tag>Today's plan</Tag>
+        <div style={{...T.title2,color:C.fg,marginTop:10,marginBottom:2}}>Lower body power</div>
+        <div style={{...T.subhead,color:C.mutedFg,marginBottom:16}}>5 exercises · 55 min · Strength, power, basketball</div>
+        <Btn onClick={()=>setTab("workouts")}>Start session</Btn>
       </div>
-      <Btn onClick={()=>setTab("workouts")}>START SESSION</Btn>
     </div>
+    <SectionHeader>This week</SectionHeader>
     <div style={{display:"flex",gap:10,marginBottom:16}}>
-      <Stat label="Weekly Load" value="87" unit="pts" color={C.accent} trend={12}/>
+      <Stat label="Load" value="87" unit="pts" color={C.tint} trend={12}/>
       <Stat label="Recovery" value="78" unit="%" color={C.green} trend={5}/>
       <Stat label="Streak" value="14" unit="days" color={C.orange}/>
     </div>
     <Card style={{marginTop:0}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-        <div style={{fontSize:13,fontWeight:600,color:C.fg}}>WEEKLY VOLUME</div>
-        <Tag>This Week</Tag>
+        <div style={{...T.headline,color:C.fg}}>Weekly volume</div>
+        <Tag>This week</Tag>
       </div>
       <Bars values={[60,75,45,90,80,70,87]}/>
-      <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>
-        {["M","T","W","T","F","S","S"].map((d,i)=><div key={i} style={{flex:1,textAlign:"center",fontSize:9,color:i===6?C.accent:C.mutedFg,fontWeight:i===6?700:400}}>{d}</div>)}
+      <div style={{display:"flex",justifyContent:"space-between",marginTop:8}}>
+        {["M","T","W","T","F","S","S"].map((d,i)=><div key={i} style={{flex:1,textAlign:"center",...T.caption2,color:i===6?C.tint:C.mutedFg,fontWeight:i===6?600:400}}>{d}</div>)}
       </div>
     </Card>
   </div>
@@ -2317,25 +2444,29 @@ const RecoveryScreen=()=>{
   const [scores,setScores]=useState({sleep:7,soreness:3,energy:6,stress:4});
   const [saved,setSaved]=useState(false);
   const metrics=[
-    {key:"sleep",label:"SLEEP QUALITY",emoji:"😴",color:"#818CF8",tip:"7–9 hours is the recovery sweet spot."},
-    {key:"energy",label:"ENERGY LEVEL",emoji:"⚡",color:C.accent,tip:"Low energy two days running? Consider a deload."},
-    {key:"soreness",label:"MUSCLE SORENESS",emoji:"💪",color:C.orange,tip:"Some soreness is normal. Severe needs rest."},
-    {key:"stress",label:"STRESS LEVEL",emoji:"🧠",color:C.red,tip:"Mental stress slows physical recovery too."},
+    {key:"sleep",label:"Sleep quality",icon:"moon",color:C.indigo,tip:"7–9 hours is the recovery sweet spot."},
+    {key:"energy",label:"Energy level",icon:"bolt",color:C.tint,tip:"Low energy two days running? Consider a deload."},
+    {key:"soreness",label:"Muscle soreness",icon:"body",color:C.orange,tip:"Some soreness is normal. Severe needs rest."},
+    {key:"stress",label:"Stress level",icon:"brain",color:C.red,tip:"Mental stress slows physical recovery too."},
   ];
   const score=Math.round((scores.sleep/10)*30+(scores.energy/10)*30+((10-scores.soreness)/10)*20+((10-scores.stress)/10)*20);
-  const [label,rc]=score>=80?["ELITE",C.green]:score>=60?["READY",C.accent]:score>=40?["MODERATE",C.orange]:["REST DAY",C.red];
+  const [label,rc]=score>=80?["Elite",C.green]:score>=60?["Ready",C.tint]:score>=40?["Moderate",C.orange]:["Rest day",C.red];
   return(
     <div style={{padding:"0 16px 16px"}}>
-      <div style={{marginBottom:20}}><div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Daily Check-In</div><div style={{fontSize:20,fontWeight:700,color:C.fg}}>RECOVERY STATUS</div></div>
-      <Card style={{marginBottom:16,textAlign:"center",padding:24}}>
+      <div style={{marginBottom:16}}><div style={{...T.footnote,color:C.mutedFg}}>Daily check-in</div><div style={{...T.largeTitle,color:C.fg}}>Recover</div></div>
+      <Card style={{marginBottom:28,textAlign:"center",padding:24}}>
         <div style={{position:"relative",display:"inline-block",marginBottom:12}}>
           <Ring value={score} max={100} color={rc} size={100} stroke={7}/>
-          <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}><div style={{fontSize:26,fontWeight:700,color:rc}}>{score}</div></div>
+          <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)"}}><div className="num" style={{...T.title1,color:rc}}>{score}</div></div>
         </div>
-        <div style={{fontSize:18,fontWeight:700,color:rc,letterSpacing:2}}>{label}</div>
-        <div style={{fontSize:11,color:C.mutedFg,marginTop:4}}>{label==="ELITE"?"Push hard today 🔥":label==="READY"?"Good to train":label==="MODERATE"?"Light session recommended":"Prioritise rest & nutrition"}</div>
+        <div style={{...T.title3,color:rc}}>{label}</div>
+        <div style={{...T.subhead,color:C.mutedFg,marginTop:4}}>{label==="Elite"?"Push hard today":label==="Ready"?"Good to train":label==="Moderate"?"Light session recommended":"Prioritise rest and nutrition"}</div>
       </Card>
-      {!saved?(<><div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:16}}>{metrics.map(({key,label,emoji,color,tip})=>(<Card key={key}><div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><div style={{fontSize:12,fontWeight:600,color:C.fg}}>{emoji} {label}</div><div style={{fontSize:16,fontWeight:700,color}}>{scores[key]}/10</div></div><input type="range" min={1} max={10} value={scores[key]} onChange={e=>setScores(s=>({...s,[key]:+e.target.value}))} style={{width:"100%",accentColor:color,cursor:"pointer"}}/><div style={{fontSize:10,color:C.mutedFg,marginTop:6}}>💬 {tip}</div></Card>))}</div><Btn onClick={()=>setSaved(true)}>LOG RECOVERY</Btn></>):(<Card style={{textAlign:"center",padding:20}}><div style={{fontSize:24,marginBottom:8}}>✅</div><div style={{fontWeight:700,color:C.fg,marginBottom:4}}>Recovery Logged</div><Btn variant="ghost" onClick={()=>setSaved(false)} style={{marginTop:12}}>Edit Entry</Btn></Card>)}
+      {!saved?(<>
+        <SectionHeader>How do you feel?</SectionHeader>
+        <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:16}}>{metrics.map(({key,label,icon,color,tip})=>(<Card key={key}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{width:29,height:29,borderRadius:6.5,background:alpha(color,.18),color,display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={icon} size={18} stroke={2}/></div><div style={{...T.headline,color:C.fg}}>{label}</div></div><div className="num" style={{...T.headline,color}}>{scores[key]}<span style={{...T.footnote,color:C.mutedFg}}>/10</span></div></div><input type="range" min={1} max={10} value={scores[key]} aria-label={label} onChange={e=>setScores(s=>({...s,[key]:+e.target.value}))} style={{accentColor:color}}/><div style={{...T.footnote,color:C.mutedFg,marginTop:10}}>{tip}</div></Card>))}</div>
+        <Btn onClick={()=>setSaved(true)}>Log recovery</Btn>
+      </>):(<Card style={{textAlign:"center",padding:24}}><div style={{color:C.green,display:"flex",justifyContent:"center",marginBottom:8}}><Icon name="check" size={32} stroke={2.5}/></div><div style={{...T.headline,color:C.fg,marginBottom:12}}>Recovery logged</div><Btn variant="ghost" onClick={()=>setSaved(false)}>Edit entry</Btn></Card>)}
     </div>
   );
 };
@@ -2343,18 +2474,33 @@ const RecoveryScreen=()=>{
 /* ─── METRICS ─────────────────────────────────────────── */
 const MetricsScreen=()=>{
   const [active,setActive]=useState("weight");const [showMeasureForm,setShowMeasureForm]=useState(false);
-  const metrics={weight:{label:"BODY WEIGHT",unit:"kg",current:"84.2",change:-0.8,data:[86,85.5,85.1,84.8,84.5,84.2],color:C.accent},bf:{label:"BODY FAT",unit:"%",current:"11.4",change:-0.3,data:[12.5,12.2,12.0,11.8,11.6,11.4],color:C.purple},muscle:{label:"MUSCLE MASS",unit:"kg",current:"72.8",change:1.2,data:[70.2,70.8,71.4,71.9,72.4,72.8],color:C.green}};
+  const metrics={weight:{label:"Body weight",unit:"kg",current:"84.2",change:-0.8,data:[86,85.5,85.1,84.8,84.5,84.2],color:C.tint},bf:{label:"Body fat",unit:"%",current:"11.4",change:-0.3,data:[12.5,12.2,12.0,11.8,11.6,11.4],color:C.purple},muscle:{label:"Muscle mass",unit:"kg",current:"72.8",change:1.2,data:[70.2,70.8,71.4,71.9,72.4,72.8],color:C.green}};
   const m=metrics[active];
-  const meas=[{l:"Chest",v:"102cm"},{l:"Waist",v:"78cm"},{l:"Hips",v:"98cm"},{l:"Thigh",v:"58cm"},{l:"Bicep",v:"38cm"},{l:"Calf",v:"40cm"}];
+  const meas=[{l:"Chest",v:"102 cm"},{l:"Waist",v:"78 cm"},{l:"Hips",v:"98 cm"},{l:"Thigh",v:"58 cm"},{l:"Bicep",v:"38 cm"},{l:"Calf",v:"40 cm"}];
+  const fields=[{label:"Body weight",unit:"kg",key:"weight"},{label:"Chest",unit:"cm",key:"chest"},{label:"Waist",unit:"cm",key:"waist"},{label:"Hips",unit:"cm",key:"hips"},{label:"Left thigh",unit:"cm",key:"thigh"}];
   return(
     <div style={{padding:"0 16px 16px"}}>
-      <div style={{marginBottom:20}}><div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Athlete Profile</div><div style={{fontSize:20,fontWeight:700,color:C.fg}}>BODY METRICS</div></div>
-      <div style={{display:"flex",gap:8,marginBottom:16}}>{Object.entries(metrics).map(([k,v])=>(<button key={k} onClick={()=>setActive(k)} style={{flex:1,padding:"10px 4px",background:active===k?v.color:C.card,color:active===k?C.accentFg:C.mutedFg,border:`1px solid ${active===k?v.color:C.border}`,borderRadius:10,fontFamily:"Space Grotesk",fontWeight:700,fontSize:10,letterSpacing:1,cursor:"pointer",textTransform:"uppercase"}}>{v.label.split(" ")[1]||v.label.split(" ")[0]}</button>))}</div>
-      <Card style={{marginBottom:16,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:12,color:C.mutedFg,letterSpacing:1,textTransform:"uppercase"}}>{m.label}</div><div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:4}}><span style={{fontSize:40,fontWeight:700,color:m.color}}>{m.current}</span><span style={{fontSize:16,color:C.mutedFg}}>{m.unit}</span></div><div style={{fontSize:12,color:(m.change<0&&active!=="muscle")||(m.change>0&&active==="muscle")?C.green:C.red,marginTop:4}}>{m.change>0?"+":""}{m.change}{m.unit} this month</div></div><Ring value={active==="weight"?70:active==="bf"?30:80} max={100} color={m.color} size={72}/></Card>
-      <Card style={{marginBottom:16}}><div style={{fontSize:12,fontWeight:600,color:C.fg,marginBottom:12}}>6-WEEK TREND</div><Bars values={m.data} color={m.color} height={60}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}>{["WK1","WK2","WK3","WK4","WK5","NOW"].map((w,i)=><div key={i} style={{flex:1,textAlign:"center",fontSize:9,color:i===5?m.color:C.mutedFg}}>{w}</div>)}</div></Card>
-      <div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>Measurements</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>{meas.map((x,i)=>(<Card key={i} style={{textAlign:"center",padding:12}}><div style={{fontSize:10,color:C.mutedFg,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{x.l}</div><div style={{fontSize:16,fontWeight:700,color:C.fg}}>{x.v}</div></Card>))}</div>
-      <Btn style={{marginTop:16}} onClick={()=>setShowMeasureForm(true)}>LOG NEW MEASUREMENTS</Btn>{showMeasureForm&&(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={()=>setShowMeasureForm(false)}><div style={{background:"#1a1a1a",borderRadius:12,padding:24,maxWidth:360,width:"100%"}} onClick={e=>e.stopPropagation()}><div style={{fontSize:16,fontWeight:700,color:C.fg,marginBottom:16}}>Log Measurements</div>{[{label:"Body Weight (kg)",key:"weight"},{label:"Chest (cm)",key:"chest"},{label:"Waist (cm)",key:"waist"},{label:"Hips (cm)",key:"hips"},{label:"Left Thigh (cm)",key:"thigh"}].map(f=>(<div key={f.key} style={{marginBottom:12}}><div style={{fontSize:11,color:C.mutedFg,letterSpacing:1,textTransform:"uppercase",marginBottom:4}}>{f.label}</div><input type="number" step="0.1" placeholder="-" style={{width:"100%",background:"#111",border:"1px solid #333",borderRadius:8,padding:"8px 12px",color:C.fg,fontSize:14,outline:"none",boxSizing:"border-box"}}/></div>))}<div style={{display:"flex",gap:8,marginTop:8}}><Btn style={{flex:1}} onClick={()=>setShowMeasureForm(false)}>Cancel</Btn><Btn style={{flex:1,background:C.accent,color:"#000"}} onClick={()=>setShowMeasureForm(false)}>Save</Btn></div></div></div>)}
+      <div style={{marginBottom:16}}><div style={{...T.footnote,color:C.mutedFg}}>Athlete profile</div><div style={{...T.largeTitle,color:C.fg}}>Body</div></div>
+      <Segmented style={{marginBottom:16}} value={active} onChange={setActive} options={Object.entries(metrics).map(([k,v])=>[k,v.label.replace("Body ","")].map((x,i)=>i===1?x.charAt(0).toUpperCase()+x.slice(1):x))}/>
+      <Card style={{marginBottom:12,display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{...T.footnote,color:C.mutedFg}}>{m.label}</div><div style={{display:"flex",alignItems:"baseline",gap:6,marginTop:2}}><span className="num" style={{...T.largeTitle,fontSize:40,lineHeight:"48px",color:m.color}}>{m.current}</span><span style={{...T.body,color:C.mutedFg}}>{m.unit}</span></div><div className="num" style={{...T.footnote,color:(m.change<0&&active!=="muscle")||(m.change>0&&active==="muscle")?C.green:C.red,marginTop:2}}>{m.change>0?"+":"−"}{Math.abs(m.change)} {m.unit} this month</div></div><Ring value={active==="weight"?70:active==="bf"?30:80} max={100} color={m.color} size={72}/></Card>
+      <Card style={{marginBottom:28}}><div style={{...T.headline,color:C.fg,marginBottom:12}}>6-week trend</div><Bars values={m.data} color={m.color} height={60}/><div style={{display:"flex",justifyContent:"space-between",marginTop:8}}>{["Wk 1","Wk 2","Wk 3","Wk 4","Wk 5","Now"].map((w,i)=><div key={i} style={{flex:1,textAlign:"center",...T.caption2,color:i===5?m.color:C.mutedFg,fontWeight:i===5?600:400}}>{w}</div>)}</div></Card>
+      <SectionHeader>Measurements</SectionHeader>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>{meas.map((x,i)=>(<Card key={i} style={{textAlign:"center",padding:"12px 8px"}}><div style={{...T.footnote,color:C.mutedFg,marginBottom:2}}>{x.l}</div><div className="num" style={{...T.headline,color:C.fg}}>{x.v}</div></Card>))}</div>
+      <Btn variant="ghost" style={{marginTop:16}} onClick={()=>setShowMeasureForm(true)}>Log new measurements</Btn>
+      {showMeasureForm&&(
+        <Sheet onClose={()=>setShowMeasureForm(false)}>
+          <SheetBar title="Log measurements" left="Cancel" onLeft={()=>setShowMeasureForm(false)} right="Save" onRight={()=>setShowMeasureForm(false)}/>
+          <div style={{padding:"16px 16px 40px"}}>
+            <Group onSheet>
+              {fields.map((f,i)=>(<Row key={f.key} last={i===fields.length-1} style={{padding:"6px 16px"}}>
+                <label htmlFor={"m-"+f.key} style={{...T.body,color:C.fg,flex:1}}>{f.label}</label>
+                <input id={"m-"+f.key} type="number" inputMode="decimal" step="0.1" placeholder="0" style={{width:90,height:32,background:"transparent",border:"none",color:C.fg,fontSize:17,textAlign:"right",outline:"none"}}/>
+                <span style={{...T.body,color:C.mutedFg,width:24}}>{f.unit}</span>
+              </Row>))}
+            </Group>
+          </div>
+        </Sheet>
+      )}
     </div>
   );
 };
@@ -2374,41 +2520,51 @@ const VideosScreen=()=>{
   const [upload,setUpload]=useState(false);const [playing,setPlaying]=useState(null);
   const fileRef=useRef();
   const filtered=cat==="All"?VIDS:VIDS.filter(v=>v.cat===cat);
-  const catColor={Offense:C.accent,Defense:C.blue,"S&C":C.orange,Recovery:C.green,Mindset:C.purple};
+  const catColor={Offense:C.tint,Defense:C.blue,"S&C":C.orange,Recovery:C.green,Mindset:C.purple};
   return(
-    <div style={{padding:"0 16px 16px",position:"relative"}}>
-      {playing&&(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={()=>setPlaying(null)}><div style={{background:"#1a1a1a",borderRadius:12,padding:24,maxWidth:380,width:"100%"}} onClick={e=>e.stopPropagation()}><div style={{fontSize:16,fontWeight:700,color:C.fg,marginBottom:4}}>{playing.title}</div><div style={{fontSize:12,color:C.accent,marginBottom:12}}>{playing.cat} · {playing.coach}</div><div style={{background:"#111",borderRadius:8,height:180,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10}}><span style={{fontSize:52}}>▶</span><div style={{fontSize:12,color:C.mutedFg,textAlign:"center",padding:"0 20px"}}>Full video coming soon</div></div><div style={{fontSize:13,color:C.mutedFg,marginTop:12,lineHeight:"1.5"}}>{playing.desc}</div><Btn style={{marginTop:16,width:"100%"}} onClick={()=>setPlaying(null)}>Close</Btn></div></div>)}{upload&&(
-        <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.9)",zIndex:100,display:"flex",flexDirection:"column",justifyContent:"flex-end"}} onClick={()=>setUpload(false)}>
-          <div className="fade-up" onClick={e=>e.stopPropagation()} style={{background:C.card,borderRadius:"24px 24px 0 0",padding:24,border:`1px solid ${C.border}`}}>
-            <div style={{fontSize:18,fontWeight:700,color:C.fg,marginBottom:4}}>Upload Video</div>
-            <div style={{fontSize:12,color:C.mutedFg,marginBottom:20}}>Add a coaching video for your athletes</div>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
-              <input placeholder="Video title" style={{background:C.muted,border:`1px solid ${C.border}`,borderRadius:10,padding:"11px 14px",color:C.fg,fontFamily:"Space Grotesk",fontSize:13,outline:"none"}}/>
-              <select style={{background:C.muted,border:`1px solid ${C.border}`,borderRadius:10,padding:"11px 14px",color:C.fg,fontFamily:"Space Grotesk",fontSize:13,outline:"none"}}>{VCATS.filter(c=>c!=="All").map(c=><option key={c}>{c}</option>)}</select>
-              <div onClick={()=>fileRef.current?.click()} style={{background:C.muted,border:`2px dashed ${C.border}`,borderRadius:10,padding:20,textAlign:"center",cursor:"pointer"}}><div style={{fontSize:24,marginBottom:6}}>🎬</div><div style={{fontSize:13,color:C.fg,fontWeight:600}}>Tap to select video</div><div style={{fontSize:11,color:C.mutedFg,marginTop:2}}>MP4, MOV — up to 500MB</div><input ref={fileRef} type="file" accept="video/*" style={{display:"none"}}/></div>
-            </div>
-            <Btn>PUBLISH VIDEO</Btn>
+    <div>
+      {playing&&(
+        <Sheet onClose={()=>setPlaying(null)}>
+          <SheetBar title={playing.title} right="Done" onRight={()=>setPlaying(null)}/>
+          <div style={{padding:"16px 16px 40px"}}>
+            <div style={{background:"#000",borderRadius:16,height:200,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10,marginBottom:16,color:"#fff"}}><Icon name="play" size={44} fill="#fff" stroke={0}/><div style={{...T.footnote,color:"rgba(255,255,255,.6)"}}>Full video coming soon</div></div>
+            <div style={{...T.title3,color:C.fg,marginBottom:2}}>{playing.title}</div>
+            <div style={{...T.footnote,color:C.mutedFg,marginBottom:12}}>{playing.cat} · {playing.coach}</div>
+            <div style={{...T.body,color:C.fg}}>{playing.desc}</div>
           </div>
-        </div>
+        </Sheet>
       )}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <div><div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Coaching Library</div><div style={{fontSize:20,fontWeight:700,color:C.fg}}>VIDEOS</div></div>
-        <button onClick={()=>setUpload(true)} style={{background:C.accent,color:C.accentFg,border:"none",borderRadius:10,padding:"8px 12px",fontFamily:"Space Grotesk",fontWeight:700,fontSize:11,letterSpacing:1,cursor:"pointer",textTransform:"uppercase"}}>＋ UPLOAD</button>
+      {upload&&(
+        <Sheet onClose={()=>setUpload(false)}>
+          <SheetBar title="Upload video" left="Cancel" onLeft={()=>setUpload(false)} right="Publish" onRight={()=>setUpload(false)}/>
+          <div style={{padding:"16px 16px 40px"}}>
+            <SectionHeader>Add a coaching video for your athletes</SectionHeader>
+            <Group onSheet style={{marginBottom:16}}>
+              <Row style={{padding:"6px 16px"}}><input placeholder="Title" aria-label="Video title" style={{flex:1,height:32,background:"transparent",border:"none",color:C.fg,fontSize:17,outline:"none"}}/></Row>
+              <Row last style={{padding:"6px 16px"}}><label style={{...T.body,color:C.fg,flex:1}}>Category</label><select aria-label="Category" style={{background:"transparent",border:"none",color:C.mutedFg,fontSize:17,outline:"none",textAlign:"right",direction:"rtl"}}>{VCATS.filter(c=>c!=="All").map(c=><option key={c}>{c}</option>)}</select><div style={{color:C.label3}}><Icon name="chevronDown" size={16} stroke={2.25}/></div></Row>
+            </Group>
+            <div onClick={()=>fileRef.current?.click()} style={{background:C.cardOnSheet,borderRadius:16,padding:24,textAlign:"center",cursor:"pointer"}}><div style={{color:C.tint,display:"flex",justifyContent:"center",marginBottom:8}}><Icon name="upload" size={32}/></div><div style={{...T.headline,color:C.fg}}>Choose a video</div><div style={{...T.footnote,color:C.mutedFg,marginTop:2}}>MP4 or MOV, up to 500 MB</div><input ref={fileRef} type="file" accept="video/*" style={{display:"none"}}/></div>
+          </div>
+        </Sheet>
+      )}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <SectionHeader style={{marginBottom:0}}>Coaching library</SectionHeader>
+        <button data-plain onClick={()=>setUpload(true)} style={{background:"none",border:"none",color:C.tint,...T.body,display:"flex",alignItems:"center",gap:4,padding:"4px 0"}}><Icon name="plus" size={18} stroke={2.25}/>Upload</button>
       </div>
-      <div style={{display:"flex",gap:6,marginBottom:16,overflowX:"auto",paddingBottom:4}}>
-        {VCATS.map(c=>(<button key={c} onClick={()=>setCat(c)} style={{background:cat===c?C.accent:C.card,color:cat===c?C.accentFg:C.mutedFg,border:`1px solid ${cat===c?C.accent:C.border}`,borderRadius:20,padding:"6px 12px",fontFamily:"Space Grotesk",fontWeight:600,fontSize:10,letterSpacing:1,cursor:"pointer",flexShrink:0,textTransform:"uppercase"}}>{c}</button>))}
+      <div style={{display:"flex",gap:8,marginBottom:16,overflowX:"auto",paddingBottom:4,marginLeft:-16,marginRight:-16,paddingLeft:16,paddingRight:16}}>
+        {VCATS.map(c=>(<button key={c} data-plain aria-pressed={cat===c} onClick={()=>setCat(c)} style={{background:cat===c?C.fg:C.card,color:cat===c?C.bg:C.fg,border:"none",borderRadius:999,height:32,padding:"0 14px",fontSize:15,fontWeight:cat===c?600:500,lineHeight:"20px",flexShrink:0}}>{c}</button>))}
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
         {filtered.map(v=>(
-          <Card key={v.id} style={{padding:0,overflow:"hidden"}}>
-            <div style={{height:130,background:`linear-gradient(135deg,#1a1a1a,#111)`,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:6,position:"relative"}}>
-              <div style={{width:44,height:44,borderRadius:22,background:"rgba(223,225,4,0.9)",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}} onClick={(e)=>{e.stopPropagation();setPlaying(v);}}><span style={{fontSize:20,marginLeft:3}}>▶</span></div>
-              <div style={{position:"absolute",bottom:8,right:8}}><Tag color={catColor[v.cat]||C.mutedFg}>{v.cat}</Tag></div>
+          <Card key={v.id} style={{padding:0,overflow:"hidden"}} onClick={()=>setPlaying(v)}>
+            <div style={{height:150,background:`linear-gradient(135deg,${C.card2},${C.card})`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+              <div style={{width:56,height:56,borderRadius:28,background:"rgba(255,255,255,.92)",display:"flex",alignItems:"center",justifyContent:"center",color:"#000",boxShadow:"0 4px 12px rgba(0,0,0,.2)"}}><Icon name="play" size={24} fill="#000" stroke={0} style={{marginLeft:3}}/></div>
+              <div style={{position:"absolute",top:10,left:10}}><Tag color={catColor[v.cat]||C.mutedFg}>{v.cat}</Tag></div>
             </div>
-            <div style={{padding:"12px 14px"}}>
-              <div style={{fontSize:14,fontWeight:700,color:C.fg,marginBottom:3}}>{v.title}</div>
-              <div style={{fontSize:11,color:C.mutedFg,marginBottom:6}}>{v.coach}</div>
-              <div style={{fontSize:12,color:C.mutedFg,lineHeight:1.5}}>{v.desc}</div>
+            <div style={{padding:"12px 16px 14px"}}>
+              <div style={{...T.headline,color:C.fg,marginBottom:2}}>{v.title}</div>
+              <div style={{...T.footnote,color:C.mutedFg,marginBottom:6}}>{v.coach}</div>
+              <div style={{...T.subhead,color:C.mutedFg}}>{v.desc}</div>
             </div>
           </Card>
         ))}
@@ -2420,15 +2576,27 @@ const VideosScreen=()=>{
 /* ─── STATS ───────────────────────────────────────────── */
 const StatsScreen=()=>{
   const [tab,setTab]=useState("prs");
-  const prs=[{lift:"BACK SQUAT",val:"145kg",date:"Mar 8"},{lift:"BENCH PRESS",val:"105kg",date:"Feb 28"},{lift:"DEADLIFT",val:"180kg",date:"Mar 5"},{lift:"VERTICAL JUMP",val:"72cm",date:"Mar 10"},{lift:"SPRINT 40M",val:"4.6s",date:"Mar 1"},{lift:"3PT SHOOTING",val:"68%",date:"Mar 12"}];
+  const prs=[{lift:"Back squat",val:"145 kg",date:"Mar 8"},{lift:"Bench press",val:"105 kg",date:"Feb 28"},{lift:"Deadlift",val:"180 kg",date:"Mar 5"},{lift:"Vertical jump",val:"72 cm",date:"Mar 10"},{lift:"Sprint 40 m",val:"4.6 s",date:"Mar 1"},{lift:"3-point shooting",val:"68%",date:"Mar 12"}];
   const board=[{rank:1,name:"Marcus J.",score:98,change:0,av:"MJ"},{rank:2,name:"Devon K.",score:95,change:1,av:"DK"},{rank:3,name:"Hillary N.",score:92,change:-1,av:"HN",me:true},{rank:4,name:"Liam T.",score:88,change:2,av:"LT"},{rank:5,name:"Chris R.",score:85,change:-1,av:"CR"}];
+  const medal=[C.orange,C.gray,"#CD7F32"];
   return(
     <div style={{padding:"0 16px 16px"}}>
-      <div style={{marginBottom:20}}><div style={{fontSize:12,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Academy</div><div style={{fontSize:20,fontWeight:700,color:C.fg}}>PERFORMANCE</div></div>
-      <div style={{display:"flex",marginBottom:20,background:C.card,borderRadius:10,padding:4,border:`1px solid ${C.border}`}}>
-        {[["prs","Personal Bests"],["board","Leaderboard"]].map(([k,l])=>(<button key={k} onClick={()=>setTab(k)} style={{flex:1,padding:"8px 0",background:tab===k?C.accent:"transparent",color:tab===k?C.accentFg:C.mutedFg,border:"none",borderRadius:8,fontFamily:"Space Grotesk",fontWeight:700,fontSize:12,cursor:"pointer"}}>{l}</button>))}
-      </div>
-      {tab==="prs"?(<div style={{display:"flex",flexDirection:"column",gap:10}}>{prs.map((p,i)=>(<Card key={i} style={{display:"flex",alignItems:"center",gap:14}}><div style={{fontSize:22}}>🥇</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:700,color:C.fg}}>{p.lift}</div><div style={{fontSize:11,color:C.mutedFg}}>{p.date}</div></div><div style={{fontSize:20,fontWeight:700,color:C.accent}}>{p.val}</div></Card>))}</div>):(<div style={{display:"flex",flexDirection:"column",gap:10}}>{board.map((a,i)=>(<Card key={i} style={{display:"flex",alignItems:"center",gap:12,border:a.me?`1px solid ${C.accent}66`:`1px solid ${C.border}`,background:a.me?`${C.accent}08`:C.card}}><div style={{fontSize:18,width:24,textAlign:"center"}}>{a.rank<=3?["🥇","🥈","🥉"][a.rank-1]:a.rank}</div><div style={{width:34,height:34,borderRadius:17,background:a.me?C.accent:C.muted,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,color:a.me?C.accentFg:C.fg}}>{a.av}</div><div style={{flex:1}}><div style={{fontSize:13,fontWeight:700,color:C.fg}}>{a.name}{a.me&&<span style={{fontSize:10,color:C.accent}}> (You)</span>}</div><div style={{fontSize:11,color:C.mutedFg}}>{a.score} pts</div></div><div style={{fontSize:11,color:a.change>0?C.green:a.change<0?C.red:C.mutedFg}}>{a.change>0?`↑${a.change}`:a.change<0?`↓${Math.abs(a.change)}`:"–"}</div></Card>))}</div>)}
+      <div style={{marginBottom:16}}><div style={{...T.footnote,color:C.mutedFg}}>Academy</div><div style={{...T.largeTitle,color:C.fg}}>Stats</div></div>
+      <Segmented style={{marginBottom:20}} value={tab} onChange={setTab} options={[["prs","Personal bests"],["board","Leaderboard"]]}/>
+      {tab==="prs"?(
+        <Group>{prs.map((p,i)=>(<Row key={i} last={i===prs.length-1} inset={57}>
+          <div style={{width:29,height:29,borderRadius:6.5,background:alpha(C.tint,.18),color:C.tint,display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="trophy" size={17} stroke={2}/></div>
+          <div style={{flex:1,minWidth:0}}><div style={{...T.body,color:C.fg}}>{p.lift}</div><div style={{...T.footnote,color:C.mutedFg}}>{p.date}</div></div>
+          <div className="num" style={{...T.headline,color:C.tint}}>{p.val}</div>
+        </Row>))}</Group>
+      ):(
+        <Group>{board.map((a,i)=>(<Row key={i} last={i===board.length-1} inset={57} style={{background:a.me?alpha(C.tint,.08):"transparent"}}>
+          <div className="num" style={{width:29,textAlign:"center",...T.headline,color:a.rank<=3?medal[a.rank-1]:C.mutedFg}}>{a.rank}</div>
+          <div style={{width:34,height:34,borderRadius:17,background:a.me?C.accent:C.muted,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:600,color:a.me?C.accentFg:C.fg}}>{a.av}</div>
+          <div style={{flex:1,minWidth:0}}><div style={{...T.body,color:C.fg}}>{a.name}{a.me&&<span style={{...T.footnote,color:C.mutedFg}}> (You)</span>}</div><div className="num" style={{...T.footnote,color:C.mutedFg}}>{a.score} pts</div></div>
+          <div className="num" style={{...T.subhead,fontWeight:600,color:a.change>0?C.green:a.change<0?C.red:C.label3}}>{a.change>0?`+${a.change}`:a.change<0?`−${Math.abs(a.change)}`:"–"}</div>
+        </Row>))}</Group>
+      )}
     </div>
   );
 };
@@ -2481,99 +2649,80 @@ const AuthScreen=({onLogin})=>{
     if(password.length<4){setError("Password must be at least 4 characters");return;}
     if(password!==confirmPw){setError("Passwords don't match");return;}
     const users=getUsers();
-    if(users.find(u=>u.username.toLowerCase()===username.trim().toLowerCase())){setError("Username already taken — try another");return;}
+    if(users.find(u=>u.username.toLowerCase()===username.trim().toLowerCase())){setError("That username is taken. Try another");return;}
     const nu={id:Date.now().toString(36),username:username.trim(),password,displayName:displayName.trim()||username.trim(),createdAt:new Date().toISOString()};
     saveUsers([...users,nu]);
     const s={userId:nu.id,username:nu.username,displayName:nu.displayName,rememberMe,loginTime:Date.now()};
     saveSession(s);onLogin(s);
   };
 
-  const inp={width:"100%",background:C.muted,border:`1px solid ${C.border}`,borderRadius:12,padding:"14px 16px",color:C.fg,fontFamily:"Space Grotesk",fontSize:15,outline:"none",boxSizing:"border-box",WebkitAppearance:"none"};
-  const lbl={fontSize:10,fontWeight:700,color:C.mutedFg,letterSpacing:1.5,textTransform:"uppercase",display:"block",textAlign:"left",marginBottom:6};
+  const inp={flex:1,height:44,background:"transparent",border:"none",color:C.fg,fontSize:17,outline:"none",minWidth:0};
   const action=mode==="login"?doLogin:doSignup;
+  const Field=({label,children})=>(<Row style={{padding:"0 16px"}}><label style={{...T.body,color:C.fg,width:110,flexShrink:0}}>{label}</label>{children}</Row>);
 
   return(
-    <div style={{width:"100%",height:"100%",background:C.bg,display:"flex",flexDirection:"column",alignItems:"center",overflowY:"auto",boxSizing:"border-box"}}>
+    <div className="scroll" style={{width:"100%",height:"100%",background:C.bg,display:"flex",flexDirection:"column",alignItems:"center",overflowY:"auto"}}>
       {/* Header / Logo area */}
-      <div style={{width:"100%",background:"linear-gradient(180deg,#111100 0%,#09090B 100%)",padding:"52px 28px 36px",textAlign:"center",borderBottom:`1px solid ${C.accent}22`}}>
-        <div style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:88,height:88,borderRadius:28,background:C.accent+"18",border:`2px solid ${C.accent}44`,marginBottom:16}}>
-          <NCLogo size={56} color={C.accent}/>
+      <div style={{width:"100%",padding:"64px 28px 28px",textAlign:"center"}}>
+        <div style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:88,height:88,borderRadius:22,background:C.accent,marginBottom:16}}>
+          <NCLogo size={56} color={C.accentFg}/>
         </div>
-        <div style={{fontSize:24,fontWeight:800,color:C.fg,letterSpacing:4,textTransform:"uppercase",marginBottom:4}}>NETS COACHING</div>
-        <div style={{fontSize:11,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase"}}>Basketball Training</div>
+        <div style={{...T.title1,color:C.fg}}>Nets Coaching</div>
+        <div style={{...T.subhead,color:C.mutedFg,marginTop:2}}>Basketball training</div>
       </div>
 
       {/* Form */}
-      <div style={{width:"100%",padding:"28px 28px 40px",boxSizing:"border-box",maxWidth:390}}>
-        <div style={{fontSize:19,fontWeight:700,color:C.fg,marginBottom:24,textAlign:"center"}}>
-          {mode==="login"?"Welcome Back 👋":"Create Your Account"}
-        </div>
-
-        {/* Display name (signup only) */}
-        {mode==="signup"&&(
-          <div style={{marginBottom:14}}>
-            <label style={lbl}>Your Name (optional)</label>
-            <input style={inp} placeholder="e.g. Jordan Williams" value={displayName} autoCapitalize="words" onChange={e=>{setDisplayName(e.target.value);setError("");}}/>
-          </div>
-        )}
-
-        {/* Username */}
-        <div style={{marginBottom:14}}>
-          <label style={lbl}>Username</label>
-          <input style={inp} placeholder="your_username" value={username} autoCapitalize="none" autoCorrect="off" spellCheck="false"
-            onChange={e=>{setUsername(e.target.value);setError("");}}
-            onKeyDown={e=>e.key==="Enter"&&action()}/>
-        </div>
-
-        {/* Password */}
-        <div style={{marginBottom:mode==="signup"?14:0}}>
-          <label style={lbl}>Password</label>
-          <div style={{position:"relative"}}>
-            <input style={{...inp,paddingRight:48}} type={showPw?"text":"password"} placeholder="••••••••" value={password}
+      <div style={{width:"100%",padding:"0 16px 40px",maxWidth:390}}>
+        <SectionHeader>{mode==="login"?"Welcome back":"Create your account"}</SectionHeader>
+        <Group style={{marginBottom:12}}>
+          {mode==="signup"&&(
+            <Field label="Name"><input style={inp} placeholder="Optional" value={displayName} autoCapitalize="words" onChange={e=>{setDisplayName(e.target.value);setError("");}}/></Field>
+          )}
+          <Field label="Username">
+            <input style={inp} placeholder="Required" value={username} autoCapitalize="none" autoCorrect="off" spellCheck="false"
+              onChange={e=>{setUsername(e.target.value);setError("");}}
+              onKeyDown={e=>e.key==="Enter"&&action()}/>
+          </Field>
+          <Row style={{padding:"0 16px"}} last={mode!=="signup"}>
+            <label style={{...T.body,color:C.fg,width:110,flexShrink:0}}>Password</label>
+            <input style={inp} type={showPw?"text":"password"} placeholder="Required" value={password}
               onChange={e=>{setPassword(e.target.value);setError("");}}
               onKeyDown={e=>e.key==="Enter"&&action()}/>
-            <button onClick={()=>setShowPw(!showPw)} style={{position:"absolute",right:14,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:C.mutedFg,cursor:"pointer",fontSize:16,padding:0}}>
-              {showPw?"🙈":"👁"}
-            </button>
-          </div>
-        </div>
-
-        {/* Confirm password (signup only) */}
-        {mode==="signup"&&(
-          <div style={{marginBottom:0}}>
-            <label style={lbl}>Confirm Password</label>
-            <input style={inp} type="password" placeholder="••••••••" value={confirmPw}
-              onChange={e=>{setConfirmPw(e.target.value);setError("");}}
-              onKeyDown={e=>e.key==="Enter"&&doSignup()}/>
-          </div>
-        )}
+            <button data-plain onClick={()=>setShowPw(!showPw)} aria-label={showPw?"Hide password":"Show password"} style={{background:"none",border:"none",color:C.mutedFg,padding:8,marginRight:-8}}><Icon name={showPw?"eyeOff":"eye"} size={20}/></button>
+          </Row>
+          {mode==="signup"&&(
+            <Row style={{padding:"0 16px"}} last>
+              <label style={{...T.body,color:C.fg,width:110,flexShrink:0}}>Confirm</label>
+              <input style={inp} type="password" placeholder="Repeat password" value={confirmPw}
+                onChange={e=>{setConfirmPw(e.target.value);setError("");}}
+                onKeyDown={e=>e.key==="Enter"&&doSignup()}/>
+            </Row>
+          )}
+        </Group>
 
         {/* Error */}
-        {error&&<div style={{color:C.red,fontSize:12,marginTop:12,textAlign:"center",padding:"8px 12px",background:C.red+"11",borderRadius:8,border:`1px solid ${C.red}33`}}>{error}</div>}
+        {error&&<div role="alert" style={{...T.footnote,color:C.red,padding:"0 16px 12px"}}>{error}</div>}
 
         {/* Remember me */}
-        <div style={{display:"flex",alignItems:"center",gap:10,marginTop:16,marginBottom:20,cursor:"pointer",WebkitTapHighlightColor:"transparent"}} onClick={()=>setRememberMe(!rememberMe)}>
-          <div style={{width:22,height:22,borderRadius:7,border:`2px solid ${rememberMe?C.accent:C.border}`,background:rememberMe?C.accent:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
-            {rememberMe&&<span style={{color:C.accentFg,fontSize:13,fontWeight:900,lineHeight:1}}>✓</span>}
-          </div>
-          <span style={{fontSize:13,color:C.mutedFg,userSelect:"none"}}>Keep me signed in</span>
-        </div>
+        <Group style={{marginBottom:24}}>
+          <Row last>
+            <div style={{...T.body,color:C.fg,flex:1}}>Keep me signed in</div>
+            <Switch on={rememberMe} onChange={setRememberMe} label="Keep me signed in"/>
+          </Row>
+        </Group>
 
         {/* CTA Button */}
-        <button onClick={action}
-          style={{width:"100%",background:C.accent,color:C.accentFg,border:"none",borderRadius:14,padding:"16px",fontFamily:"Space Grotesk",fontWeight:800,fontSize:15,cursor:"pointer",letterSpacing:1,marginBottom:18,WebkitTapHighlightColor:"transparent"}}>
-          {mode==="login"?"SIGN IN":"CREATE ACCOUNT"}
-        </button>
+        <Btn onClick={action} style={{marginBottom:16}}>{mode==="login"?"Sign in":"Create account"}</Btn>
 
         {/* Switch mode */}
-        <div style={{textAlign:"center",fontSize:13,color:C.mutedFg}}>
+        <div style={{textAlign:"center",...T.subhead,color:C.mutedFg}}>
           {mode==="login"
-            ?<>New here?{" "}<span style={{color:C.accent,fontWeight:700,cursor:"pointer"}} onClick={()=>switchMode("signup")}>Create account</span></>
-            :<>Already have an account?{" "}<span style={{color:C.accent,fontWeight:700,cursor:"pointer"}} onClick={()=>switchMode("login")}>Sign in</span></>
+            ?<>New here?{" "}<button data-plain style={{background:"none",border:"none",color:C.tint,...T.subhead,fontWeight:600,padding:0}} onClick={()=>switchMode("signup")}>Create account</button></>
+            :<>Already have an account?{" "}<button data-plain style={{background:"none",border:"none",color:C.tint,...T.subhead,fontWeight:600,padding:0}} onClick={()=>switchMode("login")}>Sign in</button></>
           }
         </div>
 
-        <div style={{textAlign:"center",fontSize:10,color:C.mutedFg+"55",marginTop:24}}>Your data is stored on this device only</div>
+        <div style={{textAlign:"center",...T.caption1,color:C.label3,marginTop:24}}>Your data is stored on this device only</div>
       </div>
     </div>
   );
@@ -2585,22 +2734,22 @@ const AdminLogin=({onSuccess,onClose})=>{
   const [err,setErr]=React.useState(false);
   const submit=()=>{if(pin===ADMIN_PIN)onSuccess();else{setErr(true);setPin("");}};
   return(
-    <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.96)",zIndex:300,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{background:C.card,borderRadius:24,padding:32,width:280,textAlign:"center",border:`1px solid ${C.border}`}}>
-        <div style={{fontSize:28,marginBottom:6}}>⚙️</div>
-        <div style={{fontSize:17,fontWeight:700,color:C.fg,marginBottom:4}}>Admin Mode</div>
-        <div style={{fontSize:12,color:C.mutedFg,marginBottom:20}}>Enter your PIN to continue</div>
-        <input type="password" value={pin} autoFocus
+    <Alert onClose={onClose}>
+      <div style={{padding:"20px 16px 16px",textAlign:"center"}}>
+        <div style={{...T.headline,color:C.fg,marginBottom:4}}>Admin mode</div>
+        <div style={{...T.footnote,color:C.mutedFg,marginBottom:14}}>{err?"Incorrect PIN. Try again.":"Enter your PIN to continue."}</div>
+        <input type="password" inputMode="text" value={pin} autoFocus aria-label="Admin PIN"
           onChange={e=>{setPin(e.target.value);setErr(false);}}
           onKeyDown={e=>e.key==="Enter"&&submit()}
           placeholder="PIN"
-          style={{width:"100%",background:C.muted,border:`1px solid ${err?C.red:C.border}`,borderRadius:10,padding:"12px",color:C.fg,fontFamily:"Space Grotesk",fontSize:18,outline:"none",textAlign:"center",letterSpacing:6,marginBottom:err?6:16}}
+          style={{width:"100%",height:32,background:C.card,border:`.5px solid ${err?C.red:C.border}`,borderRadius:6,padding:"0 8px",color:C.fg,fontSize:15,outline:"none",textAlign:"center"}}
         />
-        {err&&<div style={{fontSize:11,color:C.red,marginBottom:12}}>Incorrect PIN</div>}
-        <button onClick={submit} style={{width:"100%",background:C.accent,color:C.accentFg,border:"none",borderRadius:10,padding:"12px",fontFamily:"Space Grotesk",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:1}}>UNLOCK</button>
-        <div style={{fontSize:10,color:C.mutedFg,marginTop:12}}>Tap outside to cancel</div>
       </div>
-    </div>
+      <div className="hairline-top" style={{display:"flex"}}>
+        <button data-plain onClick={onClose} style={{flex:1,height:44,background:"none",border:"none",color:C.tint,...T.body,boxShadow:`.5px 0 0 0 ${C.border}`}}>Cancel</button>
+        <button data-plain onClick={submit} style={{flex:1,height:44,background:"none",border:"none",color:C.tint,...T.headline}}>Unlock</button>
+      </div>
+    </Alert>
   );
 };
 
@@ -2619,9 +2768,8 @@ const AdminEditModal=({ex,onClose})=>{
   const [img,setImg]=React.useState(savedImg);
   const [imgName,setImgName]=React.useState("");
   const fileRef=useRef();
-  const tc=TYPES[ex.type]?.color||C.accent;
-  const iStyle={width:"100%",background:C.muted,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 12px",color:C.fg,fontFamily:"Space Grotesk",fontSize:12,outline:"none",resize:"vertical",boxSizing:"border-box"};
-  const lStyle={fontSize:10,color:C.mutedFg,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:6,marginTop:16,display:"block"};
+  const tc=TYPES[ex.type]?.color||C.tint;
+  const iStyle={width:"100%",background:C.card,border:"none",borderRadius:10,padding:"11px 16px",color:C.fg,fontSize:17,lineHeight:"22px",outline:"none",resize:"vertical",display:"block"};
 
   const handleImg=e=>{
     const file=e.target.files?.[0];if(!file)return;
@@ -2647,68 +2795,71 @@ const AdminEditModal=({ex,onClose})=>{
   const updCue=(i,v)=>setForm(f=>{const c=[...f.cues];c[i]=v;return{...f,cues:c};});
 
   return(
-    <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.94)",zIndex:300,display:"flex",flexDirection:"column",overflowY:"auto"}} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{background:C.bg,borderRadius:"24px 24px 0 0",marginTop:40,flex:1,overflowY:"auto",border:`1px solid ${C.border}`}}>
-        {/* Header */}
-        <div style={{padding:"16px 20px",position:"sticky",top:0,background:C.bg,zIndex:10,borderBottom:`1px solid ${C.border}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div><div style={{fontSize:10,color:tc,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase"}}>EDITING</div><div style={{fontSize:16,fontWeight:700,color:C.fg}}>{ex.name}</div></div>
-          <button onClick={onClose} style={{background:C.muted,border:"none",color:C.fg,width:32,height:32,borderRadius:16,cursor:"pointer",fontSize:14}}>✕</button>
-        </div>
-        <div style={{padding:"4px 20px 36px"}}>
+    <Sheet onClose={onClose} zIndex={300} maxHeight="96%" style={{background:C.bg}}>
+      <SheetBar title={titleCase(ex.name)} left="Cancel" onLeft={onClose} right="Save" onRight={save}/>
+      <div style={{padding:"16px 16px 40px",display:"flex",flexDirection:"column",gap:24}}>
 
-          {/* Image */}
-          <label style={lStyle}>Exercise Image</label>
-          <div onClick={()=>fileRef.current?.click()} style={{background:img?"#fff":C.card,border:`2px dashed ${img?tc:C.border}`,borderRadius:12,overflow:"hidden",cursor:"pointer",minHeight:80,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            {img?<img src={img} alt="preview" style={{width:"100%",maxHeight:180,objectFit:"contain",display:"block"}}/>
-              :<div style={{textAlign:"center",padding:20}}><div style={{fontSize:30,marginBottom:4}}>📸</div><div style={{fontSize:12,color:C.fg,fontWeight:600}}>Tap to upload image</div><div style={{fontSize:10,color:C.mutedFg,marginTop:2}}>JPG · PNG · WebP</div></div>}
+        {/* Image */}
+        <div>
+          <SectionHeader>Exercise image</SectionHeader>
+          <div onClick={()=>fileRef.current?.click()} style={{background:img?"#fff":C.card,borderRadius:16,overflow:"hidden",cursor:"pointer",minHeight:80,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            {img?<img src={img} alt="Preview" style={{width:"100%",maxHeight:180,objectFit:"contain",display:"block"}}/>
+              :<div style={{textAlign:"center",padding:24}}><div style={{color:C.tint,display:"flex",justifyContent:"center",marginBottom:8}}><Icon name="photo" size={32}/></div><div style={{...T.headline,color:C.fg}}>Choose an image</div><div style={{...T.footnote,color:C.mutedFg,marginTop:2}}>JPG, PNG or WebP</div></div>}
           </div>
           <input ref={fileRef} type="file" accept="image/*" style={{display:"none"}} onChange={handleImg}/>
-          {imgName&&<div style={{fontSize:10,color:C.green,marginTop:4}}>✓ {imgName} ready to save</div>}
-          {img&&<button onClick={e=>{e.stopPropagation();setImg("");setImgName("");}} style={{background:"none",border:"none",color:C.red,fontSize:10,cursor:"pointer",padding:"4px 0",display:"block"}}>✕ Remove image</button>}
+          {imgName&&<div style={{...T.footnote,color:C.green,marginTop:8,padding:"0 4px"}}>{imgName} ready to save</div>}
+          {img&&<button data-plain onClick={e=>{e.stopPropagation();setImg("");setImgName("");}} style={{background:"none",border:"none",color:C.red,...T.footnote,padding:"8px 4px 0",display:"block"}}>Remove image</button>}
+        </div>
 
-          {/* Name */}
-          <label style={lStyle}>Exercise Name</label>
-          <input value={form.name} onChange={e=>upd("name",e.target.value)} style={{...iStyle,resize:"none"}}/>
+        {/* Name */}
+        <div><SectionHeader>Name</SectionHeader><input value={form.name} onChange={e=>upd("name",e.target.value)} style={{...iStyle,resize:"none"}}/></div>
 
-          {/* Benefit */}
-          <label style={lStyle}>Why This Matters</label>
-          <textarea rows={3} value={form.benefit} onChange={e=>upd("benefit",e.target.value)} style={iStyle}/>
+        {/* Benefit */}
+        <div><SectionHeader>Why this matters</SectionHeader><textarea rows={3} value={form.benefit} onChange={e=>upd("benefit",e.target.value)} style={iStyle}/></div>
 
-          {/* Steps */}
-          <label style={lStyle}>Steps</label>
-          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {/* Steps */}
+        <div>
+          <SectionHeader>Steps</SectionHeader>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
             {form.steps.map((s,i)=>(
-              <div key={i} style={{background:C.card,borderRadius:10,padding:"12px",border:`1px solid ${C.border}`}}>
-                <div style={{fontSize:10,color:tc,fontWeight:700,marginBottom:8}}>STEP {i+1}</div>
-                <input value={s.title} onChange={e=>updStep(i,"title",e.target.value)} placeholder="Title" style={{...iStyle,marginBottom:8,resize:"none"}}/>
-                <textarea rows={3} value={s.desc} onChange={e=>updStep(i,"desc",e.target.value)} placeholder="Description" style={iStyle}/>
+              <div key={i} style={{background:C.card,borderRadius:16,padding:12}}>
+                <div style={{...T.footnote,fontWeight:600,color:tc,marginBottom:8,padding:"0 4px"}}>Step {i+1}</div>
+                <input value={s.title} onChange={e=>updStep(i,"title",e.target.value)} placeholder="Title" style={{...iStyle,background:C.card2,marginBottom:8,resize:"none"}}/>
+                <textarea rows={3} value={s.desc} onChange={e=>updStep(i,"desc",e.target.value)} placeholder="Description" style={{...iStyle,background:C.card2}}/>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Cues */}
-          <label style={lStyle}>Coaching Cues</label>
-          <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {/* Cues */}
+        <div>
+          <SectionHeader>Coaching cues</SectionHeader>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {form.cues.map((c,i)=>(
               <input key={i} value={c} onChange={e=>updCue(i,e.target.value)} style={{...iStyle,resize:"none"}} placeholder={`Cue ${i+1}`}/>
             ))}
           </div>
+        </div>
 
-          {/* Tip */}
-          <label style={lStyle}>Beginner Tip / Safety Note</label>
-          <textarea rows={4} value={form.tip} onChange={e=>upd("tip",e.target.value)} style={iStyle}/>
+        {/* Tip */}
+        <div><SectionHeader>Beginner tip or safety note</SectionHeader><textarea rows={4} value={form.tip} onChange={e=>upd("tip",e.target.value)} style={iStyle}/></div>
 
-          {/* RPE */}
-          <label style={lStyle}>Target Effort — RPE {form.rpe}/10</label>
-          <input type="range" min={1} max={10} value={form.rpe} onChange={e=>upd("rpe",+e.target.value)} style={{width:"100%",accentColor:tc,cursor:"pointer",marginBottom:4}}/>
-          <div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:9,color:C.mutedFg}}>Easy</span><span style={{fontSize:9,color:C.mutedFg}}>Max Effort</span></div>
+        {/* RPE */}
+        <div>
+          <SectionHeader>Target effort · RPE {form.rpe} of 10</SectionHeader>
+          <div style={{background:C.card,borderRadius:16,padding:16}}>
+            <input type="range" min={1} max={10} value={form.rpe} aria-label="Target RPE" onChange={e=>upd("rpe",+e.target.value)} style={{accentColor:tc,marginBottom:8}}/>
+            <div style={{display:"flex",justifyContent:"space-between"}}><span style={{...T.caption1,color:C.mutedFg}}>Easy</span><span style={{...T.caption1,color:C.mutedFg}}>Max effort</span></div>
+          </div>
+        </div>
 
-          {/* Buttons */}
-          <button onClick={save} style={{marginTop:24,width:"100%",background:C.accent,color:C.accentFg,border:"none",borderRadius:12,padding:"14px",fontFamily:"Space Grotesk",fontWeight:700,fontSize:13,letterSpacing:1,cursor:"pointer",textTransform:"uppercase"}}>💾 SAVE CHANGES</button>
-          <button onClick={reset} style={{marginTop:10,width:"100%",background:"none",color:C.red,border:`1px solid ${C.red}44`,borderRadius:12,padding:"11px",fontFamily:"Space Grotesk",fontWeight:600,fontSize:11,cursor:"pointer"}}>Reset to defaults</button>
+        {/* Buttons */}
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          <Btn onClick={save}>Save changes</Btn>
+          <Btn variant="destructive" onClick={reset}>Reset to defaults</Btn>
         </div>
       </div>
-    </div>
+    </Sheet>
   );
 };
 
@@ -2724,56 +2875,57 @@ const AdminPanel=({onClose})=>{
   const imgCount=EXERCISES.filter(e=>(adminData.images||{})[e.id]||EX_IMAGES[e.id]).length;
 
   return(
-    <div style={{position:"absolute",inset:0,background:C.bg,zIndex:250,display:"flex",flexDirection:"column"}}>
+    <div className="fade-up" style={{position:"absolute",inset:0,background:C.bg,zIndex:250,display:"flex",flexDirection:"column"}}>
       {editEx&&<AdminEditModal ex={editEx} onClose={()=>setEditEx(null)}/>}
-      {/* Header */}
-      <div style={{padding:"14px 20px",background:C.surface,borderBottom:`1px solid ${C.border}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-        <div><div style={{fontSize:10,color:C.accent,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase"}}>⚙️ Admin Mode</div><div style={{fontSize:16,fontWeight:700,color:C.fg}}>Exercise Editor</div></div>
-        <button onClick={onClose} style={{background:C.muted,border:"none",color:C.fg,padding:"7px 14px",borderRadius:10,fontFamily:"Space Grotesk",fontWeight:700,fontSize:11,cursor:"pointer",letterSpacing:1}}>EXIT</button>
+      {/* Nav bar */}
+      <div className="hairline" style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",alignItems:"center",height:58,padding:"14px 8px 0",background:C.bg,flexShrink:0}}>
+        <div/>
+        <div style={{...T.headline,color:C.fg}}>Exercise editor</div>
+        <div style={{textAlign:"right"}}><button data-plain onClick={onClose} style={{background:"none",border:"none",color:C.tint,...T.headline,padding:"0 8px",height:44}}>Done</button></div>
       </div>
       {/* Search */}
-      <div style={{padding:"12px 16px",borderBottom:`1px solid ${C.border}`,flexShrink:0}}>
-        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search exercises…"
-          style={{width:"100%",background:C.card,border:`1px solid ${C.border}`,borderRadius:10,padding:"10px 14px",color:C.fg,fontFamily:"Space Grotesk",fontSize:13,outline:"none",boxSizing:"border-box"}}/>
+      <div style={{padding:"8px 16px",flexShrink:0,position:"relative"}}>
+        <div style={{position:"absolute",left:26,top:17,color:C.mutedFg}}><Icon name="search" size={18}/></div>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search" aria-label="Search exercises"
+          style={{width:"100%",height:36,background:C.muted,border:"none",borderRadius:10,padding:"0 12px 0 34px",color:C.fg,fontSize:17,outline:"none"}}/>
       </div>
       {/* Stats */}
-      <div style={{padding:"10px 16px",display:"flex",gap:8,flexShrink:0,borderBottom:`1px solid ${C.border}`}}>
-        <div style={{background:C.card,borderRadius:8,padding:"5px 10px",fontSize:9,color:C.mutedFg,border:`1px solid ${C.border}`,fontWeight:600}}>{EXERCISES.length} EXERCISES</div>
-        <div style={{background:C.green+"11",borderRadius:8,padding:"5px 10px",fontSize:9,color:C.green,border:`1px solid ${C.green}33`,fontWeight:600}}>{imgCount} WITH IMAGES</div>
-        <div style={{background:C.accent+"11",borderRadius:8,padding:"5px 10px",fontSize:9,color:C.accent,border:`1px solid ${C.accent}33`,fontWeight:600}}>{editCount} EDITED</div>
+      <div className="num" style={{padding:"4px 16px 8px",display:"flex",gap:6,flexShrink:0,flexWrap:"wrap"}}>
+        <Tag color={C.mutedFg}>{EXERCISES.length} exercises</Tag>
+        <Tag color={C.green}>{imgCount} with images</Tag>
+        <Tag color={C.tint}>{editCount} edited</Tag>
       </div>
       {/* List */}
-      <div style={{flex:1,overflowY:"auto",padding:"0 16px 24px"}}>
+      <div className="scroll" style={{flex:1,overflowY:"auto",padding:"0 16px 24px"}}>
         {Object.entries(grouped).map(([type,exs])=>(
           <div key={type}>
-            <div style={{fontSize:10,color:C.mutedFg,letterSpacing:2,textTransform:"uppercase",marginTop:18,marginBottom:8,fontWeight:700}}>{TYPES[type]?.label}</div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {exs.map(ex=>{
+            <SectionHeader style={{marginTop:20}}>{TYPES[type]?.label}</SectionHeader>
+            <Group>
+              {exs.map((ex,idx)=>{
                 const hasEdit=!!(adminData.exercises||{})[ex.id];
                 const hasImg=!!(adminData.images||{})[ex.id]||!!EX_IMAGES[ex.id];
-                const tc=TYPES[ex.type]?.color||C.accent;
+                const tc=TYPES[ex.type]?.color||C.tint;
                 return(
-                  <button key={ex.id} onClick={()=>setEditEx(mergeEx(ex))}
-                    style={{background:C.card,border:`1px solid ${hasEdit?tc+"55":C.border}`,borderRadius:12,padding:"12px 14px",display:"flex",alignItems:"center",gap:12,cursor:"pointer",width:"100%",textAlign:"left",boxSizing:"border-box"}}>
-                    <div style={{width:38,height:38,borderRadius:10,background:`${tc}18`,border:`1px solid ${tc}33`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:16}}>
-                      {hasImg?"📸":"🖼️"}
+                  <Row key={ex.id} onClick={()=>setEditEx(mergeEx(ex))} last={idx===exs.length-1} inset={66}>
+                    <div style={{width:38,height:38,borderRadius:10,background:alpha(tc,.15),color:tc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                      <Icon name={hasImg?"camera":"photo"} size={20}/>
                     </div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:700,color:C.fg,marginBottom:3}}>{ex.name}</div>
-                      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                        <span style={{fontSize:9,color:tc,fontWeight:600,textTransform:"uppercase"}}>{ex.diff}</span>
-                        {hasEdit&&<span style={{fontSize:9,color:C.accent,fontWeight:700}}>✏️ EDITED</span>}
-                        {hasImg&&<span style={{fontSize:9,color:C.green,fontWeight:700}}>📸 IMAGE</span>}
+                      <div style={{...T.body,color:C.fg,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{titleCase(ex.name)}</div>
+                      <div style={{...T.footnote,color:C.mutedFg,display:"flex",gap:8}}>
+                        <span style={{color:tc}}>{ex.diff}</span>
+                        {hasEdit&&<span style={{color:C.tint}}>Edited</span>}
+                        {hasImg&&<span style={{color:C.green}}>Image</span>}
                       </div>
                     </div>
-                    <span style={{color:C.mutedFg,fontSize:18,flexShrink:0}}>›</span>
-                  </button>
+                    <div style={{color:C.label3}}><Icon name="chevronRight" size={16} stroke={2.25}/></div>
+                  </Row>
                 );
               })}
-            </div>
+            </Group>
           </div>
         ))}
-        <button onClick={clearAll} style={{marginTop:28,width:"100%",background:"none",color:C.red,border:`1px solid ${C.red}44`,borderRadius:12,padding:"12px",fontFamily:"Space Grotesk",fontWeight:600,fontSize:11,cursor:"pointer",boxSizing:"border-box"}}>⚠️ Reset All to Defaults</button>
+        <Btn variant="destructive" style={{marginTop:28}} onClick={clearAll}>Reset all to defaults</Btn>
       </div>
     </div>
   );
@@ -2781,39 +2933,42 @@ const AdminPanel=({onClose})=>{
 
 /* ─── APP SHELL ───────────────────────────────────────── */
 const NAV=[
-  {id:"home",label:"HOME",icon:"⊞"},{id:"workouts",label:"TRAIN",icon:"🏋️"},
-  {id:"recovery",label:"RECOVER",icon:"💚"},{id:"metrics",label:"BODY",icon:"📊"},
-  {id:"videos",label:"VIDEOS",icon:"🎬"},{id:"stats",label:"STATS",icon:"🏆"},
+  {id:"home",label:"Home",icon:"home"},{id:"workouts",label:"Train",icon:"train"},
+  {id:"recovery",label:"Recover",icon:"recover"},{id:"metrics",label:"Body",icon:"body"},
+  {id:"stats",label:"Stats",icon:"stats"},
 ];
 function SplashScreen({onDone}){
   const {useEffect}=React;
   useEffect(()=>{const t=setTimeout(onDone,2600);return()=>clearTimeout(t);},[]);
-  return <div style={{position:"absolute",inset:0,background:"#09090B",zIndex:9999,
+  return <div style={{position:"absolute",inset:0,background:"#000",zIndex:9999,
     display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
     animation:"splashIn .4s ease",gap:0}}>
     <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 50% 55%,rgba(223,225,4,.10) 0%,transparent 65%)",animation:"splashPulse 2.5s ease-in-out infinite"}}/>
-    <div style={{animation:"splashLogo 2.5s ease-in-out infinite",position:"relative",zIndex:1,marginBottom:20}}>
-      <NCLogo size={36}/>
+    <div style={{animation:"splashLogo 2.5s ease-in-out infinite",position:"relative",zIndex:1,marginBottom:16}}>
+      <NCLogo size={44} color="#fff"/>
     </div>
-    <div style={{fontSize:13,fontWeight:700,letterSpacing:4,color:"rgba(255,255,255,.5)",textTransform:"uppercase",position:"relative",zIndex:1}}>NETS COACHING</div>
+    <div style={{...T.headline,color:"rgba(255,255,255,.6)",position:"relative",zIndex:1}}>Nets Coaching</div>
     <div style={{position:"absolute",bottom:80,left:60,right:60,zIndex:1}}>
-      <div style={{height:2,background:"#1e1e1e",borderRadius:2,overflow:"hidden"}}>
+      <div style={{height:4,background:"#2C2C2E",borderRadius:2,overflow:"hidden"}}>
         <div style={{height:"100%",background:"#DFE104",borderRadius:2,animation:"loadBar 2.4s ease-in-out forwards"}}/>
       </div>
-      <div style={{textAlign:"center",fontSize:11,color:"rgba(255,255,255,.25)",marginTop:8,animation:"splashPulse 2s ease-in-out infinite"}}>Loading your content...</div>
+      <div style={{textAlign:"center",...T.footnote,color:"rgba(255,255,255,.3)",marginTop:10,animation:"splashPulse 2s ease-in-out infinite"}}>Loading your content…</div>
     </div>
   </div>;
 }
 
 function App(){
+  const {useEffect}=React;
   const [tab,setTab]=useState("home");
   const [showSplash,setShowSplash]=useState(()=>true);
-  const [isDark,setIsDark]=useState(()=>localStorage.getItem("ncaTheme")!=="light");
+  const [isDark,setIsDark]=useState(()=>{const t=localStorage.getItem("ncaTheme");if(t)return t!=="light";return !(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches);});
   Object.assign(C,isDark?CDark:CLight);
   const toggleTheme=()=>{const next=!isDark;setIsDark(next);localStorage.setItem("ncaTheme",next?"dark":"light");};
+  useEffect(()=>{const r=document.documentElement.style;r.setProperty("--bg",C.bg);r.setProperty("--fill",C.muted);r.setProperty("--tint",C.tint);r.setProperty("--label",C.fg);r.setProperty("--separator",C.border);r.setProperty("--card",C.card);document.body.style.background=isDark?"#000":"#1a1a1a";},[isDark]);
   const [showAdminLogin,setShowAdminLogin]=useState(false);
   const [showAdmin,setShowAdmin]=useState(false);
   const [showProfileMenu,setShowProfileMenu]=useState(false);
+  const [scrolled,setScrolled]=useState(false);
 
   /* ── Auth state — auto-login if valid "remember me" session ── */
   const [currentUser,setCurrentUser]=useState(()=>{
@@ -2823,9 +2978,13 @@ function App(){
 
   const handleLogin=s=>setCurrentUser(s);
   const handleLogout=()=>{clearSession();setCurrentUser(null);setTab("home");setShowProfileMenu(false);};
+  const scrollRef=useRef(null);
+  const selectTab=id=>{setTab(id);setScrolled(false);if(scrollRef.current)scrollRef.current.scrollTop=0;};
+  const initial=(currentUser?.displayName||currentUser?.username||"?").charAt(0).toUpperCase();
+  const barBg=alpha(C.bg,.82);
 
   const phone=(
-    <div style={{width:390,height:844,background:C.bg,borderRadius:44,overflow:"hidden",boxShadow:"0 0 0 10px #111,0 0 80px rgba(223,225,4,0.15)",display:"flex",flexDirection:"column",position:"relative"}}>
+    <div style={{width:390,height:844,background:C.bg,borderRadius:44,overflow:"hidden",boxShadow:"0 0 0 10px #111,0 0 80px rgba(0,0,0,.6)",display:"flex",flexDirection:"column",position:"relative",color:C.fg}}>
       {showSplash&&<SplashScreen onDone={()=>setShowSplash(false)}/>}
       {currentUser?(
         <>
@@ -2833,70 +2992,68 @@ function App(){
           {showAdminLogin&&<AdminLogin onSuccess={()=>{setShowAdminLogin(false);setShowAdmin(true);}} onClose={()=>setShowAdminLogin(false)}/>}
           {showAdmin&&<AdminPanel onClose={()=>setShowAdmin(false)}/>}
 
-          {/* Profile menu overlay */}
+          {/* Profile sheet */}
           {showProfileMenu&&(
-            <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.85)",zIndex:200,display:"flex",alignItems:"flex-end"}} onClick={()=>setShowProfileMenu(false)}>
-              <div onClick={e=>e.stopPropagation()} style={{width:"100%",background:C.card,borderRadius:"24px 24px 0 0",padding:"24px 24px 40px",border:`1px solid ${C.border}`}}>
+            <Sheet onClose={()=>setShowProfileMenu(false)} scrollable={false}>
+              <div style={{padding:"16px 16px 40px"}}>
                 {/* Avatar + name */}
-                <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:24}}>
-                  <div style={{width:52,height:52,borderRadius:26,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,color:C.accentFg,flexShrink:0}}>
-                    {(currentUser.displayName||currentUser.username).charAt(0).toUpperCase()}
+                <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:20}}>
+                  <div style={{width:56,height:56,borderRadius:28,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",...T.title2,color:C.accentFg,flexShrink:0}}>
+                    {initial}
                   </div>
-                  <div>
-                    <div style={{fontSize:16,fontWeight:700,color:C.fg}}>{currentUser.displayName||currentUser.username}</div>
-                    <div style={{fontSize:12,color:C.mutedFg}}>@{currentUser.username}</div>
+                  <div style={{minWidth:0}}>
+                    <div style={{...T.headline,color:C.fg,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{currentUser.displayName||currentUser.username}</div>
+                    <div style={{...T.subhead,color:C.mutedFg}}>@{currentUser.username}</div>
                   </div>
                 </div>
-                {/* Divider */}
-                <div style={{height:1,background:C.border,marginBottom:16}}/>
-                {/* Admin option */}
-                <button onClick={()=>{setShowProfileMenu(false);setShowAdminLogin(true);}}
-                  style={{width:"100%",display:"flex",alignItems:"center",gap:12,background:"none",border:`1px solid ${C.border}`,borderRadius:12,padding:"14px 16px",color:C.fg,fontFamily:"Space Grotesk",fontSize:14,fontWeight:600,cursor:"pointer",marginBottom:10}}>
-                  <span style={{fontSize:18}}>⚙️</span> Admin Mode
-                </button>
-                {/* Sign out */}
-                <button onClick={handleLogout}
-                  style={{width:"100%",display:"flex",alignItems:"center",gap:12,background:C.red+"11",border:`1px solid ${C.red}33`,borderRadius:12,padding:"14px 16px",color:C.red,fontFamily:"Space Grotesk",fontSize:14,fontWeight:700,cursor:"pointer"}}>
-                  <span style={{fontSize:18}}>🚪</span> Sign Out
-                </button>
+                <Group onSheet style={{marginBottom:12}}>
+                  <Row onClick={toggleTheme} inset={57}>
+                    <div style={{width:29,height:29,borderRadius:6.5,background:C.indigo,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={isDark?"moon":"sun"} size={18} stroke={2}/></div>
+                    <div style={{...T.body,color:C.fg,flex:1}}>Dark mode</div>
+                    <Switch on={isDark} onChange={toggleTheme} label="Dark mode"/>
+                  </Row>
+                  <Row last onClick={()=>{setShowProfileMenu(false);setShowAdminLogin(true);}} inset={57}>
+                    <div style={{width:29,height:29,borderRadius:6.5,background:C.gray,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="gear" size={18} stroke={2}/></div>
+                    <div style={{...T.body,color:C.fg,flex:1}}>Admin mode</div>
+                    <div style={{color:C.label3}}><Icon name="chevronRight" size={16} stroke={2.25}/></div>
+                  </Row>
+                </Group>
+                <Group onSheet>
+                  <Row last onClick={handleLogout} style={{justifyContent:"center"}}>
+                    <div style={{...T.body,color:C.red}}>Sign out</div>
+                  </Row>
+                </Group>
               </div>
-            </div>
+            </Sheet>
           )}
 
-          {/* Status bar */}
-          <div style={{background:C.bg,padding:"12px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-            <div style={{display:"flex",gap:6,alignItems:"center"}}><NCLogo size={22}/></div>
-            {/* Avatar button — opens profile menu */}
-            <div style={{display:"flex",gap:8,alignItems:"center"}}>
-              <button onClick={toggleTheme}
-                style={{background:C.muted,border:`1px solid ${C.border}`,borderRadius:20,
-                  padding:"4px 10px",cursor:"pointer",fontSize:11,color:C.mutedFg,fontFamily:"Space Grotesk",
-                  fontWeight:600,letterSpacing:.5}}>
-                {isDark?"☀":"🌙"}
-              </button>
-              <button onClick={()=>setShowProfileMenu(true)}
-                style={{width:30,height:30,borderRadius:15,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:12,color:C.accentFg,border:"none",cursor:"pointer",padding:0}}>
-                {(currentUser.displayName||currentUser.username).charAt(0).toUpperCase()}
+          {/* Navigation bar */}
+          <div className={"material"+(scrolled?" hairline":"")} style={{background:scrolled?barBg:C.bg,padding:"14px 8px 0 16px",height:58,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,position:"relative",zIndex:20,transition:"background .2s"}}>
+            <NCLogo size={24}/>
+            <div style={{display:"flex",alignItems:"center"}}>
+              <IconBtn name={isDark?"sun":"moon"} onClick={toggleTheme} label={isDark?"Switch to light mode":"Switch to dark mode"}/>
+              <button data-plain onClick={()=>setShowProfileMenu(true)} aria-label="Profile and settings"
+                style={{width:44,height:44,borderRadius:22,background:"transparent",border:"none",display:"flex",alignItems:"center",justifyContent:"center",padding:0}}>
+                <div style={{width:30,height:30,borderRadius:15,background:C.accent,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,fontSize:15,color:C.accentFg}}>{initial}</div>
               </button>
             </div>
           </div>
 
-          <div style={{flex:1,overflowY:"auto",paddingTop:16}}>
-            {tab==="home"&&<HomeScreen setTab={setTab} currentUser={currentUser}/>}
+          <div className="scroll" ref={scrollRef} onScroll={e=>setScrolled(e.currentTarget.scrollTop>4)} style={{flex:1,overflowY:"auto",paddingTop:8}}>
+            {tab==="home"&&<HomeScreen setTab={selectTab} currentUser={currentUser}/>}
             {tab==="workouts"&&<WorkoutsScreen/>}
             {tab==="recovery"&&<RecoveryScreen/>}
             {tab==="metrics"&&<MetricsScreen/>}
-            {tab==="videos"&&<VideosScreen/>}
             {tab==="stats"&&<StatsScreen/>}
           </div>
-          <div style={{background:C.surface,borderTop:`1px solid ${C.border}`,display:"flex",padding:"8px 2px 18px",flexShrink:0}}>
-            {NAV.map(n=>(<button key={n.id} onClick={()=>setTab(n.id)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",border:"none",cursor:"pointer",padding:"4px 0"}}>
-              <div style={{width:30,height:30,borderRadius:9,background:tab===n.id?C.accent:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s"}}>
-                {tab===n.id?<span style={{fontWeight:700,fontSize:9,color:C.accentFg,letterSpacing:-0.5}}>{n.label.slice(0,3)}</span>:<span style={{fontSize:16}}>{n.icon}</span>}
-              </div>
-              <span style={{fontSize:7,color:tab===n.id?C.accent:C.mutedFg,fontWeight:tab===n.id?700:400,letterSpacing:0.3}}>{n.label}</span>
-            </button>))}
-          </div>
+
+          {/* Tab bar: 49pt + home-indicator inset (34 in this mock frame) */}
+          <nav className="material hairline-top" aria-label="Main" style={{background:barBg,display:"flex",height:49+34,paddingBottom:34,flexShrink:0,position:"relative",zIndex:20}}>
+            {NAV.map(n=>{const on=tab===n.id;return(<button key={n.id} data-plain aria-current={on?"page":undefined} onClick={()=>selectTab(n.id)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,background:"none",border:"none",padding:"4px 0 0",color:on?C.tint:C.gray,transition:"color .15s"}}>
+              <Icon name={n.icon} size={25} stroke={on?2.25:1.75} fill={on&&(n.icon==="home"||n.icon==="recover")?"currentColor":"none"}/>
+              <span style={{fontSize:12,lineHeight:"12px",fontWeight:500}}>{n.label}</span>
+            </button>);})}
+          </nav>
         </>
       ):(
         <AuthScreen onLogin={handleLogin}/>
@@ -2905,7 +3062,7 @@ function App(){
   );
 
   return(
-    <div style={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"100vh",background:isDark?"#000":"#1a1a1a",fontFamily:"Space Grotesk,sans-serif"}}>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center",minHeight:"100dvh",background:isDark?"#000":"#1a1a1a"}}>
       {phone}
     </div>
   );
